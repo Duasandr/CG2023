@@ -4,5 +4,5 @@
 
 #include "SceneParam.h"
 
-namespace cgengine {
-} // cgengine
+namespace cg_engine {
+} // cg_engine
