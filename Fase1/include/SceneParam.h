@@ -5,12 +5,14 @@
 #ifndef ENGINE_SCENEPARAM_H
 #define ENGINE_SCENEPARAM_H
 
-namespace cgengine {
+namespace cg_engine {
 
     class SceneParam {
-
+    private:
+        float mWindowWidth;
+        float mWindowHeight;
     };
 
-} // cgengine
+} // cg_engine
 
 #endif //ENGINE_SCENEPARAM_H
