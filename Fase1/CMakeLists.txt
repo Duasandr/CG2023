@@ -6,7 +6,7 @@ PROJECT(engine)
 set(OpenGL_GL_PREFERENCE GLVND)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(engine src/engine.cpp src/engine.cpp src/generator.cpp include/engine.h include/generator.h)
+add_executable(engine src/engine.cpp src/engine.cpp src/generator.cpp include/engine.h include/generator.h src/SceneParam.cpp include/SceneParam.h)
 target_include_directories(engine PUBLIC ./include)
 
 add_executable(generator src/generator.cpp)
