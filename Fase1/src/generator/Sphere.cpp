@@ -22,22 +22,24 @@ void Sphere(float radius, int stacks, int slices, const char *fileName) {
 
             // Upper half
 
-            vertices.push_back(Vec3f::CreateCartesianFromSphere((i + 1) * alpha, (j + 1) * beta, radius));
             vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, j * beta, radius));
             vertices.push_back(Vec3f::CreateCartesianFromSphere((i+1) * alpha,j * beta, radius));
-
-            vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, j * beta, radius));
-            vertices.push_back(Vec3f::CreateCartesianFromSphere((i + 1) * alpha, (j + 1) * beta, radius));
             vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, (j + 1) * beta, radius));
 
-            // Lower half
-            vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, -(j + 1) * beta, radius));
-            vertices.push_back(Vec3f::CreateCartesianFromSphere((i + 1) * alpha, -(j + 1) * beta, radius));
-            vertices.push_back(Vec3f::CreateCartesianFromSphere((i + 1) * alpha, -j * beta, radius ));
+            vertices.push_back(Vec3f::CreateCartesianFromSphere((i+1) * alpha,j * beta, radius));
+            vertices.push_back(Vec3f::CreateCartesianFromSphere((i+1) * alpha,(j + 1) * beta, radius));
+            vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, (j + 1) * beta, radius));
 
-            vertices.push_back(Vec3f::CreateCartesianFromSphere((i + 1) * alpha, -j * beta, radius));
+
+            // Lower half
             vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, -j * beta, radius));
             vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, -(j + 1) * beta, radius));
+            vertices.push_back(Vec3f::CreateCartesianFromSphere((i+1) * alpha,-(j + 1) * beta, radius));
+
+            vertices.push_back(Vec3f::CreateCartesianFromSphere((i+1) * alpha,-(j + 1) * beta, radius));
+            vertices.push_back(Vec3f::CreateCartesianFromSphere((i+1) * alpha, -j * beta, radius));
+            vertices.push_back(Vec3f::CreateCartesianFromSphere(i * alpha, -j * beta, radius));
+
         }
     }
 
