@@ -9,6 +9,12 @@ namespace cg_math {
         mX =  mY = mZ = 0;
     }
 
+    Vec3f::Vec3f(float x, float y, float z) {
+        mX = x;
+        mY = y;
+        mZ = z;
+    }
+
     Vec3f::~Vec3f() {
 
     }
