@@ -23,6 +23,9 @@ namespace cg_engine {
 
         void LoadModel(const char *pathToFile);
 
+        int GetWindowHeight() const;
+        int GetWindowWidth() const;
+
         void Destroy();
     private:
         SceneParam *mParams;
