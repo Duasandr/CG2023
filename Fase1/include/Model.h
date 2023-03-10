@@ -16,13 +16,15 @@ namespace cg_engine {
 
         static Model *LoadFromFile(const char *path);
 
+        unsigned int GetVertexCount() const;
+        const float *GetVertices() const;
+
         void Destroy();
 
     private:
         void SetVertex(std::ifstream &ifs);
 
-        uint64_t mBytes;
-        unsigned int mVertexCount;
+        uint64_t mSize;
         float *mVertex;
     };
 
