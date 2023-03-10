@@ -20,12 +20,6 @@ namespace cg_engine {
 
     }
 
-    void Camera::SphereToCartesian() {
-        mPosition.SetX(mRadius * cos(mBeta) * sin(mAlpha));
-        mPosition.SetY(mRadius * sin(mBeta));
-        mPosition.SetZ(mRadius * cos(mBeta) * cos(mAlpha));
-    }
-
     void Camera::SetPosition(float x, float y, float z) {
         mPosition = Vec3f(x, y, z);
 
@@ -64,12 +58,14 @@ namespace cg_engine {
 
     void Camera::FreeMoveLeft() {
         mAlpha -= 0.1;
-        SphereToCartesian();
+
+        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
     void Camera::FreeMoveRight() {
         mAlpha += 0.1;
-        SphereToCartesian();
+
+        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
     void Camera::FreeMoveUp() {
@@ -79,7 +75,8 @@ namespace cg_engine {
             mBeta = M_PI_2;
         }
 
-        SphereToCartesian();
+
+        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
     void Camera::FreeMoveDown() {
@@ -89,18 +86,19 @@ namespace cg_engine {
             mBeta = -M_PI_2;
         }
 
-        SphereToCartesian();
+
+        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
     void Camera::FreeMoveBack() {
         mRadius += 0.1;
 
-        SphereToCartesian();
+        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
     void Camera::FreeMoveFront() {
         mRadius -= 0.1;
 
-        SphereToCartesian();
+        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 } // cg_engine
