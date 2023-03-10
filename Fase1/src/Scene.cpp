@@ -72,4 +72,12 @@ namespace cg_engine {
             std::cerr << "Error loading model from file: " << pathToFile << std::endl;
         }
     }
+
+    int Scene::GetWindowHeight() const {
+        return mParams->GetWindowHeight();
+    }
+
+    int Scene::GetWindowWidth() const {
+        return mParams->GetWindowWidth();
+    }
 } // cg_engine
