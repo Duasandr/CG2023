@@ -9,6 +9,21 @@ using cg_engine::Scene;
 
 Scene *gScene;
 
+void DrawAxis() {
+    glBegin(GL_LINES);
+    glColor3f(.5, 0.5, 0.5);
+    glVertex3f(-1,0,0);
+    glVertex3f(1,0,0);
+
+    glVertex3f(0,-1,0);
+    glVertex3f(0,1,0);
+
+    glVertex3f(0,0,-1);
+    glVertex3f(0,0,1);
+
+    glEnd();
+}
+
 /**
  * Changes the window size. Called every time a window is altered.
  * @param w New width
@@ -22,7 +37,7 @@ void ChangeSize(int w, int h) {
         h = 1;
 
     // compute window's aspect ratio
-    float ratio = static_cast<float>(w) / h;
+    float ratio = static_cast<float>(w) / static_cast<float>(h);
 
     // Set the projection matrix as current
     glMatrixMode(GL_PROJECTION);
@@ -33,7 +48,7 @@ void ChangeSize(int w, int h) {
     glViewport(0, 0, w, h);
 
     // Set perspective
-    gluPerspective(45.0f ,ratio, -10.0f ,15.0f);
+    gluPerspective(gScene->GetCamera().GetProjection().GetX() ,ratio, gScene->GetCamera().GetProjection().GetY() ,gScene->GetCamera().GetProjection().GetZ());
 
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
@@ -49,11 +64,11 @@ void RenderScene() {
 
     // set the camera
     glLoadIdentity();
-    gluLookAt(1.0f,1.0f,1.0f,
-              0.0f,0.0f,0.0f,
-              0.0f,1.0f,0.0f);
+    gluLookAt(gScene->GetCamera().GetPosition().GetX(),gScene->GetCamera().GetPosition().GetY(),gScene->GetCamera().GetPosition().GetZ(),
+              gScene->GetCamera().GetLookAt().GetX(),gScene->GetCamera().GetLookAt().GetY(),gScene->GetCamera().GetLookAt().GetZ(),
+              gScene->GetCamera().GetUp().GetX(),gScene->GetCamera().GetUp().GetY(),gScene->GetCamera().GetUp().GetZ());
     // Draw
-
+    DrawAxis();
     // End of frame
     glutSwapBuffers();
 }
