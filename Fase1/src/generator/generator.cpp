@@ -58,4 +58,22 @@ int main(int argc, char **argv) {
 
         return 0;
     }
+
+    if(primitive == "cone")  {
+        char *rest;
+        float r = strtof(argv[2], &rest);
+        int h = static_cast<int>(strtol(argv[3], &rest, 10));
+        int slices = static_cast<int>(strtol(argv[4], &rest, 10));
+        int stacks = static_cast<int>(strtol(argv[5], &rest, 10));
+
+        if (*rest != '\0') {
+            cerr << "Error parsing cone." << endl;
+        }
+
+        Cone(r, h, stacks, slices, argv[6]);
+
+        return 0;
+    }
+
+    return 0;
 }
