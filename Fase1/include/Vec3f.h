@@ -4,6 +4,8 @@
 
 #ifndef ENGINE_VEC3F_H
 #define ENGINE_VEC3F_H
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 namespace cg_math {
 
