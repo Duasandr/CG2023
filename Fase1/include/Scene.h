@@ -4,8 +4,10 @@
 
 #ifndef ENGINE_SCENE_H
 #define ENGINE_SCENE_H
+#include <vector>
 #include <SceneParam.h>
 #include <Camera.h>
+#include <Model.h>
 
 namespace cg_engine {
     using cg_math::Vec3f;
@@ -19,12 +21,17 @@ namespace cg_engine {
 
         void SetParams(const char *pathToConfigXML);
 
+        void LoadModel(const char *pathToFile);
+
         void Destroy();
     private:
         SceneParam *mParams;
         Camera mCamera;
+        std::vector<Model*> mModels;
 
         static void ResetCamera(Scene *scene);
+
+        static void LoadModels(Scene *scene);
     };
 
 } // cg_engine
