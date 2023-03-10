@@ -25,7 +25,7 @@ void Plane(int length, int divisions, const char *filePath) {
 
     // fills with counterclockwise triangle vertices
     for (int i = 0; i < divisions; ++i) {
-        for (int j = 0; j < divisions; j += 6) {
+        for (int j = 0; j < divisions; ++j) {
 
             /**
             *  <---length--->
