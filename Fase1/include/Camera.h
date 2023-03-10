@@ -12,6 +12,11 @@ namespace cg_engine {
         Camera();
         virtual ~Camera();
 
+        void SetPosition(float x, float y, float z);
+        void SetLookAt(float x, float y, float z);
+        void SetUp(float x, float y, float z);
+        void SetProjection(float fov, float near, float far);
+
     private:
         cg_math::Vec3f mPosition;
         cg_math::Vec3f mLookAt;
