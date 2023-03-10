@@ -5,6 +5,8 @@
 #ifndef ENGINE_SCENEPARAM_H
 #define ENGINE_SCENEPARAM_H
 #include <tinyxml2.h>
+#include <string>
+#include <vector>
 
 namespace cg_engine {
 
