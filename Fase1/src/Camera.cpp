@@ -17,4 +17,20 @@ namespace cg_engine {
     Camera::~Camera() {
 
     }
+
+    void Camera::SetPosition(float x, float y, float z) {
+        mPosition = Vec3f(x, y, z);
+    }
+
+    void Camera::SetLookAt(float x, float y, float z) {
+        mLookAt = Vec3f(x, y, z);
+    }
+
+    void Camera::SetUp(float x, float y, float z) {
+        mUp = Vec3f(x, y, z);
+    }
+
+    void Camera::SetProjection(float fov, float near, float far) {
+        mProjection = Vec3f(fov, near, far);
+    }
 } // cg_engine
