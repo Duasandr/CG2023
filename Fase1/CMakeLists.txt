@@ -11,7 +11,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 add_executable(engine src/engine/engine.cpp src/engine/engine.cpp include/engine/engine.h include/generator/generator.h src/engine/SceneParam.cpp include/engine/SceneParam.h src/common/Vec3f.cpp include/common/Vec3f.h src/engine/tinyxml2.cpp src/engine/Scene.cpp include/engine/Scene.h src/engine/Camera.cpp include/engine/Camera.h src/engine/Model.cpp include/engine/Model.h)
 target_include_directories(engine PUBLIC ./include/engine ./include/common)
 
-add_executable(generator src/generator/generator.cpp src/common/Vec3f.cpp include/common/Vec3f.h src/generator/Plane.cpp include/generator/Plane.h src/generator/Utils.cpp include/generator/Utils.h include/generator/Primitives.h src/generator/Box.cpp include/generator/Box.h src/generator/Sphere.cpp include/generator/Sphere.h)
+add_executable(generator src/generator/generator.cpp src/common/Vec3f.cpp include/common/Vec3f.h src/generator/Plane.cpp include/generator/Plane.h src/generator/Utils.cpp include/generator/Utils.h include/generator/Primitives.h src/generator/Box.cpp include/generator/Box.h src/generator/Sphere.cpp include/generator/Sphere.h src/generator/Cone.cpp include/generator/Cone.h)
 target_include_directories(generator PUBLIC ./include/generator ./include/common)
 
 find_package(OpenGL REQUIRED)
