@@ -5,7 +5,7 @@
 #ifndef ENGINE_VEC3F_H
 #define ENGINE_VEC3F_H
 
-namespace cg_engine_math {
+namespace cg_math {
 
     /**
      * Represents a vector of three floats
@@ -57,6 +57,6 @@ namespace cg_engine_math {
         float mZ;
     };
 
-} // cg_engine_math
+} // cg_math
 
 #endif //ENGINE_VEC3F_H
