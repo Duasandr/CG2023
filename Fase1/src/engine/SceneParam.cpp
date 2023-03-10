@@ -88,7 +88,8 @@ namespace cg_engine {
     }
 
     void SceneParam::ParseFileNames(SceneParam *params, XMLElement *models) {
-        for (XMLElement *model = models->FirstChildElement("model"); model != nullptr; model = models->NextSiblingElement("model")) {
+        for (XMLElement *model = models->FirstChildElement("model"); model != nullptr; model = model->NextSiblingElement("model")) {
+            cout << model->Attribute("file") << endl;
             params->mModelFileNames->push_back(model->Attribute("file"));
         }
     }
