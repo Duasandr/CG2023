@@ -43,4 +43,19 @@ int main(int argc, char **argv) {
 
         return 0;
     }
+
+    if(primitive == "sphere")  {
+        char *rest;
+        float r = strtof(argv[2], &rest);
+        int slices = static_cast<int>(strtol(argv[3], &rest, 10));
+        int stacks = static_cast<int>(strtol(argv[4], &rest, 10));
+
+        if (*rest != '\0') {
+            cerr << "Error parsing sphere." << endl;
+        }
+
+        Sphere(r, stacks, slices, argv[5]);
+
+        return 0;
+    }
 }
