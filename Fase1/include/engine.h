@@ -14,5 +14,6 @@
 #define _USE_MATH_DEFINES
 #include <iostream>
 #include <cmath>
+#include <SceneParam.h>
 
 #endif //ENGINE_ENGINE_H
