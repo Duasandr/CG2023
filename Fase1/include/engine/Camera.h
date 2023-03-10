@@ -39,8 +39,6 @@ namespace cg_engine {
         float mAlpha;
         float mBeta;
         float mRadius;
-
-        void SphereToCartesian();
     };
 
 } // cg_engine
