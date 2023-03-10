@@ -80,4 +80,8 @@ namespace cg_engine {
     int Scene::GetWindowWidth() const {
         return mParams->GetWindowWidth();
     }
+
+    const Camera &Scene::GetCamera() const {
+        return mCamera;
+    }
 } // cg_engine
