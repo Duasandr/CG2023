@@ -8,8 +8,7 @@ namespace cg_engine {
     using std::ifstream;
 
     Model::Model() {
-        mBytes = 0;
-        mVertexCount = 0;
+        mSize = 0;
         mVertex = nullptr;
     }
 
@@ -39,12 +38,20 @@ namespace cg_engine {
     }
 
     void Model::SetVertex(ifstream &ifs) {
-        ifs >> mVertexCount;
-        mBytes = mVertexCount * sizeof(float);
-        mVertex = new float[mVertexCount];
+        ifs >> mSize;
 
-        for (int i = 0; i < mVertexCount; ++i) {
+        mVertex = new float[mSize];
+
+        for (int i = 0; i < mSize; ++i) {
             ifs >> mVertex[i];
         }
+    }
+
+    unsigned int Model::GetVertexCount() const {
+        return mSize;
+    }
+
+    const float *Model::GetVertices() const {
+        return mVertex;
     }
 } // cg_engine
