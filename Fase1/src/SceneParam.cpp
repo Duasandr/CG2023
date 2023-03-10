@@ -3,11 +3,21 @@
 //
 #include <iostream>
 #include <string>
-#include "SceneParam.h"
+#include <vector>
+
+#include <tinyxml2.h>
+#include <SceneParam.h>
+
 
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::string;
+using std::vector;
+
+using tinyxml2::XMLDocument;
+using tinyxml2::XMLNode;
+using tinyxml2::XMLElement;
 
 namespace cg_engine {
     SceneParam::SceneParam() {
@@ -26,18 +36,130 @@ namespace cg_engine {
         mCameraFar = 0.0f;
         mCameraNear = 0.0f;
 
-        mModelCount = 0;
-        mModelFileNames = nullptr;
+        mModelFileNames = new vector<string>();
     }
 
     SceneParam::~SceneParam() {
+        Destroy();
     }
 
+    /**
+     * Initializes SceneParams with a configuration XML file.
+     * @param pathToConfigXml
+     * @return SceneParams or nullptr if unsuccessful
+     */
     SceneParam *SceneParam::Init(const char *pathToConfigXml) {
-        return nullptr;
+        SceneParam *params = new SceneParam();
+        XMLDocument configFile;
+
+        int res = configFile.LoadFile(pathToConfigXml);
+
+        if(res != tinyxml2::XML_SUCCESS) {
+            cerr << "Error opening XML configuration file." << endl;
+            return nullptr;
+        }
+
+        XMLElement *world = configFile.FirstChildElement("world");
+
+        XMLElement *window = world->FirstChildElement("window");
+
+        XMLElement *camera = world->FirstChildElement("camera");
+        XMLElement *position = camera->FirstChildElement("position");
+        XMLElement *lookAt = camera->FirstChildElement("lookAt");
+        XMLElement *up = camera->FirstChildElement("up");
+        XMLElement *projection = camera->FirstChildElement("projection");
+
+        XMLElement *groups = world->FirstChildElement("groups");
+        XMLElement *models = groups->FirstChildElement("models");
+
+        ParseWindow(params, window);
+
+        ParseCameraPosition(params, position);
+
+        ParseCameraLookAt(params, lookAt);
+
+        ParseCameraUp(params, up);
+
+        ParseCameraProjection(params, projection);
+
+        ParseFileNames(params, models);
+
+        return params;
     }
 
+    void SceneParam::ParseFileNames(SceneParam *params, XMLElement *models) {
+        for (XMLElement *model = models->FirstChildElement("model"); model != nullptr; model = models->FirstChildElement("model")) {
+            params->mModelFileNames->push_back(model->Attribute("file"));
+        }
+    }
+
+    void SceneParam::ParseCameraProjection(SceneParam *params, const XMLElement *projection) {
+        SetFloat(projection->Attribute("fov"), params->mCameraFOV);
+        SetFloat(projection->Attribute("near"), params->mCameraNear);
+        SetFloat(projection->Attribute("far"), params->mCameraFar);
+    }
+
+    void SceneParam::ParseCameraUp(SceneParam *params, const XMLElement *up) {
+        SetFloat(up->Attribute("x"), params->mCameraUpX);
+        SetFloat(up->Attribute("y"), params->mCameraUpY);
+        SetFloat(up->Attribute("z"), params->mCameraUpZ);
+    }
+
+    void SceneParam::ParseCameraLookAt(SceneParam *params, const XMLElement *lookAt) {
+        SetFloat(lookAt->Attribute("x"), params->mCameraLookAtX);
+        SetFloat(lookAt->Attribute("y"), params->mCameraLookAtY);
+        SetFloat(lookAt->Attribute("z"), params->mCameraLookAtZ);
+    }
+
+    void SceneParam::ParseCameraPosition(SceneParam *params, const XMLElement *position) {
+        SetFloat(position->Attribute("x"), params->mCameraPosX);
+        SetFloat(position->Attribute("y"), params->mCameraPosY);
+        SetFloat(position->Attribute("z"), params->mCameraPosZ);
+    }
+
+    void SceneParam::ParseWindow(SceneParam *params, const XMLElement *window) {
+        SetFloat(window->Attribute("width"), params->mWindowWidth);
+        SetFloat(window->Attribute("height"), params->mWindowHeight);
+    }
+
+    /**
+     * Releases allocated memory of Scene.
+     */
     void SceneParam::Destroy() {
         delete mModelFileNames;
+    }
+
+    /**
+     * Parses a given string to float.
+     * @param str
+     * @return float
+     * @throws std:.domain_error when invalid string is present
+     */
+    float SceneParam::ParseFloat(const char *str) {
+        float res = 0.0f;
+        char *rest;
+
+        res = static_cast<float>(strtof(str, &rest));
+
+        if(*rest != '\0') {
+            throw std::domain_error(str);
+        }
+
+        return res;
+    }
+
+    /**
+     * Utility function to set float values. Checks for parsing errors.
+     * @param str
+     * @param value field to modify
+     */
+    void SceneParam::SetFloat(const char *str, float &value) {
+        try {
+            value = ParseFloat(str);
+        }
+        catch (std::domain_error &e) {
+            cerr << "Error parsing float. " << e.what() << endl;
+            value = 0;
+        }
     }
 } // cg_engine
