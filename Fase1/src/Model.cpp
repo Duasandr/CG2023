@@ -25,15 +25,15 @@ namespace cg_engine {
         ifstream ifs;
         Model *res = new Model();
 
-        try {
-            ifs.open(path);
-            res->SetVertex(ifs);
-            ifs.close();
+        ifs.open(path);
+
+        if (ifs.fail()) {
+            std::cerr << "Error opening file : " << path << std::endl;
+            return nullptr;
         }
-        catch (std::exception &e) {
-            std::cerr << e.what() << std::endl;
-            res = nullptr;
-        }
+
+        res->SetVertex(ifs);
+        ifs.close();
 
         return res;
     }
