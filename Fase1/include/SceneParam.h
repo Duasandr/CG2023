@@ -4,7 +4,6 @@
 
 #ifndef ENGINE_SCENEPARAM_H
 #define ENGINE_SCENEPARAM_H
-#include <string>
 
 namespace cg_engine {
 
@@ -18,6 +17,20 @@ namespace cg_engine {
         void Destroy();
 
     private:
+        static void ParseWindow(SceneParam *params, const tinyxml2::XMLElement *window);
+
+        static void ParseCameraPosition(SceneParam *params, const tinyxml2::XMLElement *position);
+
+        static void ParseCameraLookAt(SceneParam *params, const tinyxml2::XMLElement *lookAt);
+
+        static void ParseCameraUp(SceneParam *params, const tinyxml2::XMLElement *up);
+
+        static void ParseCameraProjection(SceneParam *params, const tinyxml2::XMLElement *projection);
+
+        static float ParseFloat(const char *str);
+
+        static void SetFloat(const char *str, float &value);
+
         float mWindowWidth;
         float mWindowHeight;
         float mCameraPosX;
@@ -33,8 +46,10 @@ namespace cg_engine {
         float mCameraFar;
         float mCameraNear;
 
-        unsigned int mModelCount;
-        std::string *mModelFileNames;
+        std::vector<std::string> *mModelFileNames;
+
+
+        static void ParseFileNames(SceneParam *params, tinyxml2::XMLElement *models);
     };
 
 } // cg_engine
