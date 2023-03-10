@@ -1,7 +1,6 @@
 //
 // Created by Sandro Duarte on 10/03/2023.
 //
-
 #include "Camera.h"
 
 namespace cg_engine {
@@ -12,14 +11,29 @@ namespace cg_engine {
         mLookAt = Vec3f();
         mUp = Vec3f();
         mProjection = Vec3f();
+        mAlpha = 0.0f;
+        mBeta = 0.0f;
+        mRadius = 0.0f;
     }
 
     Camera::~Camera() {
 
     }
 
+    void Camera::SphereToCartesian() {
+        mPosition.SetX(mRadius * cos(mBeta) * sin(mAlpha));
+        mPosition.SetY(mRadius * sin(mBeta));
+        mPosition.SetZ(mRadius * cos(mBeta) * cos(mAlpha));
+    }
+
     void Camera::SetPosition(float x, float y, float z) {
         mPosition = Vec3f(x, y, z);
+
+        mRadius = sqrt(x * x + y * y + z * z);
+        mAlpha = acos(y / mRadius);
+        mBeta = atan2(y, x);
+
+        SphereToCartesian();
     }
 
     void Camera::SetLookAt(float x, float y, float z) {
@@ -48,5 +62,47 @@ namespace cg_engine {
 
     cg_math::Vec3f Camera::GetProjection() const {
         return mProjection;
+    }
+
+    void Camera::FreeMoveLeft() {
+        mAlpha -= 0.1;
+        SphereToCartesian();
+    }
+
+    void Camera::FreeMoveRight() {
+        mAlpha += 0.1;
+        SphereToCartesian();
+    }
+
+    void Camera::FreeMoveUp() {
+        mBeta += 0.1;
+
+        if(mBeta > M_PI_2) {
+            mBeta = M_PI_2;
+        }
+
+        SphereToCartesian();
+    }
+
+    void Camera::FreeMoveDown() {
+        mBeta -= 0.1;
+
+        if(mBeta < -M_PI_2) {
+            mBeta = -M_PI_2;
+        }
+
+        SphereToCartesian();
+    }
+
+    void Camera::FreeMoveBack() {
+        mRadius += 0.1;
+
+        SphereToCartesian();
+    }
+
+    void Camera::FreeMoveFront() {
+        mRadius -= 0.1;
+
+        SphereToCartesian();
     }
 } // cg_engine
