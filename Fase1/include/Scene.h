@@ -28,7 +28,7 @@ namespace cg_engine {
 
         const std::vector<Model*> &GetModels() const;
 
-        const Camera & GetCamera() const;
+        Camera & GetCamera();
 
         void Destroy();
     private:
