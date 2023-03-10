@@ -8,5 +8,6 @@
 #include <Plane.h>
 #include <Box.h>
 #include <Sphere.h>
+#include <Cone.h>
 
 #endif //ENGINE_PRIMITIVES_H
