@@ -162,4 +162,93 @@ namespace cg_engine {
             value = 0;
         }
     }
+
+    float SceneParam::GetWindowWidth() const {
+        return mWindowWidth;
+    }
+
+    float SceneParam::GetWindowHeight() const {
+        return mWindowHeight;
+    }
+
+    float SceneParam::GetCameraPosX() const {
+        return mCameraPosX;
+    }
+
+    float SceneParam::GetCameraPosY() const {
+        return mCameraPosY;
+    }
+
+    float SceneParam::GetCameraPosZ() const {
+        return mCameraPosZ;
+    }
+
+    float SceneParam::GetCameraLookAtX() const {
+        return mCameraLookAtX;
+    }
+
+    float SceneParam::GetCameraLookAtY() const {
+        return mCameraLookAtY;
+    }
+
+    float SceneParam::GetCameraLookAtZ() const {
+        return mCameraLookAtZ;
+    }
+
+    float SceneParam::GetCameraUpX() const {
+        return mCameraUpX;
+    }
+
+    float SceneParam::GetCameraUpY() const {
+        return mCameraUpY;
+    }
+
+    float SceneParam::GetCameraUpZ() const {
+        return mCameraUpZ;
+    }
+
+    float SceneParam::GetCameraFOV() const {
+        return mCameraFOV;
+    }
+
+    float SceneParam::GetCameraFar() const {
+        return mCameraNear;
+    }
+
+    float SceneParam::GetCameraNear() const {
+        return mCameraFar;
+    }
+
+    std::vector<std::string> &SceneParam::GetModelFileNames() const {
+        return *mModelFileNames;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const SceneParam &params) {
+        os << "Window Width: " << params.GetWindowWidth() << '\n';
+        os << "Window Height: " << params.GetWindowHeight() << '\n';
+
+        os << "Camera Position X: " << params.GetCameraPosX() << '\n';
+        os << "Camera Position Y: " << params.GetCameraPosY() << '\n';
+        os << "Camera Position Z: " << params.GetCameraPosZ() << '\n';
+
+        os << "Camera Look At X: " << params.GetCameraLookAtX() << '\n';
+        os << "Camera Look At Y: " << params.GetCameraLookAtY() << '\n';
+        os << "Camera Look At Z: " << params.GetCameraLookAtZ() << '\n';
+
+        os << "Camera Up X: " << params.GetCameraUpX() << '\n';
+        os << "Camera Up Y: " << params.GetCameraUpY() << '\n';
+        os << "Camera Up Z: " << params.GetCameraUpZ() << '\n';
+
+        os << "Camera FOV: " << params.GetCameraFOV() << '\n';
+        os << "Camera Near: " << params.GetCameraNear() << '\n';
+        os << "Camera Far: " << params.GetCameraFar() << '\n';
+
+        for(auto &fileName: params.GetModelFileNames()) {
+            os << "Model File: " << fileName << '\n';
+        }
+
+        os << endl;
+
+        return os;
+    }
 } // cg_engine
