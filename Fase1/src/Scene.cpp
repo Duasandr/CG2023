@@ -2,8 +2,10 @@
 // Created by Sandro Duarte on 10/03/2023.
 //
 
-#include <Scene.h>
 #include <iostream>
+#include <vector>
+#include <Scene.h>
+
 namespace cg_engine {
     using cg_engine::SceneParam;
 
@@ -31,17 +33,21 @@ namespace cg_engine {
     }
 
     Scene *Scene::Init(const char *pathToConfigXML) {
-        Scene *res = new Scene();
+        Scene *scene = new Scene();
 
-        res->SetParams(pathToConfigXML);
+        scene->SetParams(pathToConfigXML);
 
-        ResetCamera(res);
+        ResetCamera(scene);
 
-        for (auto &fileName: res->mParams->GetModelFileNames()) {
-            
+        LoadModels(scene);
+
+        return scene;
+    }
+
+    void Scene::LoadModels(Scene *scene) {
+        for (auto &fileName: scene->mParams->GetModelFileNames()) {
+            scene->LoadModel(fileName.c_str());
         }
-
-        return res;
     }
 
     void Scene::ResetCamera(Scene *scene) {
@@ -54,6 +60,16 @@ namespace cg_engine {
                                  scene->mParams->GetCameraUpZ());
             scene->mCamera.SetProjection(scene->mParams->GetCameraFOV(), scene->mParams->GetCameraNear(),
                                          scene->mParams->GetCameraFar());
+        }
+    }
+
+    void Scene::LoadModel(const char *pathToFile) {
+        Model *model = Model::LoadFromFile(pathToFile);
+
+        if(model != nullptr){
+            mModels.push_back(model);
+        }else{
+            std::cerr << "Error loading model from file: " << pathToFile << std::endl;
         }
     }
 } // cg_engine
