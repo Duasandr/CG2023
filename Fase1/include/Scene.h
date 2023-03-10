@@ -15,12 +15,16 @@ namespace cg_engine {
         Scene();
         virtual ~Scene();
 
+        static Scene *Init(const char *pathToConfigXML);
+
         void SetParams(const char *pathToConfigXML);
 
         void Destroy();
     private:
         SceneParam *mParams;
         Camera mCamera;
+
+        static void ResetCamera(Scene *scene);
     };
 
 } // cg_engine
