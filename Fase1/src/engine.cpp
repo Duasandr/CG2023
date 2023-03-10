@@ -9,7 +9,7 @@ using cg_engine::Scene;
 
 Scene *gScene;
 
-GLint gMode = GL_FILL;
+GLint gMode = GL_LINE;
 
 void DrawAxis() {
     glBegin(GL_LINES);
@@ -108,7 +108,7 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
 // put code to process regular keys in here
 #ifndef NDEBUG
     cout << " Key pressed: " << c << endl;
-#endif
+
     switch (c) {
         case 'l':
             gMode = GL_LINE;
@@ -122,6 +122,7 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
         default:
             break;
     }
+#endif
 }
 
 /**
@@ -135,6 +136,23 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 // put code to process special keys in here
 #ifndef NDEBUG
         cout << "Special key pressed: " << key << endl;
+
+    switch (key) {
+        case GLUT_KEY_LEFT:
+            gScene->GetCamera().FreeMoveLeft();
+            break;
+        case GLUT_KEY_RIGHT:
+            gScene->GetCamera().FreeMoveRight();
+            break;
+        case GLUT_KEY_UP:
+            gScene->GetCamera().FreeMoveUp();
+            break;
+        case GLUT_KEY_DOWN:
+            gScene->GetCamera().FreeMoveDown();
+            break;
+        default:
+            break;
+    }
 #endif
 
 }
@@ -160,11 +178,6 @@ int main(int argc, char **argv) {
     glutReshapeFunc(ChangeSize);
     glutIdleFunc(RenderScene);
 
-    // Initializes Glew for Windows and Linux machines
-#ifndef __APPLE__
-    glewInit();
-#endif
-
 // Callback registration for keyboard processing
     glutKeyboardFunc(ProcessKeys);
     glutSpecialFunc(ProcessSpecialKeys);
@@ -172,7 +185,7 @@ int main(int argc, char **argv) {
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
+    glCullFace(GL_BACK);
 
 
 // enter GLUT's main cycle
