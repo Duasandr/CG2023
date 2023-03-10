@@ -29,4 +29,18 @@ int main(int argc, char **argv) {
 
         return 0;
     }
+
+    if (primitive == "box") {
+        char *rest;
+        int length = static_cast<int>(strtol(argv[2], &rest, 10));
+        int divisions = static_cast<int>(strtol(argv[3], &rest, 10));
+
+        if (*rest != '\0') {
+            cerr << "Error parsing box." << endl;
+        }
+
+        Box(length, divisions, argv[4]);
+
+        return 0;
+    }
 }
