@@ -14,6 +14,22 @@ namespace cg_engine {
 
         static SceneParam * Init(const char* pathToConfigXml);
 
+        float GetWindowWidth() const;
+        float GetWindowHeight() const;
+        float GetCameraPosX() const;
+        float GetCameraPosY() const;
+        float GetCameraPosZ() const;
+        float GetCameraLookAtX() const;
+        float GetCameraLookAtY() const;
+        float GetCameraLookAtZ() const;
+        float GetCameraUpX() const;
+        float GetCameraUpY() const;
+        float GetCameraUpZ() const;
+        float GetCameraFOV() const;
+        float GetCameraFar() const;
+        float GetCameraNear() const;
+        std::vector<std::string> &GetModelFileNames() const;
+
         void Destroy();
 
     private:
@@ -51,6 +67,8 @@ namespace cg_engine {
 
         static void ParseFileNames(SceneParam *params, tinyxml2::XMLElement *models);
     };
+
+    std::ostream &operator<<(std::ostream &os, const SceneParam &params);
 
 } // cg_engine
 
