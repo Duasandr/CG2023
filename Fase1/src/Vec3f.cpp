@@ -31,15 +31,15 @@ namespace cg_math {
         mZ = z;
     }
 
-    float Vec3f::GetX() {
+    float Vec3f::GetX() const {
         return mX;
     }
 
-    float Vec3f::GetY() {
+    float Vec3f::GetY() const {
         return mY;
     }
 
-    float Vec3f::GetZ() {
+    float Vec3f::GetZ() const {
         return mZ;
     }
 
