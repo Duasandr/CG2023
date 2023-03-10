@@ -33,4 +33,20 @@ namespace cg_engine {
     void Camera::SetProjection(float fov, float near, float far) {
         mProjection = Vec3f(fov, near, far);
     }
+
+    Vec3f Camera::GetPosition() const {
+        return mPosition;
+    }
+
+    cg_math::Vec3f Camera::GetLookAt() const {
+        return mLookAt;
+    }
+
+    cg_math::Vec3f Camera::GetUp() const {
+        return mUp;
+    }
+
+    cg_math::Vec3f Camera::GetProjection() const {
+        return mProjection;
+    }
 } // cg_engine
