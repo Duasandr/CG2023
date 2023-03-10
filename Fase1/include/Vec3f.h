@@ -38,19 +38,19 @@ namespace cg_math {
          * Gets x value.
          * @return x
          */
-        float GetX();
+        float GetX() const;
 
         /**
          * Gets y value.
          * @return
          */
-        float GetY();
+        float GetY() const;
 
         /**
          * Gets z value.
          * @return
          */
-        float GetZ();
+        float GetZ() const;
 
     private:
         float mX;
