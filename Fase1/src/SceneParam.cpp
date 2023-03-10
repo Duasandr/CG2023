@@ -69,7 +69,7 @@ namespace cg_engine {
         XMLElement *up = camera->FirstChildElement("up");
         XMLElement *projection = camera->FirstChildElement("projection");
 
-        XMLElement *groups = world->FirstChildElement("groups");
+        XMLElement *groups = world->FirstChildElement("group");
         XMLElement *models = groups->FirstChildElement("models");
 
         ParseWindow(params, window);
@@ -88,7 +88,7 @@ namespace cg_engine {
     }
 
     void SceneParam::ParseFileNames(SceneParam *params, XMLElement *models) {
-        for (XMLElement *model = models->FirstChildElement("model"); model != nullptr; model = models->FirstChildElement("model")) {
+        for (XMLElement *model = models->FirstChildElement("model"); model != nullptr; model = models->NextSiblingElement("model")) {
             params->mModelFileNames->push_back(model->Attribute("file"));
         }
     }
