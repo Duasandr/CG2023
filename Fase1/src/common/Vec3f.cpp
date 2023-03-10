@@ -55,6 +55,18 @@ namespace cg_math {
         return res;
     }
 
+    void Vec3f::PolarToCartesian(float alpha, float height, float radius) {
+        SetX(radius * cos(alpha));
+        SetY(height);
+        SetZ(radius * sin(alpha));
+    }
+
+    Vec3f Vec3f::CreateCartesianFromPolar(float alpha, float height, float radius) {
+        Vec3f res;
+        res.PolarToCartesian(alpha, height, radius);
+        return res;
+    }
+
     std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F) {
         os << vec3F.GetX() << ' ' << vec3F.GetY() << ' ' << vec3F.GetZ();
         return os;
