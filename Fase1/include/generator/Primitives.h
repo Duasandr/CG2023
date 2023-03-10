@@ -7,5 +7,6 @@
 
 #include <Plane.h>
 #include <Box.h>
+#include <Sphere.h>
 
 #endif //ENGINE_PRIMITIVES_H
