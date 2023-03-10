@@ -17,6 +17,11 @@ namespace cg_engine {
         void SetUp(float x, float y, float z);
         void SetProjection(float fov, float near, float far);
 
+        cg_math::Vec3f GetPosition() const;
+        cg_math::Vec3f GetLookAt() const;
+        cg_math::Vec3f GetUp() const;
+        cg_math::Vec3f GetProjection() const;
+
     private:
         cg_math::Vec3f mPosition;
         cg_math::Vec3f mLookAt;
