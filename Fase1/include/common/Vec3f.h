@@ -21,8 +21,10 @@ namespace cg_math {
         virtual ~Vec3f();
 
         static Vec3f CreateCartesianFromSphere(float alpha, float beta , float radius);
+        static Vec3f CreateCartesianFromPolar(float alpha, float height, float radius);
 
         void SphereToCartesian(float alpha, float beta, float radius);
+        void PolarToCartesian(float alpha, float height, float radius);
 
         /**
          * Sets x value.
