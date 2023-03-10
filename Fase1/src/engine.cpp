@@ -9,19 +9,37 @@ using cg_engine::Scene;
 
 Scene *gScene;
 
+GLint gMode = GL_FILL;
+
 void DrawAxis() {
     glBegin(GL_LINES);
-    glColor3f(.5, 0.5, 0.5);
-    glVertex3f(-1,0,0);
-    glVertex3f(1,0,0);
+    glColor3f(0.5f, 0.5f, 0.5f);
 
-    glVertex3f(0,-1,0);
-    glVertex3f(0,1,0);
+    glVertex3f(-1.0f,0.0f,0.0f);
+    glVertex3f(1.0f,0.0f,0.0f);
 
-    glVertex3f(0,0,-1);
-    glVertex3f(0,0,1);
+    glVertex3f(0.0f,-1.0f,0.0f);
+    glVertex3f(0.0f,1.0f,0.0f);
+
+    glVertex3f(0.0f,0.0f,-1.0f);
+    glVertex3f(0.0f,0.0f,1.0f);
 
     glEnd();
+}
+
+void DrawTriangles(const unsigned int vertexCount, const float *vertices) {
+    glBegin(GL_TRIANGLES);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    for (unsigned int i = 0; i < vertexCount; i += 3) {
+        glVertex3f(vertices[i],vertices[i+1],vertices[i+2]);
+    }
+    glEnd();
+}
+
+void DrawScene() {
+    for (auto &model: gScene->GetModels()) {
+        DrawTriangles(model->GetVertexCount(), model->GetVertices());
+    }
 }
 
 /**
@@ -67,8 +85,14 @@ void RenderScene() {
     gluLookAt(gScene->GetCamera().GetPosition().GetX(),gScene->GetCamera().GetPosition().GetY(),gScene->GetCamera().GetPosition().GetZ(),
               gScene->GetCamera().GetLookAt().GetX(),gScene->GetCamera().GetLookAt().GetY(),gScene->GetCamera().GetLookAt().GetZ(),
               gScene->GetCamera().GetUp().GetX(),gScene->GetCamera().GetUp().GetY(),gScene->GetCamera().GetUp().GetZ());
+
+    // Sets a different polygon mode on keyboard pressed
+    glPolygonMode(GL_FRONT_AND_BACK, gMode);
+
     // Draw
     DrawAxis();
+    DrawScene();
+
     // End of frame
     glutSwapBuffers();
 }
@@ -82,7 +106,22 @@ void RenderScene() {
 void ProcessKeys(unsigned char c, int xx, int yy) {
 
 // put code to process regular keys in here
-    cout << "Key pressed: " << c << endl;
+#ifndef NDEBUG
+    cout << " Key pressed: " << c << endl;
+#endif
+    switch (c) {
+        case 'l':
+            gMode = GL_LINE;
+            break;
+        case 'p':
+            gMode = GL_POINT;
+            break;
+        case 'f':
+            gMode = GL_FILL;
+            break;
+        default:
+            break;
+    }
 }
 
 /**
@@ -94,7 +133,9 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
 void ProcessSpecialKeys(int key, int xx, int yy) {
 
 // put code to process special keys in here
+#ifndef NDEBUG
         cout << "Special key pressed: " << key << endl;
+#endif
 
 }
 
@@ -131,6 +172,8 @@ int main(int argc, char **argv) {
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
+
 
 // enter GLUT's main cycle
     glutMainLoop();
