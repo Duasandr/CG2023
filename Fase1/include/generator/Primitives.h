@@ -5,6 +5,7 @@
 #ifndef ENGINE_PRIMITIVES_H
 #define ENGINE_PRIMITIVES_H
 
-#include "Plane.h"
+#include <Plane.h>
+#include <Box.h>
 
 #endif //ENGINE_PRIMITIVES_H
