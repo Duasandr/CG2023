@@ -43,6 +43,18 @@ namespace cg_math {
         return mZ;
     }
 
+    void Vec3f::SphereToCartesian(float alpha, float beta, float radius) {
+            SetX(radius * cos(beta) * sin(alpha));
+            SetY(radius * sin(beta));
+            SetZ(radius * cos(beta) * cos(alpha));
+    }
+
+    Vec3f Vec3f::CreateCartesianFromSphere(float alpha, float beta, float radius) {
+        Vec3f res;
+        res.SphereToCartesian(alpha, beta, radius);
+        return res;
+    }
+
     std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F) {
         os << vec3F.GetX() << ' ' << vec3F.GetY() << ' ' << vec3F.GetZ();
         return os;
