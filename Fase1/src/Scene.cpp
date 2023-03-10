@@ -84,4 +84,8 @@ namespace cg_engine {
     const Camera &Scene::GetCamera() const {
         return mCamera;
     }
+
+    const std::vector<Model *> &Scene::GetModels() const {
+        return mModels;
+    }
 } // cg_engine
