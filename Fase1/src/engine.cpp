@@ -7,6 +7,8 @@ using std::cout;
 using std::endl;
 using cg_engine::Scene;
 
+Scene *gScene;
+
 /**
  * Changes the window size. Called every time a window is altered.
  * @param w New width
@@ -89,9 +91,7 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
  * @return
  */
 int main(int argc, char **argv) {
-    Scene scene;
-    scene.SetParams("config.xml");
-
+    gScene = Scene::Init("config.xml");
     // init GLUT and the window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
