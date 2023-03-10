@@ -118,8 +118,8 @@ namespace cg_engine {
     }
 
     void SceneParam::ParseWindow(SceneParam *params, const XMLElement *window) {
-        SetFloat(window->Attribute("width"), params->mWindowWidth);
-        SetFloat(window->Attribute("height"), params->mWindowHeight);
+        SetInt(window->Attribute("width"), params->mWindowWidth);
+        SetInt(window->Attribute("height"), params->mWindowHeight);
     }
 
     /**
@@ -148,6 +148,19 @@ namespace cg_engine {
         return res;
     }
 
+    int SceneParam::ParseInt(const char *str) {
+        int res = 0;
+        char *rest;
+
+        res = static_cast<int>(strtol(str, &rest, 10));
+
+        if(*rest != '\0') {
+            throw std::domain_error(str);
+        }
+
+        return res;
+    }
+
     /**
      * Utility function to set float values. Checks for parsing errors.
      * @param str
@@ -163,11 +176,21 @@ namespace cg_engine {
         }
     }
 
-    float SceneParam::GetWindowWidth() const {
+    void SceneParam::SetInt(const char *str, int &value) {
+        try {
+            value = ParseInt(str);
+        }
+        catch (std::domain_error &e) {
+            cerr << "Error parsing int. " << e.what() << endl;
+            value = 0;
+        }
+    }
+
+    int SceneParam::GetWindowWidth() const {
         return mWindowWidth;
     }
 
-    float SceneParam::GetWindowHeight() const {
+    int SceneParam::GetWindowHeight() const {
         return mWindowHeight;
     }
 
