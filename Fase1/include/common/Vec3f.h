@@ -5,7 +5,9 @@
 #ifndef ENGINE_VEC3F_H
 #define ENGINE_VEC3F_H
 #define _USE_MATH_DEFINES
+#include <iostream>
 #include <cmath>
+
 
 namespace cg_math {
 
@@ -60,6 +62,7 @@ namespace cg_math {
         float mZ;
     };
 
+    std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F);
 } // cg_math
 
 #endif //ENGINE_VEC3F_H

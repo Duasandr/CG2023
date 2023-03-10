@@ -2,7 +2,7 @@
 // Created by Sandro Duarte on 10/03/2023.
 //
 #include <iostream>
-#include <Model.h>
+#include "Model.h"
 
 namespace cg_engine {
     using std::ifstream;

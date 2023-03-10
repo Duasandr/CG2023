@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <vector>
-#include <Scene.h>
+#include "Scene.h"
 
 namespace cg_engine {
     using cg_engine::SceneParam;

@@ -1,7 +1,7 @@
 //
 // Created by Sandro Duarte on 09/03/2023.
 //
-#include <engine.h>
+#include "engine.h"
 
 using std::cout;
 using std::endl;
@@ -13,14 +13,16 @@ GLint gMode = GL_LINE;
 
 void DrawAxis() {
     glBegin(GL_LINES);
-    glColor3f(0.5f, 0.5f, 0.5f);
 
+    glColor3f(1.0f, 0.0f, 0.0f);
     glVertex3f(-1.0f,0.0f,0.0f);
     glVertex3f(1.0f,0.0f,0.0f);
 
+    glColor3f(0.0f, 1.0f, 0.0f);
     glVertex3f(0.0f,-1.0f,0.0f);
     glVertex3f(0.0f,1.0f,0.0f);
 
+    glColor3f(0.0f, 0.0f, 1.0f);
     glVertex3f(0.0f,0.0f,-1.0f);
     glVertex3f(0.0f,0.0f,1.0f);
 
@@ -29,7 +31,7 @@ void DrawAxis() {
 
 void DrawTriangles(const unsigned int vertexCount, const float *vertices) {
     glBegin(GL_TRIANGLES);
-    glColor3f(0.0f, 1.0f, 0.0f);
+    glColor3f(1.0f, 1.0f, 1.0f);
     for (unsigned int i = 0; i < vertexCount; i += 3) {
         glVertex3f(vertices[i],vertices[i+1],vertices[i+2]);
     }
@@ -86,8 +88,10 @@ void RenderScene() {
               gScene->GetCamera().GetLookAt().GetX(),gScene->GetCamera().GetLookAt().GetY(),gScene->GetCamera().GetLookAt().GetZ(),
               gScene->GetCamera().GetUp().GetX(),gScene->GetCamera().GetUp().GetY(),gScene->GetCamera().GetUp().GetZ());
 
+
     // Sets a different polygon mode on keyboard pressed
-    glPolygonMode(GL_FRONT_AND_BACK, gMode);
+    glPolygonMode(GL_FRONT, gMode);
+
 
     // Draw
     DrawAxis();
@@ -108,7 +112,7 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
 // put code to process regular keys in here
 #ifndef NDEBUG
     cout << " Key pressed: " << c << endl;
-
+#endif
     switch (c) {
         case 'l':
             gMode = GL_LINE;
@@ -122,7 +126,7 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
         default:
             break;
     }
-#endif
+
 }
 
 /**
@@ -136,7 +140,7 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 // put code to process special keys in here
 #ifndef NDEBUG
         cout << "Special key pressed: " << key << endl;
-
+#endif
     switch (key) {
         case GLUT_KEY_LEFT:
             gScene->GetCamera().FreeMoveLeft();
@@ -153,7 +157,7 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
         default:
             break;
     }
-#endif
+
 
 }
 
@@ -165,7 +169,12 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
  * @return
  */
 int main(int argc, char **argv) {
-    gScene = Scene::Init("config.xml");
+    if(argc < 2) {
+        std::cerr << "Invalid argument number" << std::endl;
+        return 1;
+    }
+
+    gScene = Scene::Init(argv[1]);
     // init GLUT and the window
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
@@ -185,8 +194,6 @@ int main(int argc, char **argv) {
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-
 
 // enter GLUT's main cycle
     glutMainLoop();

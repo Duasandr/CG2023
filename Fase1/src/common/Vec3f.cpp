@@ -43,4 +43,9 @@ namespace cg_math {
         return mZ;
     }
 
+    std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F) {
+        os << vec3F.GetX() << ' ' << vec3F.GetY() << ' ' << vec3F.GetZ();
+        return os;
+    }
+
 } // cg_math

@@ -5,9 +5,9 @@
 #ifndef ENGINE_SCENE_H
 #define ENGINE_SCENE_H
 #include <vector>
-#include <SceneParam.h>
-#include <Camera.h>
-#include <Model.h>
+#include "SceneParam.h"
+#include "Camera.h"
+#include "Model.h"
 
 namespace cg_engine {
     using cg_math::Vec3f;

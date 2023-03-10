@@ -32,8 +32,6 @@ namespace cg_engine {
         mRadius = sqrt(x * x + y * y + z * z);
         mAlpha = acos(y / mRadius);
         mBeta = atan2(y, x);
-
-        SphereToCartesian();
     }
 
     void Camera::SetLookAt(float x, float y, float z) {

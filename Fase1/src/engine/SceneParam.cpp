@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include <tinyxml2.h>
-#include <SceneParam.h>
+#include "tinyxml2.h"
+#include "SceneParam.h"
 
 
 using std::cout;
