@@ -8,10 +8,10 @@ set (CMAKE_CXX_STANDARD 11)
 set(OpenGL_GL_PREFERENCE GLVND)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_executable(engine src/engine.cpp src/engine.cpp src/generator.cpp include/engine.h include/generator.h src/SceneParam.cpp include/SceneParam.h include/Vec3f.cpp include/Vec3f.h src/tinyxml2.cpp)
+add_executable(engine src/engine.cpp src/engine.cpp src/generator.cpp include/engine.h include/generator.h src/SceneParam.cpp include/SceneParam.h src/Vec3f.cpp include/Vec3f.h src/tinyxml2.cpp src/Scene.cpp include/Scene.h src/Camera.cpp include/Camera.h)
 target_include_directories(engine PUBLIC ./include)
 
-add_executable(generator src/generator.cpp include/Vec3f.cpp include/Vec3f.h)
+add_executable(generator src/generator.cpp src/Vec3f.cpp include/Vec3f.h)
 target_include_directories(generator PUBLIC ./include)
 
 find_package(OpenGL REQUIRED)

@@ -4,7 +4,7 @@
 
 #include "Vec3f.h"
 
-namespace cg_engine_math {
+namespace cg_math {
     Vec3f::Vec3f() {
         mX =  mY = mZ = 0;
     }
@@ -37,4 +37,4 @@ namespace cg_engine_math {
         return mZ;
     }
 
-} // cg_engine_math
+} // cg_math
