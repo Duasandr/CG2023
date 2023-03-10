@@ -26,6 +26,8 @@ namespace cg_engine {
         int GetWindowHeight() const;
         int GetWindowWidth() const;
 
+        const std::vector<Model*> &GetModels() const;
+
         const Camera & GetCamera() const;
 
         void Destroy();
