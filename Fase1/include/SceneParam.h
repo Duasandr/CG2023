@@ -17,8 +17,8 @@ namespace cg_engine {
 
         static SceneParam * Init(const char* pathToConfigXml);
 
-        float GetWindowWidth() const;
-        float GetWindowHeight() const;
+        int GetWindowWidth() const;
+        int GetWindowHeight() const;
         float GetCameraPosX() const;
         float GetCameraPosY() const;
         float GetCameraPosZ() const;
@@ -48,10 +48,14 @@ namespace cg_engine {
 
         static float ParseFloat(const char *str);
 
+        static int ParseInt(const char *str);
+
         static void SetFloat(const char *str, float &value);
 
-        float mWindowWidth;
-        float mWindowHeight;
+        static void SetInt(const char *str, int &value);
+
+        int mWindowWidth;
+        int mWindowHeight;
         float mCameraPosX;
         float mCameraPosY;
         float mCameraPosZ;
