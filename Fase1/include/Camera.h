@@ -17,6 +17,14 @@ namespace cg_engine {
         void SetUp(float x, float y, float z);
         void SetProjection(float fov, float near, float far);
 
+        void FreeMoveLeft();
+        void FreeMoveRight();
+        void FreeMoveUp();
+        void FreeMoveDown();
+
+        void FreeMoveFront();
+        void FreeMoveBack();
+
         cg_math::Vec3f GetPosition() const;
         cg_math::Vec3f GetLookAt() const;
         cg_math::Vec3f GetUp() const;
@@ -27,6 +35,12 @@ namespace cg_engine {
         cg_math::Vec3f mLookAt;
         cg_math::Vec3f mUp;
         cg_math::Vec3f mProjection;
+
+        float mAlpha;
+        float mBeta;
+        float mRadius;
+
+        void SphereToCartesian();
     };
 
 } // cg_engine
