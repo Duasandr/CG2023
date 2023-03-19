@@ -28,6 +28,11 @@ namespace cg_engine {
         void FreeMoveFront();
         void FreeMoveBack();
 
+        void LookLeft();
+        void LookRight();
+        void LookFront();
+        void LookBack();
+
         cg_math::Vec3f GetPosition() const;
         cg_math::Vec3f GetLookAt() const;
         cg_math::Vec3f GetUp() const;
