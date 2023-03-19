@@ -44,5 +44,5 @@ void Sphere(float radius, int stacks, int slices, const char *fileName) {
     }
 
 
-    DumpVertices(fileName, vertices.size() * 3,vertices);
+    DumpVertices(fileName, vertices.size(),vertices);
 }

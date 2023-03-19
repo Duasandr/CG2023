@@ -220,6 +220,6 @@ void Box(int length, int divisions, const char *filePath) {
     // back face
     BackFace(length,divisions,vertices);
 
-    DumpVertices(filePath, vertices.size() * 3 ,vertices);
+    DumpVertices(filePath, vertices.size(),vertices);
 
 }

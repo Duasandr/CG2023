@@ -61,6 +61,6 @@ void Plane(int length, int divisions, const char *filePath) {
         z += squareSize;
     }
 
-    DumpVertices(filePath, vertices.size()*3, vertices);
+    DumpVertices(filePath, vertices.size(), vertices);
 
 }

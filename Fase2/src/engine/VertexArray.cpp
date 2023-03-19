@@ -29,10 +29,11 @@ namespace cg_engine {
         ifs >> mVertexCount;
 
         // a vertex is 3 floats
-        mVertices = new float[mVertexCount * 3];
+        const int size = mVertexCount * 3;
+        mVertices = new float[size];
 
         // reads the remaining values from the file into the array
-        for (int i = 0; i < mVertexCount; ++i) {
+        for (int i = 0; i < size; ++i) {
             ifs >> mVertices[i];
         }
 
