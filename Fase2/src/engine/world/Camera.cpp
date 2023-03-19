@@ -125,15 +125,31 @@ namespace cg_engine {
     }
 
     void Camera::FreeMoveBack() {
-        mRadius += 0.1;
+        mRadius += 1;
 
         mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
     void Camera::FreeMoveFront() {
-        mRadius -= 0.1;
+        mRadius -= 1;
 
         mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
+    }
+
+    void Camera::LookLeft() {
+        mLookAt.SetX(mLookAt.GetX()+1);
+    }
+
+    void Camera::LookRight() {
+        mLookAt.SetX(mLookAt.GetX()-1);
+    }
+
+    void Camera::LookFront() {
+        mLookAt.SetZ(mLookAt.GetZ()-1);
+    }
+
+    void Camera::LookBack() {
+        mLookAt.SetZ(mLookAt.GetZ()+1);
     }
 
 
