@@ -26,16 +26,11 @@ namespace cg_engine {
          */
         static Model *Create(const char *path);
 
-        void Draw() const;
-
         /**
-         * Returns the current vertex count of the model
-         * @return Number of vertices
-         */
-        unsigned int GetVertexCount() const;
-
-        const float *GetVertices() const;
-
+         * Draws Model to screen.
+         * Renders the vertex array.
+        */
+        void Draw() const;
 
     private:
         Model() = default;
