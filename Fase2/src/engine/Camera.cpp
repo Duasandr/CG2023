@@ -23,7 +23,7 @@ namespace cg_engine {
     void Camera::SetPosition(float x, float y, float z) {
         mPosition = Vec3f(x, y, z);
 
-        mRadius = sqrt(x * x + y * y + z * z);
+        mRadius = mPosition.Norm();
         mAlpha = acos(y / mRadius);
         mBeta = atan2(y, x);
     }
@@ -73,9 +73,8 @@ namespace cg_engine {
 
         // approximately PI/2
         if(mBeta > 1.5) {
-            mBeta = M_PI_2;
+            mBeta = 1.5;
         }
-
 
         mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
@@ -87,8 +86,7 @@ namespace cg_engine {
         if(mBeta < -1.5) {
             mBeta = -1.5;
         }
-
-
+        
         mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
 
