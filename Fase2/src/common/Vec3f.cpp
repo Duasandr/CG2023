@@ -43,6 +43,14 @@ namespace cg_math {
         return mZ;
     }
 
+    /**
+     * Returns the norm (length) of the vector.
+     * @return
+    */
+    float Vec3f::Norm() const {
+        return sqrt(mX * mX + mY * mY + mZ * mZ);
+    }
+
     void Vec3f::SphereToCartesian(float alpha, float beta, float radius) {
             SetX(radius * cos(beta) * sin(alpha));
             SetY(radius * sin(beta));
