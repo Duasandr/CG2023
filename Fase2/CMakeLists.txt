@@ -1,0 +1,70 @@
+cmake_minimum_required(VERSION 3.5)
+
+# Project Name
+PROJECT(engine)
+
+set (CMAKE_CXX_STANDARD 11)
+
+set(OpenGL_GL_PREFERENCE GLVND)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+add_executable(engine src/engine/engine.cpp src/engine/engine.cpp include/engine/engine.h include/generator/generator.h src/engine/SceneParam.cpp include/engine/SceneParam.h src/common/Vec3f.cpp include/common/Vec3f.h src/engine/tinyxml2.cpp src/engine/Scene.cpp include/engine/Scene.h src/engine/Camera.cpp include/engine/Camera.h src/engine/Model.cpp include/engine/Model.h src/engine/VertexBuffer.cpp include/engine/VertexBuffer.h src/engine/VertexArray.cpp include/engine/VertexArray.h)
+target_include_directories(engine PUBLIC ./include/engine ./include/common)
+
+add_executable(generator src/generator/generator.cpp src/common/Vec3f.cpp include/common/Vec3f.h src/generator/Plane.cpp include/generator/Plane.h src/generator/Utils.cpp include/generator/Utils.h include/generator/Primitives.h src/generator/Box.cpp include/generator/Box.h src/generator/Sphere.cpp include/generator/Sphere.h src/generator/Cone.cpp include/generator/Cone.h)
+target_include_directories(generator PUBLIC ./include/generator ./include/common)
+
+find_package(OpenGL REQUIRED)
+
+include_directories(${OpenGL_INCLUDE_DIRS})
+
+link_directories(${OpenGL_LIBRARY_DIRS})
+
+add_definitions(${OpenGL_DEFINITIONS})
+
+if(NOT OPENGL_FOUND)
+    message(ERROR " OPENGL not found!")
+endif(NOT OPENGL_FOUND)
+
+if  (WIN32)
+
+	message(STATUS "Toolkits_DIR set to: " ${TOOLKITS_FOLDER})
+	set(TOOLKITS_FOLDER "" CACHE PATH "Path to Toolkits folder")
+	
+	if (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")
+		message(ERROR ": GLUT not found")
+	endif (NOT EXISTS "${TOOLKITS_FOLDER}/glut/GL/glut.h" OR NOT EXISTS "${TOOLKITS_FOLDER}/glut/glut32.lib")	
+	
+	
+	include_directories(${TOOLKITS_FOLDER}/glut )
+	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} 
+										  ${TOOLKITS_FOLDER}/glut/glut32.lib)
+	
+	if (EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )
+		file(COPY ${TOOLKITS_FOLDER}/glut/glut32.dll DESTINATION ${CMAKE_BINARY_DIR})
+	endif(EXISTS "${TOOLKITS_FOLDER}/glut/glut32.dll" )	
+	
+	set_property(DIRECTORY .. PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+	
+else (WIN32) #Linux and Mac
+
+	set( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} Wno-deprecated")
+	find_package(GLUT REQUIRED)
+	include_directories(${GLUT_INCLUDE_DIR})
+	link_directories(${GLUT_LIBRARY_DIRS})
+	add_definitions(${GLUT_DEFINITIONS})
+	
+	target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )
+	if(NOT GLUT_FOUND)
+	   message(ERROR ": GLUT not found!")
+	endif(NOT GLUT_FOUND)
+	
+endif(WIN32)
+
+
+
+
+
+
+
+
