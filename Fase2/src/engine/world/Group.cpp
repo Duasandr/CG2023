@@ -19,14 +19,20 @@ namespace cg_engine {
 
         XMLElement *models_block = block->FirstChildElement("models");
 
-        for (XMLElement *model_tag = models_block->FirstChildElement("model"); model_tag != nullptr; model_tag = model_tag->NextSiblingElement("model")) {
-           res->mModels.push_back(Model::Create(model_tag->Attribute("file")));
+        if(models_block) {
+            for (XMLElement *model_tag = models_block->FirstChildElement("model");
+                 model_tag != nullptr; model_tag = model_tag->NextSiblingElement("model")) {
+                res->mModels.push_back(Model::Create(model_tag->Attribute("file")));
+            }
         }
 
         XMLElement *transform_block = block->FirstChildElement("transform");
 
-        for (XMLElement *transform_tag = transform_block->FirstChildElement(); transform_tag != nullptr; transform_tag = transform_tag->NextSiblingElement()) {
-            res->mTransforms.push_back(Transform::Create(transform_tag));
+        if(transform_block) {
+            for (XMLElement *transform_tag = transform_block->FirstChildElement();
+                 transform_tag != nullptr; transform_tag = transform_tag->NextSiblingElement()) {
+                res->mTransforms.push_back(Transform::Create(transform_tag));
+            }
         }
 
         Group **root = &res->mChildGroup;
