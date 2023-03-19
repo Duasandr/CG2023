@@ -79,7 +79,6 @@ void RenderScene() {
 
     // Draw
     DrawAxis();
-    DrawCrossHairs();
     gWorld->Draw();
 
     // End of frame
