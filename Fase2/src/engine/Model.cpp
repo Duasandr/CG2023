@@ -48,6 +48,10 @@ namespace cg_engine {
         return res;
     }
 
+    /**
+     * Draws Model to screen.
+     * Renders the vertex array.
+    */
     void Model::Draw() const {
         glColor3f(1.0f, 1.0f, 1.0f);
         mVertexBuffer.Bind();
