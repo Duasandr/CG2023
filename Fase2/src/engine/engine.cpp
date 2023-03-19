@@ -79,6 +79,7 @@ void RenderScene() {
 
     // Draw
     DrawAxis();
+    DrawCrossHairs();
     gWorld->Draw();
 
     // End of frame
@@ -100,12 +101,39 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
     switch (c) {
         case 'l':
             gMode = GL_LINE;
+            glutPostRedisplay();
             break;
         case 'p':
             gMode = GL_POINT;
+            glutPostRedisplay();
             break;
         case 'f':
             gMode = GL_FILL;
+            glutPostRedisplay();
+            break;
+        case '+':
+            gWorld->Camera().FreeMoveFront();
+            glutPostRedisplay();
+            break;
+        case '-':
+            gWorld->Camera().FreeMoveBack();
+            glutPostRedisplay();
+            break;
+        case 'd':
+            gWorld->Camera().LookRight();
+            glutPostRedisplay();
+            break;
+        case 'a':
+            gWorld->Camera().LookLeft();
+            glutPostRedisplay();
+            break;
+        case 's':
+            gWorld->Camera().LookBack();
+            glutPostRedisplay();
+            break;
+        case 'w':
+            gWorld->Camera().LookFront();
+            glutPostRedisplay();
             break;
         default:
             break;
@@ -128,15 +156,19 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
     switch (key) {
         case GLUT_KEY_LEFT:
             gWorld->Camera().FreeMoveLeft();
+            glutPostRedisplay();
             break;
         case GLUT_KEY_RIGHT:
             gWorld->Camera().FreeMoveRight();
+            glutPostRedisplay();
             break;
         case GLUT_KEY_UP:
             gWorld->Camera().FreeMoveUp();
+            glutPostRedisplay();
             break;
         case GLUT_KEY_DOWN:
             gWorld->Camera().FreeMoveDown();
+            glutPostRedisplay();
             break;
         default:
             break;
