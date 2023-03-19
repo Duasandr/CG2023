@@ -62,6 +62,12 @@ namespace cg_math {
          */
         float GetZ() const;
 
+        /**
+         * Returns the norm (length) of the vector.
+         * @return
+        */
+        float Norm() const;
+
     private:
         float mX;
         float mY;
