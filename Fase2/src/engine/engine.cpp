@@ -2,12 +2,13 @@
 // Created by Sandro Duarte on 09/03/2023.
 //
 #include "engine.h"
+#include "world/World.h"
 
 using std::cout;
 using std::endl;
-using cg_engine::Scene;
+using cg_engine::World;
 
-Scene *gScene;
+World *gWorld;
 
 GLint gMode = GL_LINE;
 
@@ -53,7 +54,7 @@ void ChangeSize(int w, int h) {
     glViewport(0, 0, w, h);
 
     // Set perspective
-    gluPerspective(gScene->GetCamera().GetProjection().GetX() ,ratio, gScene->GetCamera().GetProjection().GetY() ,gScene->GetCamera().GetProjection().GetZ());
+    gluPerspective(gWorld->Camera().GetProjection().GetX() ,ratio, gWorld->Camera().GetProjection().GetY() ,gWorld->Camera().GetProjection().GetZ());
 
     // return to the model view matrix mode
     glMatrixMode(GL_MODELVIEW);
@@ -69,17 +70,16 @@ void RenderScene() {
 
     // set the camera
     glLoadIdentity();
-    gluLookAt(gScene->GetCamera().GetPosition().GetX(),gScene->GetCamera().GetPosition().GetY(),gScene->GetCamera().GetPosition().GetZ(),
-              gScene->GetCamera().GetLookAt().GetX(),gScene->GetCamera().GetLookAt().GetY(),gScene->GetCamera().GetLookAt().GetZ(),
-              gScene->GetCamera().GetUp().GetX(),gScene->GetCamera().GetUp().GetY(),gScene->GetCamera().GetUp().GetZ());
-
+    gluLookAt(gWorld->Camera().GetPosition().GetX(), gWorld->Camera().GetPosition().GetY(), gWorld->Camera().GetPosition().GetZ(),
+              gWorld->Camera().GetLookAt().GetX(), gWorld->Camera().GetLookAt().GetY(), gWorld->Camera().GetLookAt().GetZ(),
+              gWorld->Camera().GetUp().GetX(), gWorld->Camera().GetUp().GetY(), gWorld->Camera().GetUp().GetZ());
 
     // Sets a different polygon mode on keyboard pressed
     glPolygonMode(GL_FRONT, gMode);
 
     // Draw
     DrawAxis();
-    gScene->Draw();
+    gWorld->Draw();
 
     // End of frame
     glutSwapBuffers();
@@ -127,16 +127,16 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 #endif
     switch (key) {
         case GLUT_KEY_LEFT:
-            gScene->GetCamera().FreeMoveLeft();
+            gWorld->Camera().FreeMoveLeft();
             break;
         case GLUT_KEY_RIGHT:
-            gScene->GetCamera().FreeMoveRight();
+            gWorld->Camera().FreeMoveRight();
             break;
         case GLUT_KEY_UP:
-            gScene->GetCamera().FreeMoveUp();
+            gWorld->Camera().FreeMoveUp();
             break;
         case GLUT_KEY_DOWN:
-            gScene->GetCamera().FreeMoveDown();
+            gWorld->Camera().FreeMoveDown();
             break;
         default:
             break;
@@ -158,13 +158,15 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    gScene = Scene::Init(argv[1]);
     // init GLUT and the window
+    gWorld = World::Create(argv[1]);
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH|GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowPosition(100,100);
-    glutInitWindowSize(gScene->GetWindowWidth() , gScene->GetWindowHeight());
+    glutInitWindowSize(gWorld->Window().getWidth() , gWorld->Window().getHeight());
     glutCreateWindow("CG@DI-UM");
+
 
 #ifndef __APPLE__
     glewInit();
@@ -172,7 +174,7 @@ int main(int argc, char **argv) {
 
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    Scene::LoadModels(gScene);
+    gWorld->LoadGroups();
 
 // Required callback registry
     glutDisplayFunc(RenderScene);

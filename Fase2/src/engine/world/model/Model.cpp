@@ -8,7 +8,7 @@
 #include <GL/glut.h>
 #endif
 #include <iostream>
-#include "Model.h"
+#include "world/model/Model.h"
 
 namespace cg_engine {
     using std::ifstream;

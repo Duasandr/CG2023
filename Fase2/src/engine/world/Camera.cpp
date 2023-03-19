@@ -1,9 +1,11 @@
 //
 // Created by Sandro Duarte on 10/03/2023.
 //
-#include "Camera.h"
+#include "world/Camera.h"
+#include "Parser.h"
 
 namespace cg_engine {
+    using tinyxml2::XMLElement;
     using cg_math::Vec3f;
 
     Camera::Camera() {
@@ -18,6 +20,38 @@ namespace cg_engine {
 
     Camera::~Camera() {
 
+    }
+
+    Camera *Camera::Create(tinyxml2::XMLElement *block) {
+        Camera *res = new Camera();
+
+        XMLElement *tag = block->FirstChildElement("position");
+
+        res->SetPosition(Parser::ParseFloat(tag->Attribute("x")),
+                               Parser::ParseFloat(tag->Attribute("y")),
+                               Parser::ParseFloat(tag->Attribute("z")));
+
+        tag = block->FirstChildElement("lookAt");
+
+        res->SetLookAt(Parser::ParseFloat(tag->Attribute("x")),
+                               Parser::ParseFloat(tag->Attribute("y")),
+                               Parser::ParseFloat(tag->Attribute("z")));
+
+        tag = block->FirstChildElement("up");
+
+        res->SetUp(Parser::ParseFloat(tag->Attribute("x")),
+                       Parser::ParseFloat(tag->Attribute("y")),
+                       Parser::ParseFloat(tag->Attribute("z")));
+
+
+        tag = block->FirstChildElement("projection");
+
+        res->SetProjection(Parser::ParseFloat(tag->Attribute("fov")),
+                                 Parser::ParseFloat(tag->Attribute("near")),
+                                 Parser::ParseFloat(tag->Attribute("far")));
+
+
+        return res;
     }
 
     void Camera::SetPosition(float x, float y, float z) {
@@ -101,4 +135,6 @@ namespace cg_engine {
 
         mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
     }
+
+
 } // cg_engine

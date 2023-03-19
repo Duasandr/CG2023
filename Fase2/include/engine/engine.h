@@ -14,7 +14,5 @@
 #define _USE_MATH_DEFINES
 #include <iostream>
 #include <cmath>
-#include "Scene.h"
-#include <VertexBuffer.h>
 
 #endif //ENGINE_ENGINE_H

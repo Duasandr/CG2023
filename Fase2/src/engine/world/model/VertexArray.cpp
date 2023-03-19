@@ -4,8 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
-#include "VertexArray.h"
-#include "VertexBuffer.h"
+#include "world/model/VertexArray.h"
+#include "world/model/VertexBuffer.h"
 
 namespace cg_engine {
     using std::ifstream;

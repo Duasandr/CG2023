@@ -2,7 +2,7 @@
 // Created by Sandro Duarte on 18/03/2023.
 //
 
-#include "VertexBuffer.h"
+#include "world/model/VertexBuffer.h"
 
 
 #ifdef __APPLE__

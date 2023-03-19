@@ -4,13 +4,16 @@
 
 #ifndef ENGINE_CAMERA_H
 #define ENGINE_CAMERA_H
-#include <Vec3f.h>
+#include "Vec3f.h"
+#include "tinyxml2.h"
 
 namespace cg_engine {
     class Camera {
     public:
         Camera();
         virtual ~Camera();
+
+        static Camera* Create(tinyxml2::XMLElement *tag);
 
         void SetPosition(float x, float y, float z);
         void SetLookAt(float x, float y, float z);

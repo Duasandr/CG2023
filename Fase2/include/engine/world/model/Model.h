@@ -6,8 +6,8 @@
 #define ENGINE_MODEL_H
 #include <fstream>
 #include <cstdint>
-#include <VertexBuffer.h>
-#include <VertexArray.h>
+#include "VertexBuffer.h"
+#include "VertexArray.h"
 
 namespace cg_engine {
 
