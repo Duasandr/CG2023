@@ -49,6 +49,7 @@ namespace cg_engine {
     }
 
     void Model::Draw() const {
+        glColor3f(1.0f, 1.0f, 1.0f);
         mVertexBuffer.Bind();
         glVertexPointer(3, GL_FLOAT, 0, 0);
         glDrawArrays(GL_TRIANGLES, 0, mVertexArray.GetVertexCount());
