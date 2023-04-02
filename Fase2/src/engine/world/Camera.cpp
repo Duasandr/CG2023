@@ -85,7 +85,7 @@ namespace cg_engine {
     Vec3f Camera::GetLookAt() const { return mLookAt; }
 
     Vec3f Camera::GetUp() const { return mUp; }
-    
+
     Vec3f Camera::GetProjection() const { return mProjection; }
 
     void Camera::FreeMoveLeft() {
