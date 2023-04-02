@@ -14,24 +14,28 @@ namespace cg_engine {
     using std::vector;
     using tinyxml2::XMLElement;
 
+    Group::Group() {
+        mTransforms = vector<Transform*>();
+        mModels = vector<Model*>();
+        mChildGroup = nullptr;
+    }
+
     Group *Group::Create(tinyxml2::XMLElement *block) {
-        Group *res = new Group();
-
-        XMLElement *models_block = block->FirstChildElement("models");
-
-        if(models_block) {
-            for (XMLElement *model_tag = models_block->FirstChildElement("model");
-                 model_tag != nullptr; model_tag = model_tag->NextSiblingElement("model")) {
-                res->mModels.push_back(Model::Create(model_tag->Attribute("file")));
-            }
-        }
+        auto *res = new Group();
 
         XMLElement *transform_block = block->FirstChildElement("transform");
-
         if(transform_block) {
             for (XMLElement *transform_tag = transform_block->FirstChildElement();
                  transform_tag != nullptr; transform_tag = transform_tag->NextSiblingElement()) {
                 res->mTransforms.push_back(Transform::Create(transform_tag));
+            }
+        }
+
+        XMLElement *models_block = block->FirstChildElement("models");
+        if(models_block) {
+            for (XMLElement *model_tag = models_block->FirstChildElement("model");
+                 model_tag != nullptr; model_tag = model_tag->NextSiblingElement("model")) {
+                res->mModels.push_back(Model::Create(model_tag->Attribute("file")));
             }
         }
 
@@ -44,17 +48,25 @@ namespace cg_engine {
         return res;
     }
 
+
     void Group::Draw() {
+        if(mTransforms.empty() && mModels.empty() && !mChildGroup) {
+            return;
+        }
+
         glPushMatrix();
 
+        // Apply all transformations
         for (auto &transform: mTransforms) {
             transform->Apply();
         }
 
+        // Draw all models
         for (auto &model: mModels) {
             model->Draw();
         }
 
+        // Draw child group
         if(mChildGroup) {
             mChildGroup->Draw();
         }
