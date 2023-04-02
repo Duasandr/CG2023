@@ -13,7 +13,7 @@ namespace cg_engine {
     using tinyxml2::XMLElement;
 
     World *World::Create(const char *pathToFile) {
-        World *res = new World();
+        auto *res = new World();
 
         if(res->mConfigFile.LoadFile(pathToFile) != tinyxml2::XML_SUCCESS) {
             cerr << "Error opening XML configuration file." << endl;
