@@ -26,7 +26,7 @@ namespace cg_engine {
         // Default constructor
         Camera();
         // Default destructor
-        virtual ~Camera();
+        virtual ~Camera() = default;
 
         /**
          * @brief Creates a camera from a XML block.
