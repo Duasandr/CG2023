@@ -8,6 +8,7 @@
  * cg_engine namespace contains all the classes and functions of the engine
  */
 namespace cg_engine {
+    using cg_utils::Parser;
 
     Window *Window::Create(tinyxml2::XMLElement *tag) {
         auto *res = new Window();
