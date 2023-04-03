@@ -13,17 +13,19 @@ using std::vector;
 using cg_math::Vec3f;
 
 void Plane(int length, int divisions, const char *filePath) {
-    // Computes the total number of floats present in the vertices array
     vector<Vec3f> vertices;
 
+    // calculates the size of each square of the plane
     float squareSize = static_cast<float>(length) / static_cast<float>(divisions);
 
-    // Starting from the left back edge
+    // finds the initial position of the plane (lower left corner)
     float x = static_cast<float>(-length) * 0.5f;
-    float y = 0.0f;
+    // the y coordinate is always 0
+    const float y = 0.0f;
+    // finds the initial position of the plane (lower left corner)
     float z = static_cast<float>(-length) * 0.5f;
 
-    // fills with counterclockwise triangle vertices
+    // creates the plane by creating triangles and moving to the next square in the x-axis and z-axis (row by row)
     for (int i = 0; i < divisions; ++i) {
         for (int j = 0; j < divisions; ++j) {
 
@@ -52,15 +54,14 @@ void Plane(int length, int divisions, const char *filePath) {
             vertices.emplace_back(x + squareSize, y, z + squareSize);
             vertices.emplace_back(x  + squareSize, y, z);
 
-            // Moves to next upper left x
+            // Moves to next upper left x coordinate of the square (next column)
             x += squareSize;
         }
-        // Moves back to the left side
+        // Resets the x coordinate to the initial position of the row
         x -= static_cast<float>(length);
-        // Moves a row down
+        // Moves to the next row (next line)
         z += squareSize;
     }
 
     DumpVertices(filePath, vertices.size(), vertices);
-
 }
