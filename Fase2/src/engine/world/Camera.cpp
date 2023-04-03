@@ -5,6 +5,7 @@
 #include "Parser.h"
 
 namespace cg_engine {
+    using cg_utils::Parser;
     using tinyxml2::XMLElement;
     using cg_math::Vec3f;
 
@@ -74,11 +75,15 @@ namespace cg_engine {
         mBeta = atan2(y, x);
     }
 
+    // Setters
+
     void Camera::SetLookAt(float x, float y, float z) { mLookAt = Vec3f(x, y, z); }
 
     void Camera::SetUp(float x, float y, float z) { mUp = Vec3f(x, y, z); }
 
     void Camera::SetProjection(float fov, float near, float far) { mProjection = Vec3f(fov, near, far); }
+
+    // Getters
 
     Vec3f Camera::GetPosition() const { return mPosition; }
 
