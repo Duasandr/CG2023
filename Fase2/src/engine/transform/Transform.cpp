@@ -10,6 +10,7 @@
 #include <string>
 
 namespace cg_engine {
+    using cg_utils::Parser;
     using std::string;
     using tinyxml2::XMLElement;
 
