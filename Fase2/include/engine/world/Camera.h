@@ -23,9 +23,15 @@ namespace cg_engine {
      */
     class Camera {
     public:
-        // Default constructor
+        /**
+         * @brief Default constructor.
+         * @details It initializes the position, the lookAt point, the up vector and the projection vector.
+         * It also initializes the radius, the alpha and the beta angles.
+         */
         Camera();
-        // Default destructor
+        /**
+         * @brief Default destructor.
+         */
         virtual ~Camera() = default;
 
         /**
@@ -127,20 +133,28 @@ namespace cg_engine {
         cg_math::Vec3f GetProjection() const;
 
     private:
-        // The position of the camera
+        /**
+         * @brief Position of the camera.
+         */
         cg_math::Vec3f mPosition;
-        // The lookAt point of the camera
+        /**
+         * @brief LookAt point of the camera.
+         */
         cg_math::Vec3f mLookAt;
-        // The up vector of the camera
+        /**
+         * @brief Up vector of the camera.
+         */
         cg_math::Vec3f mUp;
-        // The projection vector of the camera
+        /**
+         * @brief Projection vector of the camera.
+         * @details It contains the field of view, the near and far planes.
+         */
         cg_math::Vec3f mProjection;
 
-        // The radius of the camera
+        // TODO: Move this to a camera controller.
+
         float mAlpha;
-        // The angle between the camera and the origin
         float mBeta;
-        // The distance between the camera and the origin
         float mRadius;
     };
 
