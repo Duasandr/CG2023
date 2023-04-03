@@ -12,6 +12,11 @@
 namespace cg_engine {
     using cg_math::Vec3f;
 
+    Rotate::Rotate() {
+        mVector = Vec3f(0, 0, 0);
+        mAngle = 0;
+    }
+
     Rotate::Rotate(float angle, float x, float y, float z) {
         mVector = Vec3f(x, y, z);
         mAngle = angle;
