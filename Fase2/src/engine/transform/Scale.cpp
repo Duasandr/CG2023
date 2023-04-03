@@ -12,11 +12,10 @@
 namespace cg_engine {
     using cg_math::Vec3f;
 
-    Scale::Scale(float factor) {
-        mFactor = factor;
-    }
+    Scale::Scale() { mFactor = 1.0f; }
 
-    void Scale::Apply() {
-        glScalef(mFactor, mFactor, mFactor);
-    }
+    Scale::Scale(float factor) { mFactor = factor; }
+
+    void Scale::Apply() { glScalef(mFactor, mFactor, mFactor); }
+
 } // cg_engine
