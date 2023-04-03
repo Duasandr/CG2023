@@ -5,7 +5,7 @@
 #ifndef ENGINE_PARSER_H
 #define ENGINE_PARSER_H
 
-namespace cg_engine {
+namespace cg_utils {
 
     class Parser {
     public:

@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "Parser.h"
 
-namespace cg_engine {
+namespace cg_utils {
     using std::cerr;
     using std::domain_error;
 
