@@ -10,12 +10,11 @@
 #include "transform/Translate.h"
 #include "Parser.h"
 
+
 namespace cg_engine {
     using cg_math::Vec3f;
 
-    Translate::Translate(float x, float y, float z) {
-        mVector = Vec3f(x, y, z);
-    }
+    Translate::Translate(float x, float y, float z) { mVector = Vec3f(x, y, z); }
 
     void Translate::Apply() {
         glTranslatef(mVector.GetX(), mVector.GetY(), mVector.GetZ());
