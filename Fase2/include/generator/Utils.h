@@ -8,6 +8,13 @@
 #include <Vec3f.h>
 #include <vector>
 
-void DumpVertices(const char *path, unsigned int totalValues, std::vector<cg_math::Vec3f> &vertices);
+/**
+ * @brief Saves the vertices to a file.
+ * @details It saves the vertices to a file with the given path.
+ * @param path The path to the file where the vertices will be saved.
+ * @param nVertices The total number of vertices.
+ * @param vertices The vertices to be saved.
+ */
+void DumpVertices(const char *path, unsigned int nVertices, std::vector<cg_math::Vec3f> &vertices);
 
 #endif //ENGINE_UTILS_H
