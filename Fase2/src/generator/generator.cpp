@@ -4,26 +4,28 @@
 #include <iostream>
 
 #include <Primitives.h>
+#include <Parser.h>
 
 using std::cerr;
 using std::endl;
 
 int main(int argc, char **argv) {
+    using cg_utils::Parser;
+
+    // Check if the number of arguments is valid for the primitive
     if (argc < 2) {
         std::cerr << "Invalid number of arguments" << std::endl;
         return -1;
     }
 
+    // Get the primitive name from the first argument
     std::string primitive = argv[1];
 
-    if (primitive == "plane") {
-        char *rest;
-        int length = static_cast<int>(strtol(argv[2], &rest, 10));
-        int divisions = static_cast<int>(strtol(argv[3], &rest, 10));
+    // Check if the primitive is valid
 
-        if (*rest != '\0') {
-            cerr << "Error parsing plane." << endl;
-        }
+    if (primitive == "plane") {
+        int length = Parser::ParseInt(argv[2]);
+        int divisions = Parser::ParseInt(argv[3]);
 
         Plane(length, divisions, argv[4]);
 
@@ -31,13 +33,8 @@ int main(int argc, char **argv) {
     }
 
     if (primitive == "box") {
-        char *rest;
-        int length = static_cast<int>(strtol(argv[2], &rest, 10));
-        int divisions = static_cast<int>(strtol(argv[3], &rest, 10));
-
-        if (*rest != '\0') {
-            cerr << "Error parsing box." << endl;
-        }
+        int length = Parser::ParseInt(argv[2]);
+        int divisions = Parser::ParseInt(argv[3]);
 
         Box(length, divisions, argv[4]);
 
@@ -45,14 +42,9 @@ int main(int argc, char **argv) {
     }
 
     if(primitive == "sphere")  {
-        char *rest;
-        float r = strtof(argv[2], &rest);
-        int slices = static_cast<int>(strtol(argv[3], &rest, 10));
-        int stacks = static_cast<int>(strtol(argv[4], &rest, 10));
-
-        if (*rest != '\0') {
-            cerr << "Error parsing sphere." << endl;
-        }
+        float r = Parser::ParseFloat(argv[2]);
+        int slices = Parser::ParseInt(argv[3]);
+        int stacks = Parser::ParseInt(argv[4]);
 
         Sphere(r, stacks, slices, argv[5]);
 
@@ -60,20 +52,18 @@ int main(int argc, char **argv) {
     }
 
     if(primitive == "cone")  {
-        char *rest;
-        float r = strtof(argv[2], &rest);
-        int h = static_cast<int>(strtol(argv[3], &rest, 10));
-        int slices = static_cast<int>(strtol(argv[4], &rest, 10));
-        int stacks = static_cast<int>(strtol(argv[5], &rest, 10));
+        float radius = Parser::ParseFloat(argv[2]);
+        int height = Parser::ParseInt(argv[3]);
+        int slices = Parser::ParseInt(argv[4]);
+        int stacks = Parser::ParseInt(argv[5]);
 
-        if (*rest != '\0') {
-            cerr << "Error parsing cone." << endl;
-        }
-
-        Cone(r, h, stacks, slices, argv[6]);
+        Cone(radius, height, stacks, slices, argv[6]);
 
         return 0;
     }
 
-    return 0;
+    // If the primitive is not valid, print an error message
+    cerr << "Invalid primitive: " << primitive << endl;
+
+    return 1;
 }
