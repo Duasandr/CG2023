@@ -1,20 +1,23 @@
-<world> 
+<world>
     <window width="512" height="512" />
-    <camera> 
+    <camera>
 	    <position x="10" y="10" z="10" />
 	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" />
         <projection fov="100" near="1" far="1000" />
 	</camera>
 	<group>
+		<transform>
+			<scale factor="100"/>
+		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Sun -->
 		</models>
 	</group>
 	<group>
 		<transform>
-			<translate x="3.5" y="0" z="0"/>
-			<scale factor="0.003504"/>
+			<translate x="238" y="0" z="0"/>
+			<scale factor="4"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Mercury -->
@@ -22,8 +25,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="6.7" y="0" z="0"/>
-			<scale factor="0.008691"/>
+			<translate x="372" y="0" z="0"/>
+			<scale factor="9"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Venus -->
@@ -31,8 +34,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="9.3" y="0" z="0"/>
-			<scale factor="0.009149"/>
+			<translate x="600" y="0" z="0"/>
+			<scale factor="10"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Earth -->
@@ -40,8 +43,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="14.2" y="0" z="0"/>
-			<scale factor="0.004868"/>
+			<translate x="850" y="0" z="0"/>
+			<scale factor="50"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Mars -->
@@ -49,8 +52,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="48.4" y="0" z="0"/>
-			<scale factor="0.100398"/>
+			<translate x="1520" y="0" z="0"/>
+			<scale factor="110"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Jupiter -->
@@ -58,8 +61,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="88.9" y="0" z="0"/>
-			<scale factor="0.083626"/>
+			<translate x="1950" y="0" z="0"/>
+			<scale factor="90"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Saturn -->
@@ -67,8 +70,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="179" y="0" z="0"/>
-			<scale factor="0.036422"/>
+			<translate x="2620" y="0" z="0"/>
+			<scale factor="40"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Uranus -->
@@ -76,8 +79,8 @@
 	</group>
 	<group>
 		<transform>
-			<translate x="288" y="0" z="0"/>
-			<scale factor="0.035359"/>
+			<translate x="3501" y="0" z="0"/>
+			<scale factor="30"/>
 		</transform>
 		<models>
 			<model file="sphere.3d" /> <!-- Neptune -->

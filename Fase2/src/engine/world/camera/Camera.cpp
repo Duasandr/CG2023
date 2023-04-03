@@ -1,8 +1,10 @@
 //
 // Created by Sandro Duarte on 10/03/2023.
 //
-#include "world/Camera.h"
+#include "world/camera/Camera.h"
+#include "world/camera/Spherical.h"
 #include "Parser.h"
+#include "world/camera/FirstPerson.h"
 
 namespace cg_engine {
     using cg_utils::Parser;
@@ -19,9 +21,7 @@ namespace cg_engine {
         mLookAt = Vec3f();
         mUp = Vec3f();
         mProjection = Vec3f();
-        mAlpha = 0.0f;
-        mBeta = 0.0f;
-        mRadius = 0.0f;
+        mCameraType = new Spherical(*this);
     }
 
     Camera *Camera::Create(tinyxml2::XMLElement *block) {
@@ -60,19 +60,14 @@ namespace cg_engine {
                                  Parser::ParseFloat(tag->Attribute("near")),
                                  Parser::ParseFloat(tag->Attribute("far")));
 
+        // Set the camera type. By default, it is spherical.
+        res->SetCameraType(new Spherical(*res));
 
         return res;
     }
 
     void Camera::SetPosition(float x, float y, float z) {
         mPosition = Vec3f(x, y, z);
-
-        // The radius is the norm of the position vector.
-        mRadius = mPosition.Norm();
-        // The alpha angle is the angle between the x-axis and the projection of the position vector on the xz plane.
-        mAlpha = acos(y / mRadius);
-        // The beta angle is the angle between the z-axis and the projection of the position vector on the xz plane.
-        mBeta = atan2(y, x);
     }
 
     // Setters
@@ -83,76 +78,38 @@ namespace cg_engine {
 
     void Camera::SetProjection(float fov, float near, float far) { mProjection = Vec3f(fov, near, far); }
 
+    void Camera::SetCameraType(CameraType *cameraType) {
+        delete mCameraType;
+        mCameraType = cameraType;
+    }
+
     // Getters
 
-    Vec3f Camera::GetPosition() const { return mPosition; }
+    /**
+     * @brief Get the position of the camera.
+     * @details It returns the position of the camera. It is a const method.
+     * @return The position of the camera. It is a const reference to a Vec3f.
+     */
+    Vec3f const &Camera::GetPosition() const { return mPosition; }
 
-    Vec3f Camera::GetLookAt() const { return mLookAt; }
+    Vec3f &Camera::GetPosition() { return mPosition; }
 
-    Vec3f Camera::GetUp() const { return mUp; }
+    Vec3f &Camera::GetLookAt() { return mLookAt; }
 
-    Vec3f Camera::GetProjection() const { return mProjection; }
+    Vec3f &Camera::GetUp() { return mUp; }
 
-    void Camera::FreeMoveLeft() {
-        mAlpha -= 0.1;
+    Vec3f &Camera::GetProjection() { return mProjection; }
 
-        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
+    void Camera::Move(const unsigned char option) {
+        mCameraType->Move(*this, option);
     }
 
-    void Camera::FreeMoveRight() {
-        mAlpha += 0.1;
-
-        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
-    }
-
-    void Camera::FreeMoveUp() {
-        mBeta += 0.1;
-
-        // approximately PI/2
-        if(mBeta > 1.5) {
-            mBeta = 1.5;
+    void Camera::SwitchType() {
+        if (mCameraType->GetType() == CameraType::SPHERICAL) {
+            mCameraType = new FirstPerson();
+        } else {
+            mCameraType = new Spherical(*this);
         }
-
-        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
-    }
-
-    void Camera::FreeMoveDown() {
-        mBeta -= 0.1;
-
-        // approximately PI/2
-        if(mBeta < -1.5) {
-            mBeta = -1.5;
-        }
-        
-        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
-    }
-
-    void Camera::FreeMoveBack() {
-        mRadius += 1;
-
-        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
-    }
-
-    void Camera::FreeMoveFront() {
-        mRadius -= 1;
-
-        mPosition.SphereToCartesian(mAlpha, mBeta, mRadius);
-    }
-
-    void Camera::LookLeft() {
-        mLookAt.SetX(mLookAt.GetX()+1);
-    }
-
-    void Camera::LookRight() {
-        mLookAt.SetX(mLookAt.GetX()-1);
-    }
-
-    void Camera::LookFront() {
-        mLookAt.SetZ(mLookAt.GetZ()-1);
-    }
-
-    void Camera::LookBack() {
-        mLookAt.SetZ(mLookAt.GetZ()+1);
     }
 
 

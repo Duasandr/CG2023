@@ -12,6 +12,8 @@
  * @details It contains all the classes and functions of the engine.
  */
 namespace cg_engine {
+    class CameraType;
+
     /**
      * @brief Camera class.
      * @details It represents the camera of the scene.
@@ -74,65 +76,52 @@ namespace cg_engine {
         void SetProjection(float fov, float near, float far);
 
         /**
-         * @brief Moves the camera left in a spherical way.
-        */
-        void FreeMoveLeft();
-
-        /**
-         * @brief Moves the camera right in a spherical way.
-        */
-        void FreeMoveRight();
-
-        /**
-         * @brief Moves the camera up in a spherical way.
-        */
-        void FreeMoveUp();
-
-        /**
-         * @brief Moves the camera down in a spherical way.
-        */
-        void FreeMoveDown();
-
-        /**
-         * @brief Moves the camera front in a spherical way.
-        */
-        void FreeMoveFront();
-
-        /**
-         * @brief Moves the camera back in a spherical way.
-        */
-        void FreeMoveBack();
-
-        void LookLeft();
-        void LookRight();
-        void LookFront();
-        void LookBack();
+         * @brief Sets the type of the camera.
+         * @param cameraType The type of the camera.
+         */
+        void SetCameraType(CameraType *cameraType);
 
         /**
          * @brief Gets the position of the camera.
          * @return The position of the camera.
          */
-        cg_math::Vec3f GetPosition() const;
+        cg_math::Vec3f &GetPosition();
+        cg_math::Vec3f const &GetPosition() const;
 
         /**
          * @brief Gets the lookAt point of the camera.
          * @return The lookAt point of the camera.
          */
-        cg_math::Vec3f GetLookAt() const;
+        cg_math::Vec3f &GetLookAt();
 
         /**
          * @brief Gets the up vector of the camera.
          * @return The up vector of the camera.
          */
-        cg_math::Vec3f GetUp() const;
+        cg_math::Vec3f &GetUp();
 
         /**
          * @brief Gets the projection vector of the camera.
          * @return The projection vector of the camera.
          */
-        cg_math::Vec3f GetProjection() const;
+        cg_math::Vec3f &GetProjection();
+
+        /**
+         * @brief Moves the camera.
+         * @details It moves the camera according to the option.
+         * @param option
+         */
+        void Move(unsigned char option);
+
+        void SwitchType();
 
     private:
+        /**
+         * @brief Type of the camera.
+         * @details It can be free or spherical.
+         */
+        cg_engine::CameraType *mCameraType;
+
         /**
          * @brief Position of the camera.
          */
@@ -151,11 +140,6 @@ namespace cg_engine {
          */
         cg_math::Vec3f mProjection;
 
-        // TODO: Move this to a camera controller.
-
-        float mAlpha;
-        float mBeta;
-        float mRadius;
     };
 
 } // cg_engine

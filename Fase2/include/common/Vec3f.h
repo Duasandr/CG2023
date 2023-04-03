@@ -107,6 +107,13 @@ namespace cg_math {
         */
         float Norm() const;
 
+        void Normalize();
+
+        Vec3f Cross(const Vec3f& vec2) const;
+
+        Vec3f &operator-=(const Vec3f& vec2);
+        Vec3f &operator+=(const Vec3f& vec2);
+
     private:
         float mX;
         float mY;
@@ -121,6 +128,23 @@ namespace cg_math {
      * @return output stream with the vector printed
      */
     std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F);
+
+    /**
+     * @brief Overload of the + operator.
+     * @details Adds two vectors.
+     * @param vec1 first vector
+     * @param vec2 second vector
+     * @return sum of the two vectors
+     */
+    Vec3f operator+(const Vec3f& vec1, const Vec3f& vec2);
+
+    Vec3f operator-(const Vec3f& vec1, const Vec3f& vec2);
+
+    Vec3f operator*(const Vec3f& vec1, const Vec3f& vec2);
+
+    Vec3f operator+(const Vec3f& vec1, float scalar);
+    Vec3f operator-(const Vec3f& vec1, float scalar);
+    Vec3f operator*(const Vec3f& vec1, float scalar);
 } // cg_math
 
 #endif //ENGINE_VEC3F_H

@@ -110,34 +110,22 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
             gMode = GL_FILL;
             glutPostRedisplay();
             break;
-        case '+':
-            gWorld->Camera().FreeMoveFront();
-            glutPostRedisplay();
-            break;
-        case '-':
-            gWorld->Camera().FreeMoveBack();
-            glutPostRedisplay();
-            break;
-        case 'd':
-            gWorld->Camera().LookRight();
-            glutPostRedisplay();
-            break;
-        case 'a':
-            gWorld->Camera().LookLeft();
-            glutPostRedisplay();
-            break;
-        case 's':
-            gWorld->Camera().LookBack();
-            glutPostRedisplay();
-            break;
         case 'w':
-            gWorld->Camera().LookFront();
+        case 'a':
+        case 's':
+        case 'd':
+        case 'q':
+        case 'e':
+            gWorld->Camera().Move(c);
+            glutPostRedisplay();
+            break;
+        case ' ':
+            gWorld->Camera().SwitchType();
             glutPostRedisplay();
             break;
         default:
             break;
     }
-
 }
 
 /**
@@ -152,28 +140,6 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 #ifndef NDEBUG
         cout << "Special key pressed: " << key << endl;
 #endif
-    switch (key) {
-        case GLUT_KEY_LEFT:
-            gWorld->Camera().FreeMoveLeft();
-            glutPostRedisplay();
-            break;
-        case GLUT_KEY_RIGHT:
-            gWorld->Camera().FreeMoveRight();
-            glutPostRedisplay();
-            break;
-        case GLUT_KEY_UP:
-            gWorld->Camera().FreeMoveUp();
-            glutPostRedisplay();
-            break;
-        case GLUT_KEY_DOWN:
-            gWorld->Camera().FreeMoveDown();
-            glutPostRedisplay();
-            break;
-        default:
-            break;
-    }
-
-
 }
 
 /**

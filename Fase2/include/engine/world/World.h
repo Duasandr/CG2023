@@ -5,7 +5,7 @@
 #ifndef ENGINE_WORLD_H
 #define ENGINE_WORLD_H
 #include <vector>
-#include "Camera.h"
+#include "world/camera/Camera.h"
 #include "Group.h"
 #include "Window.h"
 

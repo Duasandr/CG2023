@@ -65,10 +65,68 @@ namespace cg_math {
         SetZ(radius * sin(alpha));
     }
 
+    void Vec3f::Normalize() {
+        float norm = Norm();
+        if (norm == 0) {
+            return;
+        }
+        mX /= norm;
+        mY /= norm;
+        mZ /= norm;
+    }
+
     // Overloaded operators
+
+    Vec3f &Vec3f::operator-=(const Vec3f &vec2) {
+        mX -= vec2.GetX();
+        mY -= vec2.GetY();
+        mZ -= vec2.GetZ();
+        return *this;
+    }
+
+    Vec3f &Vec3f::operator+=(const Vec3f &vec2) {
+        mX += vec2.GetX();
+        mY += vec2.GetY();
+        mZ += vec2.GetZ();
+        return *this;
+    }
+
+    Vec3f Vec3f::Cross(const Vec3f &vec2) const {
+        return {mY * vec2.GetZ() - mZ * vec2.GetY(),
+                mZ * vec2.GetX() - mX * vec2.GetZ(),
+                mX * vec2.GetY() - mY * vec2.GetX()};
+    }
 
     std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F) {
         return  os << vec3F.GetX() << ' ' << vec3F.GetY() << ' ' << vec3F.GetZ();
     }
+
+    Vec3f operator+(const Vec3f& vec1, const Vec3f& vec2) {
+        return {vec1.GetX() + vec2.GetX(), vec1.GetY() + vec2.GetY(), vec1.GetZ() + vec2.GetZ()};
+    }
+
+
+    Vec3f operator+(const Vec3f& vec1, float scalar) {
+        return {vec1.GetX() + scalar, vec1.GetY() + scalar, vec1.GetZ() + scalar};
+    }
+
+    Vec3f operator-(const Vec3f& vec1, float scalar) {
+        return operator+(vec1, -scalar);
+    }
+
+    Vec3f operator-(const Vec3f& vec1, const Vec3f& vec2) {
+        return {vec1.GetX() - vec2.GetX(), vec1.GetY() - vec2.GetY(), vec1.GetZ() - vec2.GetZ()};
+    }
+
+    Vec3f operator*(const Vec3f& vec1, const Vec3f& vec2) {
+        return {vec1.GetX() * vec2.GetX(), vec1.GetY() * vec2.GetY(), vec1.GetZ() * vec2.GetZ()};
+    }
+
+    Vec3f operator*(const Vec3f& vec1, float scalar) {
+        return {vec1.GetX() * scalar, vec1.GetY() * scalar, vec1.GetZ() * scalar};
+    }
+
+
+
 
 } // cg_math
