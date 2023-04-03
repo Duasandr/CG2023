@@ -2,12 +2,14 @@
 // Created by Sandro Duarte on 10/03/2023.
 //
 
-#include <fstream>
 #include <vector>
 
 #include <Box.h>
 #include <Vec3f.h>
 #include <Utils.h>
+
+// TODO: Improve the code to be more generic and reusable. It is not a good idea to have a function for each face. Change the plane to reuse the same function for each face.
+
 
 using std::vector;
 using cg_math::Vec3f;
