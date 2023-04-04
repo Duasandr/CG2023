@@ -61,10 +61,10 @@ namespace cg_engine {
          */
         std::vector<cg_engine::Model*> mModels;
         /**
-         * @brief Child group
-         * @details This pointer contains a pointer to the next group in the linked list.
+         * @brief Child groups
+         * @details This vector contains all the child groups of the group.
          */
-        Group *mChildGroup;
+        std::vector<Group*> mChildGroups;
     };
 
 } // cd_engine

@@ -17,7 +17,7 @@ namespace cg_engine {
     Group::Group() {
         mTransforms = vector<Transform*>();
         mModels = vector<Model*>();
-        mChildGroup = nullptr;
+        mChildGroups = vector<Group*>();
     }
 
     Group *Group::Create(tinyxml2::XMLElement *block) {
@@ -40,10 +40,8 @@ namespace cg_engine {
         }
 
         // Create child group if it exists
-        Group **root = &res->mChildGroup;
         for (XMLElement *group_tag = block->FirstChildElement("group"); group_tag != nullptr; group_tag = group_tag->NextSiblingElement("group")) {
-            *root = Create(group_tag);
-            root = &(*root)->mChildGroup;
+            res->mChildGroups.push_back(Group::Create(group_tag));
         }
 
         return res;
@@ -67,8 +65,10 @@ namespace cg_engine {
         }
 
         // Draw child group if it exists
-        if(mChildGroup) {
-            mChildGroup->Draw();
+        for (auto &child: mChildGroups) {
+            if (child) {
+                child->Draw();
+            }
         }
 
         glPopMatrix();
