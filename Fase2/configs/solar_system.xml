@@ -1,89 +1,224 @@
 <world>
-    <window width="512" height="512" />
+    <window width="1024" height="860" />
     <camera>
-	    <position x="10" y="10" z="10" />
+	    <position x="5" y="5" z="5" />
 	    <lookAt x="0" y="0" z="0" />
 	    <up x="0" y="1" z="0" />
         <projection fov="100" near="1" far="1000" />
 	</camera>
 	<group>
-		<transform>
-			<scale factor="100"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Sun -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="238" y="0" z="0"/>
-			<scale factor="4"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Mercury -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="372" y="0" z="0"/>
-			<scale factor="9"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Venus -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="600" y="0" z="0"/>
-			<scale factor="10"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Earth -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="850" y="0" z="0"/>
-			<scale factor="50"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Mars -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="1520" y="0" z="0"/>
-			<scale factor="110"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Jupiter -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="1950" y="0" z="0"/>
-			<scale factor="90"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Saturn -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="2620" y="0" z="0"/>
-			<scale factor="40"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Uranus -->
-		</models>
-	</group>
-	<group>
-		<transform>
-			<translate x="3501" y="0" z="0"/>
-			<scale factor="30"/>
-		</transform>
-		<models>
-			<model file="sphere.3d" /> <!-- Neptune -->
-		</models>
+		<group>
+			<!-- Sun -->
+			<transform>
+				<!-- Sun is 50 times bigger than earth -->
+				<scale factor="50"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+		</group>
+		<group>
+			<!-- Mercury -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="102.95" y="0" z="0"/>
+				<!-- Mercury is 38% of earth -->
+				<scale factor="0.38"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+		</group>
+		<group>
+			<!-- Venus -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="107.95" y="0" z="0"/>
+				<!-- Venus is 95% of earth -->
+				<scale factor="0.95"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+		</group>
+		<group>
+			<!-- Earth -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="112.95" y="0" z="0"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+			<group>
+				<!-- Moon -->
+				<transform>
+					<!-- Distance from the earth -->
+					<translate x="1.5" y="0" z="0"/>
+					<!-- Moon is 27% of earth -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+		</group>
+		<group>
+			<!-- Mars -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="122.95" y="0" z="0"/>
+				<!-- Mars is 53% of earth -->
+				<scale factor="0.53"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+			<group>
+				<!-- Phobos -->
+				<transform>
+					<!-- Distance from the mars -->
+					<translate x="1.5" y="0" z="0"/>
+					<!-- Phobos is 27% of mars -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Deimos -->
+				<transform>
+					<!-- Distance from the mars -->
+					<translate x="2.5" y="0" z="0"/>
+					<!-- Deimos is 27% of mars -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+		</group>
+		<group>
+			<!-- Jupiter -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="152.95" y="0" z="0"/>
+				<!-- Jupiter is 11 times bigger than earth -->
+				<scale factor="11"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+			<group>
+				<!-- Io -->
+				<transform>
+					<!-- Distance from the jupiter -->
+					<translate x="1.5" y="0" z="0"/>
+					<!-- Io is 22% of jupiter -->
+					<scale factor="0.22"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Europa -->
+				<transform>
+					<!-- Distance from the jupiter -->
+					<translate x="2.5" y="0" z="0"/>
+					<!-- Europa is 12% of jupiter -->
+					<scale factor="0.12"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Ganymede -->
+				<transform>
+					<!-- Distance from the jupiter -->
+					<translate x="3.5" y="0" z="0"/>
+					<!-- Ganymede is 37% of jupiter -->
+					<scale factor="0.37"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Callisto -->
+				<transform>
+					<!-- Distance from the jupiter -->
+					<translate x="4.5" y="0" z="0"/>
+					<!-- Callisto is 27% of jupiter -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+		</group>
+		<group>
+			<!-- Saturn -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="292.95" y="0" z="0"/>
+				<!-- Saturn is 9 times bigger than earth -->
+				<scale factor="9"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+			<group>
+				<!-- Titan -->
+				<transform>
+					<!-- Distance from the saturn -->
+					<translate x="6.5" y="0" z="0"/>
+					<!-- Titan is 27% of saturn -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+			<!-- TODO Rings -->
+		</group>
+		<group>
+			<!-- Uranus -->
+			<transform>
+				<!-- Distance from the sun -->
+				<translate x="392.95" y="0" z="0"/>
+				<!-- Uranus is 4 times bigger than earth -->
+				<scale factor="4"/>
+			</transform>
+			<models>
+				<model file="sphere.3d" />
+			</models>
+			<group>
+				<!-- Titania -->
+				<transform>
+					<!-- Distance from the uranus -->
+					<translate x="1.5" y="0" z="0"/>
+					<!-- Titania is 27% of uranus -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+			<group>
+				<!-- Oberon -->
+				<transform>
+					<!-- Distance from the uranus -->
+					<translate x="2.5" y="0" z="0"/>
+					<!-- Oberon is 27% of uranus -->
+					<scale factor="0.27"/>
+				</transform>
+				<models>
+					<model file="sphere.3d" />
+				</models>
+			</group>
+		</group>
 	</group>
 </world>
