@@ -39,6 +39,7 @@ namespace cg_engine {
             }
         }
 
+        // Create child group if it exists
         Group **root = &res->mChildGroup;
         for (XMLElement *group_tag = block->FirstChildElement("group"); group_tag != nullptr; group_tag = group_tag->NextSiblingElement("group")) {
             *root = Create(group_tag);
@@ -48,25 +49,24 @@ namespace cg_engine {
         return res;
     }
 
-
     void Group::Draw() {
-        if(mTransforms.empty() && mModels.empty() && !mChildGroup) {
-            return;
-        }
-
         glPushMatrix();
 
-        // Apply all transformations
+        // Apply all transforms to the group
         for (auto &transform: mTransforms) {
-            transform->Apply();
+            if(transform) {
+                transform->Apply();
+            }
         }
 
-        // Draw all models
+        // Draw all models in the group
         for (auto &model: mModels) {
-            model->Draw();
+            if (model) {
+                model->Draw();
+            }
         }
 
-        // Draw child group
+        // Draw child group if it exists
         if(mChildGroup) {
             mChildGroup->Draw();
         }

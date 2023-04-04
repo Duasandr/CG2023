@@ -4,7 +4,6 @@
 #include <iostream>
 #include "world/Window.h"
 #include "world/World.h"
-#include "tinyxml2.h"
 
 namespace cg_engine {
     using std::cerr;
@@ -32,7 +31,12 @@ namespace cg_engine {
     void World::LoadGroups() {
         XMLElement *world_tag = mConfigFile.FirstChildElement("world");
 
+        // Load groups from XML file into the world object (mGroups) and create them in the GPU memory (OpenGL) as well.
+        // This is done by calling the Group::Create() method.
+        // The Group::Create() method will return a pointer to a Group object that will be stored in the mGroups vector.
+        // The Group::Create() method will also create the group in the GPU memory (OpenGL) and store the group's ID in the Group object.
         for (XMLElement *group_tag = world_tag->FirstChildElement("group"); group_tag != nullptr; group_tag = group_tag->NextSiblingElement("group")) {
+            // Create a new group and store it in the mGroups vector.
             mGroups.push_back(Group::Create(group_tag));
         }
     }
@@ -47,7 +51,9 @@ namespace cg_engine {
 
     void World::Draw() {
         for (auto &group: mGroups) {
-            group->Draw();
+            if (group) {
+                group->Draw();
+            }
         }
     }
 } // cg_engine
