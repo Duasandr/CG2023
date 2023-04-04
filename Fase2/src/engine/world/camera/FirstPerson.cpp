@@ -8,7 +8,7 @@ namespace cg_engine {
 
     FirstPerson::FirstPerson() {
         mCameraFront = cg_math::Vec3f(0.0f, 0.0f, -1.0f);
-        mCameraSpeed = 50.0f;
+        mCameraSpeed = 5.0f;
     }
 
     void FirstPerson::Move(Camera &camera, const unsigned char option) {
@@ -25,6 +25,7 @@ namespace cg_engine {
     }
 
     void FirstPerson::MoveUp(Camera &camera) {
+
     }
 
     void FirstPerson::MoveDown(Camera &camera) {
@@ -43,12 +44,12 @@ namespace cg_engine {
     }
 
     void FirstPerson::UpdateCameraVectors(Camera &camera) {
-            // calculate the new Front vector
-            mCameraFront.Normalize();
-            // also re-calculate the Right and Up vector
-            mCameraRight = mCameraFront.Cross(camera.GetUp());  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-            mCameraRight.Normalize();
-            camera.GetUp()  = mCameraRight.Cross(mCameraFront);
+            // calculate the new mFront vector
+            mCameraFront = cg_math::Vec3f::Normalize(mCameraFront);
+            // also re-calculate the mRight and mUp vector
+            mCameraRight = cg_math::Vec3f::Cross(mCameraFront,camera.GetUp());  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+            mCameraRight = cg_math::Vec3f::Normalize(mCameraRight);
+            camera.GetUp()  = cg_math::Vec3f::Cross(mCameraRight, mCameraFront);
             camera.GetLookAt() = camera.GetPosition() + mCameraFront;
 
     }

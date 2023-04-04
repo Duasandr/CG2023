@@ -65,14 +65,12 @@ namespace cg_math {
         SetZ(radius * sin(alpha));
     }
 
-    void Vec3f::Normalize() {
-        float norm = Norm();
+    Vec3f Vec3f::Normalize(const Vec3f &vec) {
+        float norm = vec.Norm();
         if (norm == 0) {
-            return;
+            return {0,0,0};
         }
-        mX /= norm;
-        mY /= norm;
-        mZ /= norm;
+        return {vec.GetX() / norm, vec.GetY() / norm, vec.GetZ() / norm };
     }
 
     // Overloaded operators
@@ -91,10 +89,10 @@ namespace cg_math {
         return *this;
     }
 
-    Vec3f Vec3f::Cross(const Vec3f &vec2) const {
-        return {mY * vec2.GetZ() - mZ * vec2.GetY(),
-                mZ * vec2.GetX() - mX * vec2.GetZ(),
-                mX * vec2.GetY() - mY * vec2.GetX()};
+    Vec3f Vec3f::Cross(const Vec3f &vec1, const Vec3f &vec2) {
+        return {vec1.GetY() * vec2.GetZ() - vec1.GetZ() * vec2.GetY(),
+                vec1.GetZ() * vec2.GetX() - vec1.GetX() * vec2.GetZ(),
+                vec1.GetX() * vec2.GetY() - vec1.GetY() * vec2.GetX()};
     }
 
     std::ostream &operator<<(std::ostream &os, const Vec3f& vec3F) {

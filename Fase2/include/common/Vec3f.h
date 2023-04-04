@@ -107,9 +107,9 @@ namespace cg_math {
         */
         float Norm() const;
 
-        void Normalize();
+        static Vec3f Normalize(const Vec3f& vec);
 
-        Vec3f Cross(const Vec3f& vec2) const;
+        static Vec3f Cross(const Vec3f& vec1, const Vec3f& vec2);
 
         Vec3f &operator-=(const Vec3f& vec2);
         Vec3f &operator+=(const Vec3f& vec2);

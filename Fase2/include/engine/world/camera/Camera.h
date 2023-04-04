@@ -123,7 +123,7 @@ namespace cg_engine {
         cg_engine::CameraType *mCameraType;
 
         /**
-         * @brief Position of the camera.
+         * @brief mPosition of the camera.
          */
         cg_math::Vec3f mPosition;
         /**
@@ -131,7 +131,7 @@ namespace cg_engine {
          */
         cg_math::Vec3f mLookAt;
         /**
-         * @brief Up vector of the camera.
+         * @brief mUp vector of the camera.
          */
         cg_math::Vec3f mUp;
         /**
