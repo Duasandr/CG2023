@@ -83,9 +83,9 @@ namespace cg_math {
     }
 
     Vec3f &Vec3f::operator+=(const Vec3f &vec2) {
-        mX += vec2.GetX();
-        mY += vec2.GetY();
-        mZ += vec2.GetZ();
+        mX += vec2.mX;
+        mY += vec2.mY;
+        mZ += vec2.mZ;
         return *this;
     }
 
