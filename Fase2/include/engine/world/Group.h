@@ -54,12 +54,12 @@ namespace cg_engine {
          * @brief List of transformations
          * @details This vector contains all the transformations that will be applied to the group.
          */
-        std::vector<cg_engine::Transform*> mTransforms;
+        std::vector<Transform*> mTransforms;
         /**
          * @brief List of models
          * @details This vector contains all the models that will be drawn by the group.
          */
-        std::vector<cg_engine::Model*> mModels;
+        std::vector<Model*> mModels;
         /**
          * @brief Child groups
          * @details This vector contains all the child groups of the group.
