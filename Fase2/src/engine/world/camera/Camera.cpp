@@ -1,6 +1,12 @@
 //
 // Created by Sandro Duarte on 10/03/2023.
 //
+#ifdef __APPLE__
+#include <glut.h>
+#else
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
 #include "world/camera/Camera.h"
 #include "world/camera/Spherical.h"
 #include "Parser.h"
@@ -21,7 +27,7 @@ namespace cg_engine {
         mLookAt = Vec3f();
         mUp = Vec3f();
         mProjection = Vec3f();
-        mCameraType = new Spherical(*this);
+        mFirstMouse = true;
     }
 
     Camera *Camera::Create(tinyxml2::XMLElement *block) {
@@ -60,8 +66,10 @@ namespace cg_engine {
                                  Parser::ParseFloat(tag->Attribute("near")),
                                  Parser::ParseFloat(tag->Attribute("far")));
 
+        res->SetFront(cg_math::Vec3f::Normalize(res->mPosition - res->mLookAt));
+        res->InitSphereCoords(res->GetPosition().GetX(), res->GetPosition().GetY());
         // Set the camera type. By default, it is spherical.
-        res->SetCameraType(new Spherical(*res));
+        //res->SetCameraType(new Spherical(*res));
 
         return res;
     }
@@ -101,7 +109,63 @@ namespace cg_engine {
     Vec3f &Camera::GetProjection() { return mProjection; }
 
     void Camera::Move(const unsigned char option) {
-        mCameraType->Move(*this, option);
+        //mCameraType->Move(*this, option);
+        switch (option) {
+            case 'w':
+                mPosition += mFront * 1.5f;
+                break;
+            case 's':
+                mPosition -= mFront * 1.5f;
+                break;
+            case 'a':
+                mPosition -= cg_math::Vec3f::Normalize(cg_math::Vec3f::Cross(mFront , mUp)) * 1.5f;
+                break;
+            case 'd':
+                mPosition += cg_math::Vec3f::Normalize(cg_math::Vec3f::Cross(mFront , mUp)) * 1.5f;
+                break;
+            default:
+                break;
+        }
+        PositionCamera();
+    }
+
+    void Camera::Rotate(const float x, const float y) {
+        if (mFirstMouse)
+        {
+            mLastX = x;
+            mLastY = y;
+            mFirstMouse = false;
+        }
+
+        float xoffset = x - mLastX;
+        float yoffset = mLastY - y;
+        mLastX = x;
+        mLastY = y;
+
+        float sensitivity = 0.01f;
+        xoffset *= sensitivity;
+        yoffset *= sensitivity;
+
+        mAlpha += xoffset;
+        mBeta  += yoffset;
+
+        if(mBeta > 1.5f)
+            mBeta = 1.5f;
+        else if(mBeta < -1.5f)
+            mBeta = -1.5f;
+
+        cg_math::Vec3f direction = cg_math::Vec3f::CreateCartesianFromSphere(mAlpha, mBeta, mRadius);
+        mFront = cg_math::Vec3f::Normalize(direction);
+        PositionCamera();
+    }
+
+    void Camera::InitSphereCoords(const float x, const float y) {
+        // The radius is the norm of the position vector.
+        mRadius = mPosition.Norm();
+        // The alpha angle is the angle between the x-axis and the projection of the position vector on the xz plane.
+        mAlpha = acos(y / mRadius);
+        // The beta angle is the angle between the z-axis and the projection of the position vector on the xz plane.
+        mBeta = atan2(y, x);
     }
 
     void Camera::SwitchType() {
@@ -110,6 +174,23 @@ namespace cg_engine {
         } else {
             mCameraType = new Spherical(*this);
         }
+    }
+
+    void Camera::PositionCamera() {
+       mLookAt = mPosition + mFront;
+    }
+
+    void Camera::SetFront(const Vec3f &front) {
+        mFront = front;
+    }
+
+    void Camera::Zoom(float xoffset, float yoffset) {
+        float fov = mProjection.GetX() - yoffset;
+        if (fov < 1.0f)
+            fov = 1.0f;
+        if (fov > 45.0f)
+            fov = 45.0f;
+        mProjection.SetX(fov);
     }
 
 

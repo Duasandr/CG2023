@@ -142,6 +142,11 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 #endif
 }
 
+void ProcessMouse(int xx, int yy) {
+    gWorld->Camera().Rotate(xx, yy);
+    glutPostRedisplay();
+}
+
 /**
  * Main entry of the program.
  * Reads a configuration file and initializes Glut.
@@ -181,6 +186,7 @@ int main(int argc, char **argv) {
 // Callback registration for keyboard processing
     glutKeyboardFunc(ProcessKeys);
     glutSpecialFunc(ProcessSpecialKeys);
+    glutMotionFunc(ProcessMouse);
 
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);

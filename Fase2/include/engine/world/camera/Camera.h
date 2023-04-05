@@ -67,6 +67,8 @@ namespace cg_engine {
          */
         void SetUp(float x, float y, float z);
 
+        void SetFront(cg_math::Vec3f const &front);
+
         /**
          * @brief Sets the projection vector of the camera.
          * @param fov The field of view.
@@ -74,6 +76,7 @@ namespace cg_engine {
          * @param far The far plane.
          */
         void SetProjection(float fov, float near, float far);
+
 
         /**
          * @brief Sets the type of the camera.
@@ -106,12 +109,18 @@ namespace cg_engine {
          */
         cg_math::Vec3f &GetProjection();
 
+        void PositionCamera();
+
         /**
          * @brief Moves the camera.
          * @details It moves the camera according to the option.
          * @param option
          */
         void Move(unsigned char option);
+
+        void Rotate(float x, float y);
+
+        void Zoom(float xoffset, float yoffset);
 
         void SwitchType();
 
@@ -120,12 +129,17 @@ namespace cg_engine {
          * @brief Type of the camera.
          * @details It can be free or spherical.
          */
-        cg_engine::CameraType *mCameraType;
+        cg_engine::CameraType *mCameraType{};
 
         /**
          * @brief mPosition of the camera.
          */
         cg_math::Vec3f mPosition;
+        /**
+         * @brief Front vector of the camera.
+         * @details It is the vector that represents the direction of the camera.
+         */
+        cg_math::Vec3f mFront;
         /**
          * @brief LookAt point of the camera.
          */
@@ -140,6 +154,27 @@ namespace cg_engine {
          */
         cg_math::Vec3f mProjection;
 
+        bool mFirstMouse;
+        float mLastX{};
+        float mLastY{};
+
+        /**
+         * @brief The alpha angle
+         * @details The alpha angle is the angle between the x-axis and the projection of the position vector on the xz plane.
+         */
+        float mAlpha{};
+        /**
+         * @brief The beta angle
+         * @details The beta angle is the angle between the z-axis and the projection of the position vector on the xz plane.
+         */
+        float mBeta{};
+        /**
+         * @brief The radius
+         * @details The radius is the distance between the camera and the origin.
+         */
+        float mRadius{};
+
+        void InitSphereCoords(float x, float y);
     };
 
 } // cg_engine
