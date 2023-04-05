@@ -9,6 +9,11 @@
 
 namespace cg_engine {
 
+    //TODO: Add the ability to rotate the camera around.
+    /**
+     * @brief FirstPerson class.
+     * @details It represents the first person camera. It can be moved freely.
+     */
     class FirstPerson : public CameraType {
     public:
         FirstPerson();
@@ -26,9 +31,22 @@ namespace cg_engine {
     private:
         void UpdateCameraVectors(Camera &camera);
 
-        cg_math::Vec3f mCameraFront;
-        cg_math::Vec3f mCameraRight;
-        float mCameraSpeed;
+        /**
+         * @brief The camera's front vector.
+         * @details It is the vector that points to the front of the camera.
+         * It is calculated from the camera's position and the lookAt point.
+         */
+        cg_math::Vec3f mFront;
+        /**
+         * @brief The camera's right vector.
+         * @details It is the vector that points to the positive x axis of the camera.
+         */
+        cg_math::Vec3f mRight;
+        /**
+         * @brief The camera's speed.
+         * @details It is the speed at which the camera moves.
+         */
+        float mSpeed;
     };
 
 } // cg_engine
