@@ -17,11 +17,6 @@ namespace cg_engine {
     using tinyxml2::XMLElement;
     using cg_math::Vec3f;
 
-    /**
-     * @brief Default constructor.
-     * @details It initializes the position, the lookAt point, the up vector and the projection vector.
-     * It also initializes the radius, the alpha and the beta angles.
-     */
     Camera::Camera() {
         mPosition = Vec3f();
         mLookAt = Vec3f();
@@ -31,6 +26,18 @@ namespace cg_engine {
     }
 
     Camera *Camera::Create(tinyxml2::XMLElement *block) {
+        /**
+         * Creates a new camera from an XML block.
+         * It parses the position, the lookAt point, the up vector and the projection vector.
+         * <camera>-----------------------------------------------------------------------------
+         *   attribute "x"     "y"      "z"                                                     }
+	     *  <position   x="100" y="100"  z="100" />            first child element "position"   }
+	     *  <lookAt     x="0"   y="0"    z="0" />              first child element "lookAt"     }-> Block
+	     *  <up         x="0"   y="1"    z="0" />              first child element "up"         }
+         *   attribute "fov"      "near"   "far"                                                }
+         *  <projection fov="100" near="1" far="1000" />       first child element "projection" }
+	     * </camera>----------------------------------------------------------------------------}
+         */
         auto *res = new Camera();
 
         // Parse the position of the camera from the XML block.
@@ -66,7 +73,7 @@ namespace cg_engine {
                                  Parser::ParseFloat(tag->Attribute("near")),
                                  Parser::ParseFloat(tag->Attribute("far")));
 
-        res->SetFront(cg_math::Vec3f::Normalize(res->mPosition - res->mLookAt));
+        res->SetFront(Vec3f::Normalize(res->mPosition - res->mLookAt));
         res->InitSphereCoords(res->GetPosition().GetX(), res->GetPosition().GetY());
         // Set the camera type. By default, it is spherical.
         //res->SetCameraType(new Spherical(*res));
@@ -160,8 +167,9 @@ namespace cg_engine {
     }
 
     void Camera::InitSphereCoords(const float x, const float y) {
+        //TODO: calculate direction first and then use it to calculate the angles
         // The radius is the norm of the position vector.
-        mRadius = mPosition.Norm();
+        mRadius = mFront.Norm();
         // The alpha angle is the angle between the x-axis and the projection of the position vector on the xz plane.
         mAlpha = acos(y / mRadius);
         // The beta angle is the angle between the z-axis and the projection of the position vector on the xz plane.
