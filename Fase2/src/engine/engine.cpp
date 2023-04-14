@@ -9,6 +9,7 @@ using std::endl;
 using cg_engine::World;
 
 World *gWorld;
+int tracking = 0;
 
 GLint gMode = GL_LINE;
 
@@ -111,16 +112,19 @@ void ProcessKeys(unsigned char c, int xx, int yy) {
             glutPostRedisplay();
             break;
         case 'w':
-        case 'a':
-        case 's':
-        case 'd':
-        case 'q':
-        case 'e':
-            gWorld->Camera().Move(c);
+            gWorld->Camera().Move(cg_engine::CameraMovement::FORWARD);
             glutPostRedisplay();
             break;
-        case ' ':
-            gWorld->Camera().SwitchType();
+        case 'a':
+            gWorld->Camera().Move(cg_engine::CameraMovement::LEFT);
+            glutPostRedisplay();
+            break;
+        case 's':
+            gWorld->Camera().Move(cg_engine::CameraMovement::BACKWARD);
+            glutPostRedisplay();
+            break;
+        case 'd':
+            gWorld->Camera().Move(cg_engine::CameraMovement::RIGHT);
             glutPostRedisplay();
             break;
         default:
@@ -142,8 +146,31 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 #endif
 }
 
-void ProcessMouse(int xx, int yy) {
-    gWorld->Camera().Rotate(xx, yy);
+void ProcessMouseButtons(int button, int state, int xx, int yy) {
+    if (state == GLUT_DOWN)  {
+        startX = xx;
+        startY = yy;
+        if (button == GLUT_LEFT_BUTTON)
+            tracking = 1;
+        else if (button == GLUT_RIGHT_BUTTON)
+            tracking = 2;
+        else { // Middle button
+
+        }
+    }
+    else if (state == GLUT_UP) {
+        tracking = 0;
+    }
+}
+
+void ProcessMouseMotion(int xx, int yy) {
+    if (!tracking)
+        return;
+
+    if (tracking == 1) {
+        gWorld->Camera().Rotate(xx, yy);
+    }
+
     glutPostRedisplay();
 }
 
@@ -186,7 +213,8 @@ int main(int argc, char **argv) {
 // Callback registration for keyboard processing
     glutKeyboardFunc(ProcessKeys);
     glutSpecialFunc(ProcessSpecialKeys);
-    glutMotionFunc(ProcessMouse);
+    glutMotionFunc(ProcessMouseMotion);
+    glutMouseFunc(ProcessMouseButtons);
 
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
