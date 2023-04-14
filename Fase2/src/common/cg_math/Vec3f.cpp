@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Vec3f.h"
-
+#include "Mat4f.h"
 /**
  * @brief cg_math namespace contains all the math classes and functions.
  */
@@ -43,9 +43,14 @@ namespace cg_math {
     }
 
     Vec3f Vec3f::CreateCartesianFromSphere(float alpha, float beta, float radius) {
-        float x = radius * cos(beta) * sin(alpha);
-        float y = radius * sin(beta);
-        float z = radius * cos(beta) * cos(alpha);
+        float alphaRad = alpha; //* M_PI / 180;
+        float betaRad = beta; //* M_PI / 180;
+
+        // Calculate new direction vector using spherical coordinates
+        float cosBeta = cos(betaRad);
+        float x = radius * cosBeta * sin(alphaRad);
+        float y = radius * sin(betaRad);
+        float z = radius * cosBeta * cos(alphaRad);
 
         return {x, y, z};
     }
@@ -70,6 +75,10 @@ namespace cg_math {
         if (norm == 0) { return {0,0,0}; }
 
         return {vec.GetX() / norm, vec.GetY() / norm, vec.GetZ() / norm };
+    }
+
+    float Vec3f::Distance(const Vec3f &lhs, const Vec3f &rhs) {
+        return Norm(lhs - rhs);
     }
 
     Vec3f Vec3f::Cross(const Vec3f &lhs, const Vec3f &rhs) {

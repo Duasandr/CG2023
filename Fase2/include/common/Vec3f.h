@@ -7,9 +7,8 @@
 #include <iostream>
 #include <cmath>
 
-
 namespace cg_math {
-
+    class Mat4f;
     /**
      * @brief Vec3f class.
      * @details It represents a 3D vector.
@@ -62,14 +61,6 @@ namespace cg_math {
          */
         Vec3f(const Vec3f& vec);
         /**
-         * @brief Move constructor.
-         * @details Move constructor is used to avoid unnecessary copies thus improving performance.
-         * It is defaulted because the compiler can generate a move constructor for us since it is a trivial class.
-         * @details Sets x, y and z to the values of the given vector.
-         * @param vec vector to move
-         */
-        Vec3f(Vec3f&& vec) noexcept = default;
-        /**
          * @brief Parameter constructor.
          * @details Sets x, y and z to the values of the given vector.
          * Useful for converting from other types of vectors and achieving polymorphism.
@@ -100,6 +91,14 @@ namespace cg_math {
          * @return float length of the vector
         */
         static float Norm       (const Vec3f& vec);
+        /**
+         * @brief Returns the distance between two vectors.
+         * @details The distance is the norm of the difference between the two vectors.
+         * @param lhs left hand side vector
+         * @param rhs right hand side vector
+         * @return float distance between the two vectors
+         */
+        static float Distance   (const Vec3f& lhs, const Vec3f& rhs);
         /**
          * Returns a normalized vector.
          * @details The normalized vector has the same direction as the original vector, but its length is 1.
