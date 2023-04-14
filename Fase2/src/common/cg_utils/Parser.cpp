@@ -11,7 +11,7 @@ namespace cg_utils {
     using cg_math::Vec3f;
 
     int Parser::ParseInt(const char *str) {
-        int res = 0;
+        int res;
         char *rest;
 
         res = static_cast<int>(strtol(str, &rest, 10));
@@ -22,9 +22,9 @@ namespace cg_utils {
 
         return res;
     }
-    
+
     float Parser::ParseFloat(const char *str) {
-        float res = 0.0f;
+        float res;
         char *rest;
 
         res = static_cast<float>(strtof(str, &rest));
@@ -42,9 +42,9 @@ namespace cg_utils {
             return {};
         }
 
-        float x = 0.0f;
-        float y = 0.0f;
-        float z = 0.0f;
+        float x;
+        float y;
+        float z;
 
         if (tag->FindAttribute("x") == nullptr) {
             cerr << "Error: tag " << tag->Name() << " has no attribute x" << std::endl;
@@ -80,10 +80,6 @@ namespace cg_utils {
             return {};
         }
 
-        float x = 0.0f;
-        float y = 0.0f;
-        float z = 0.0f;
-
         if (tag->FindAttribute("fov") == nullptr) {
             cerr << "Error: tag " << tag->Name() << " has no attribute fov" << std::endl;
             return {};
@@ -98,6 +94,10 @@ namespace cg_utils {
             cerr << "Error: tag " << tag->Name() << " has no attribute far" << std::endl;
             return {};
         }
+
+        float x;
+        float y;
+        float z;
 
         try {
             x = Parser::ParseFloat(tag->Attribute("fov"));
