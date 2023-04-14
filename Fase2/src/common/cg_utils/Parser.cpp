@@ -8,13 +8,8 @@
 namespace cg_utils {
     using std::cerr;
     using std::domain_error;
+    using cg_math::Vec3f;
 
-    /**
-     * Parses a string into an integer.
-     * @param str
-     * @return
-     * @throws std::domain_error when string is not a valid integer
-     */
     int Parser::ParseInt(const char *str) {
         int res = 0;
         char *rest;
@@ -27,13 +22,7 @@ namespace cg_utils {
 
         return res;
     }
-
-    /**
-     * Parses a string into a float.
-     * @param str
-     * @return
-     * @throws std::domain_error when string is not a valid float
-     */
+    
     float Parser::ParseFloat(const char *str) {
         float res = 0.0f;
         char *rest;
@@ -45,5 +34,81 @@ namespace cg_utils {
         }
 
         return res;
+    }
+
+    cg_math::Vec3f Parser::ParseVec3f(tinyxml2::XMLElement *tag) {
+        if (tag == nullptr) {
+            cerr << "Error: tag is null" << std::endl;
+            return {};
+        }
+
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+
+        if (tag->FindAttribute("x") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute x" << std::endl;
+            return {};
+        }
+
+        if (tag->FindAttribute("y") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute y" << std::endl;
+            return {};
+        }
+
+        if (tag->FindAttribute("z") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute z" << std::endl;
+            return {};
+        }
+
+        try {
+            x = Parser::ParseFloat(tag->Attribute("x"));
+            y = Parser::ParseFloat(tag->Attribute("y"));
+            z = Parser::ParseFloat(tag->Attribute("z"));
+        }
+        catch (domain_error &e) {
+            cerr << "Error: " << e.what() << " is not a valid float" << std::endl;
+            return {};
+        }
+
+        return {x, y, z};
+    }
+
+    cg_math::Vec3f Parser::ParseProjection(tinyxml2::XMLElement *tag) {
+        if (tag == nullptr) {
+            cerr << "Error: tag is null" << std::endl;
+            return {};
+        }
+
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+
+        if (tag->FindAttribute("fov") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute fov" << std::endl;
+            return {};
+        }
+
+        if (tag->FindAttribute("near") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute near" << std::endl;
+            return {};
+        }
+
+        if (tag->FindAttribute("far") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute far" << std::endl;
+            return {};
+        }
+
+        try {
+            x = Parser::ParseFloat(tag->Attribute("fov"));
+            y = Parser::ParseFloat(tag->Attribute("near"));
+            z = Parser::ParseFloat(tag->Attribute("far"));
+        }
+        catch (domain_error &e) {
+            cerr << "Error: " << e.what() << " is not a valid float" << std::endl;
+            return {};
+        }
+
+        return {x, y, z};
     }
 } // cg_engine
