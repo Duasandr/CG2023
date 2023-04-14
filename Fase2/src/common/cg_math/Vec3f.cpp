@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Vec3f.h"
-#include "Mat4f.h"
+
 /**
  * @brief cg_math namespace contains all the math classes and functions.
  */
