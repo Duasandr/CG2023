@@ -148,8 +148,6 @@ void ProcessSpecialKeys(int key, int xx, int yy) {
 
 void ProcessMouseButtons(int button, int state, int xx, int yy) {
     if (state == GLUT_DOWN)  {
-        startX = xx;
-        startY = yy;
         if (button == GLUT_LEFT_BUTTON)
             tracking = 1;
         else if (button == GLUT_RIGHT_BUTTON)
