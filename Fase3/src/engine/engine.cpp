@@ -2,7 +2,7 @@
 // Created by Sandro Duarte on 09/03/2023.
 //
 #include "engine.h"
-#include "world/World.h"
+#include "World.h"
 
 using std::cout;
 using std::endl;

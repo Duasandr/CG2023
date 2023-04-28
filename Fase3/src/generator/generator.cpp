@@ -3,14 +3,15 @@
 //
 #include <iostream>
 
-#include <Primitives.h>
-#include <Parser.h>
+#include "primitives/Primitives.h"
+#include "primitives/Bezier.h"
+#include "CommonParser.h"
 
 using std::cerr;
 using std::endl;
 
 int main(int argc, char **argv) {
-    using cg_utils::Parser;
+    using cg_utils::CommonParser;
 
     // Check if the number of arguments is valid for the primitive
     if (argc < 2) {
@@ -24,8 +25,8 @@ int main(int argc, char **argv) {
     // Check if the primitive is valid
 
     if (primitive == "plane") {
-        int length = Parser::ParseInt(argv[2]);
-        int divisions = Parser::ParseInt(argv[3]);
+        int length = CommonParser::ParseInt(argv[2]);
+        int divisions = CommonParser::ParseInt(argv[3]);
 
         Plane(length, divisions, argv[4]);
 
@@ -33,8 +34,8 @@ int main(int argc, char **argv) {
     }
 
     if (primitive == "box") {
-        int length = Parser::ParseInt(argv[2]);
-        int divisions = Parser::ParseInt(argv[3]);
+        int length = CommonParser::ParseInt(argv[2]);
+        int divisions = CommonParser::ParseInt(argv[3]);
 
         Box(length, divisions, argv[4]);
 
@@ -42,9 +43,9 @@ int main(int argc, char **argv) {
     }
 
     if(primitive == "sphere")  {
-        float r = Parser::ParseFloat(argv[2]);
-        int slices = Parser::ParseInt(argv[3]);
-        int stacks = Parser::ParseInt(argv[4]);
+        float r = CommonParser::ParseFloat(argv[2]);
+        int slices = CommonParser::ParseInt(argv[3]);
+        int stacks = CommonParser::ParseInt(argv[4]);
 
         Sphere(r, stacks, slices, argv[5]);
 
@@ -52,13 +53,18 @@ int main(int argc, char **argv) {
     }
 
     if(primitive == "cone")  {
-        float radius = Parser::ParseFloat(argv[2]);
-        int height = Parser::ParseInt(argv[3]);
-        int slices = Parser::ParseInt(argv[4]);
-        int stacks = Parser::ParseInt(argv[5]);
+        float radius = CommonParser::ParseFloat(argv[2]);
+        int height = CommonParser::ParseInt(argv[3]);
+        int slices = CommonParser::ParseInt(argv[4]);
+        int stacks = CommonParser::ParseInt(argv[5]);
 
         Cone(radius, height, stacks, slices, argv[6]);
 
+        return 0;
+    }
+
+    if(primitive == "bezier")  {
+        Bezier(argv[2], CommonParser::ParseInt(argv[3]), argv[4]);
         return 0;
     }
 

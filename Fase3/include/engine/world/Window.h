@@ -4,7 +4,7 @@
 
 #ifndef ENGINE_WINDOW_H
 #define ENGINE_WINDOW_H
-#include "tinyxml2.h"
+#include "utils/tinyxml2.h"
 
 namespace cg_engine {
     /**

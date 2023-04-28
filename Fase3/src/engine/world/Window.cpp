@@ -2,7 +2,7 @@
 // Created by Sandro Duarte on 19/03/2023.
 //
 #include "world/Window.h"
-#include "Parser.h"
+#include "utils/EngineParser.h"
 
 /**
  * cg_engine namespace contains all the classes and functions of the engine
@@ -15,8 +15,8 @@ namespace cg_engine {
 
         // Parse the width and height of the window
         if(tag) {
-            res->mWidth = Parser::ParseInt(tag->Attribute("width"));
-            res->mHeight = Parser::ParseInt(tag->Attribute("height"));
+            res->mWidth = EngineParser::ParseInt(tag->Attribute("width"));
+            res->mHeight = EngineParser::ParseInt(tag->Attribute("height"));
         }
 
         return res;

@@ -7,8 +7,8 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
-#include "world/Camera.h"
-#include "Parser.h"
+#include "Camera.h"
+#include "EngineParser.h"
 
 //TODO: Camera still needs to be fixed. Rotation is not working properly.
 
@@ -49,10 +49,9 @@ namespace cg_engine {
      * //////////////////////////////
      */
 
-    using cg_utils::Parser;
     using tinyxml2::XMLElement;
     using cg_math::Vec3f;
-    using cg_math::Mat4f;
+    using cg_math::Mat;
 
     /*
     * //////////////////////////////
@@ -109,10 +108,10 @@ namespace cg_engine {
             }
         }
 
-        Vec3f pos        = Parser::ParseVec3f(tags[CAMERA_TAG_POSITION]);
-        Vec3f lookAt     = Parser::ParseVec3f(tags[CAMERA_TAG_LOOK_AT]);
-        Vec3f up         = Parser::ParseVec3f(tags[CAMERA_TAG_UP]);
-        Vec3f projection = Parser::ParseProjection(tags[CAMERA_TAG_PROJECTION]);
+        Vec3f pos        = EngineParser::ParseVec3f(tags[CAMERA_TAG_POSITION]);
+        Vec3f lookAt     = EngineParser::ParseVec3f(tags[CAMERA_TAG_LOOK_AT]);
+        Vec3f up         = EngineParser::ParseVec3f(tags[CAMERA_TAG_UP]);
+        Vec3f projection = EngineParser::ParseProjection(tags[CAMERA_TAG_PROJECTION]);
         Vec3f direction  = Vec3f::Normalize(lookAt - pos);
 
         // Set the position, the lookAt point, the up vector and the projection of the camera.
@@ -123,6 +122,7 @@ namespace cg_engine {
         res->SetDirection(direction);
         res->InitSphereCoords(pos.GetX(),pos.GetY());
 
+#ifndef NDEBUG
         std::cout << "Camera created!" << std::endl;
         std::cout << "Position: " << pos << std::endl;
         std::cout << "Look at: " << lookAt << std::endl;
@@ -130,6 +130,7 @@ namespace cg_engine {
         std::cout << "Projection: " << projection << std::endl;
         std::cout << "Direction: " << direction << std::endl;
         std::cout << "Radius: " << res->mRadius << std::endl;
+#endif
 
 
         return res;

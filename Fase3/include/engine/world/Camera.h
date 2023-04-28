@@ -5,7 +5,7 @@
 #ifndef ENGINE_CAMERA_H
 #define ENGINE_CAMERA_H
 #include "Vec3f.h"
-#include "tinyxml2.h"
+#include "utils/tinyxml2.h"
 
 /**
  * @brief The cg_engine namespace.
