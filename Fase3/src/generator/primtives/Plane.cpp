@@ -9,11 +9,15 @@
 #include "Vec3f.h"
 #include "utils/DumpVertices.h"
 
+
+
+
 using std::vector;
 using cg_math::Vec3f;
 
 void Plane(int length, int divisions, const char *filePath) {
     vector<Vec3f> vertices;
+
 
     // calculates the size of each square of the plane
     float squareSize = static_cast<float>(length) / static_cast<float>(divisions);
@@ -29,20 +33,7 @@ void Plane(int length, int divisions, const char *filePath) {
     for (int i = 0; i < divisions; ++i) {
         for (int j = 0; j < divisions; ++j) {
 
-            /**
-            *  <---length--->
-            * *--------------*
-            * -  -           - ^
-            * -   -    upper - |
-            * -      -       - |
-            * -        -     - length
-            * -  lower   -   - |
-            * -            - - |
-            * *--------------* v   x ->
-            * |
-            * v
-            * z
-            */
+
 
             // finds the vertices of the lower triangle
             vertices.emplace_back(x, y, z);

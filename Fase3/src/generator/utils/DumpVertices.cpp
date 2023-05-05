@@ -13,7 +13,7 @@ using cg_math::Vec3f;
 void DumpVertices(const char *path, const unsigned int nVertices, vector<Vec3f> &vertices) {
     std::ofstream ofs;
 
-    ofs.open(path);
+    ofs.open(path, std::ofstream::out | std::ofstream::trunc);
 
     // Write the number of vertices
     ofs << nVertices << '\n';

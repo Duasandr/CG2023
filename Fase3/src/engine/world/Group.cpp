@@ -9,6 +9,7 @@
 #endif
 #include "world/Group.h"
 #include "transform/Transform.h"
+#include "utils/EngineParser.h"
 
 namespace cg_engine {
     using std::vector;
@@ -27,7 +28,7 @@ namespace cg_engine {
         if(transform_block) {
             for (XMLElement *transform_tag = transform_block->FirstChildElement();
                  transform_tag != nullptr; transform_tag = transform_tag->NextSiblingElement()) {
-                res->mTransforms.push_back(Transform::Create(transform_tag));
+                res->mTransforms.push_back(EngineParser::ParseTransform(transform_tag));
             }
         }
 

@@ -8,6 +8,7 @@
 #include "Vec3f.h"
 #include "tinyxml2.h"
 #include "Transform.h"
+#include "Window.h"
 
 namespace cg_engine {
 
@@ -30,9 +31,12 @@ namespace cg_engine {
          */
         static cg_math::Vec3f ParseProjection(tinyxml2::XMLElement *tag);
 
+        static Window* ParseWindow(tinyxml2::XMLElement *tag);
+
 
         static Transform* ParseTransform(tinyxml2::XMLElement *tag);
         static Transform* ParseTranslate(tinyxml2::XMLElement *tag);
+        static Transform* ParseTranslateCurve(tinyxml2::XMLElement *tag);
         static Transform* ParseRotate(tinyxml2::XMLElement *tag);
         static Transform* ParseScale(tinyxml2::XMLElement *tag);
     };

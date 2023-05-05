@@ -2,10 +2,11 @@
 // Created by Sandro Duarte on 19/03/2023.
 //
 
-#ifndef ENGINE_TRANSLATE_H
-#define ENGINE_TRANSLATE_H
+#ifndef ENGINE_TRANSLATE_CURVE_H
+#define ENGINE_TRANSLATE_CURVE_H
 #include "Transform.h"
 #include "Vec3f.h"
+#include "Mat.h"
 
 namespace cg_engine {
 
@@ -29,21 +30,30 @@ namespace cg_engine {
          */
         TranslateCurve(float time, bool align);
 
+        cg_math::Vec3f GetCatmullRomPoint(float gt);
+        cg_math::Vec3f GetCatmullRomDerivative(float gt);
+
+        void Align(float t);
+
         /**
          * @brief Apply method is used to apply the transformation.
          * @details It is a virtual method that is implemented in the derived classes. It calls the glTranslatef function.
          */
         void Apply() override;
-    private:
 
-        void getGlobalCatmullRomPoint(float gt, float *pos, float *deriv);
-        void getCatmullRomPoint(float t, float *p0, float *p1, float *p2, float *p3, float *pos, float *deriv);
+        void AddPoint(const cg_math::Vec3f &point);
+
+    private:
+        float ComputeIndices(float gt);
 
         float mTime;
         bool mAlign;
+        int mCurrentIndices[4];
+        cg_math::Vec3f mPrevY;
         std::vector<cg_math::Vec3f> mPoints;
+
     };
 
 } // cg_engine
 
-#endif //ENGINE_TRANSLATE_H
+#endif //ENGINE_TRANSLATE_CURVE_H

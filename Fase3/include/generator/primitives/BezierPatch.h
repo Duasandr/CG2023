@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <vector>
+#include "Mat.h"
 #include "Vec3f.h"
 
 #define PATCH_SIZE 16
@@ -23,13 +24,13 @@ public:
     /**
      * @brief Empty constructor.
      */
-    BezierPatch();
+    BezierPatch() = default;
 
     /**
      * @brief Destructor.
      * @ Frees allocated memory.
      */
-    virtual ~BezierPatch();
+    ~BezierPatch() = default;
 
 
     /**
@@ -46,6 +47,7 @@ public:
      */
     static BezierPatch * Create(const char* pathToFile, uint32_t tesselation);
 
+
     cg_math::Vec3f BezierPoint(uint32_t p, float u, float v);
 
     void Tessellate(const char *pathToFile);
@@ -57,11 +59,15 @@ private:
     * ////////////////////////////////
     */
 
+    /**
+     * @brief Number of segments the curves will have.
+     */
     uint32_t mTesselation;
-    uint32_t mTotalIndices;
-    uint32_t mTotalControlPoints;
-    uint32_t *mIndices;
-    cg_math::Vec3f * mControlPoints;
+    /**
+     * @brief Pre-calculated Bezier patches.
+     * @details Each patch is a is a vector of 3 4x4 matrices. One for each axis.
+     */
+    std::vector<std::vector<cg_math::Mat>> mPatches;
 };
 
 

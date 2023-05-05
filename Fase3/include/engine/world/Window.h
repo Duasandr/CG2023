@@ -14,6 +14,12 @@ namespace cg_engine {
     class Window {
     public:
         /**
+         * @brief Default constructor
+         * @details This constructor is used to create a window with the default values.
+         */
+        Window() = default;
+        Window(int width, int height);
+        /**
          * @brief Copy constructor
          * @details explicitly deleted copy constructor to avoid copying
          * @param window
@@ -32,13 +38,6 @@ namespace cg_engine {
         virtual ~Window() = default;
 
         /**
-         * Creates a Window from an .xml file.
-         * @param pathToFile
-         * @return A pointer to the created window
-         */
-        static Window *Create(tinyxml2::XMLElement *tag);
-
-        /**
          * @brief Get the width of the window
          * @return The width of the window
          */
@@ -50,13 +49,6 @@ namespace cg_engine {
         int getHeight() const;
 
     private:
-        /**
-         * @brief Default constructor
-         * @details This constructor is used to create an empty window.
-         * @note This constructor is not intended to be used directly. Use the static method Window::Create() instead.
-         */
-        Window() = default;
-
         /**
          * @brief Width of the window
         */

@@ -51,7 +51,6 @@ namespace cg_engine {
 
     using tinyxml2::XMLElement;
     using cg_math::Vec3f;
-    using cg_math::Mat;
 
     /*
     * //////////////////////////////

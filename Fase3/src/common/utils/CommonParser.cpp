@@ -34,4 +34,16 @@ namespace cg_utils {
 
         return res;
     }
+
+    bool CommonParser::ParseBool(const char *str) {
+        if(strcmp(str, "True") == 0) {
+            return true;
+        }
+        else if(strcmp(str, "False") == 0) {
+            return false;
+        }
+        else {
+            throw domain_error(str);
+        }
+    }
 } // cg_engine

@@ -9,6 +9,7 @@
 #include "transform/translate/Translate.h"
 #include "Rotate.h"
 #include "Scale.h"
+#include "translate/TranslateCurve.h"
 
 namespace cg_engine {
     using cg_utils::CommonParser;
@@ -98,7 +99,7 @@ namespace cg_engine {
             string name = tag->Name();
 
             if(name == "translate") {
-
+                return ParseTranslate(tag);
             }
 
             if(name == "rotate") {
@@ -112,14 +113,61 @@ namespace cg_engine {
                 return new Scale(CommonParser::ParseFloat(tag->Attribute("factor")));
             }
         }
+        return nullptr;
     }
 
     Transform *EngineParser::ParseTranslate(tinyxml2::XMLElement *tag) {
         if(tag->Attribute("time")) {
-
+            return ParseTranslateCurve(tag);
         }
         return new Translate(CommonParser::ParseFloat(tag->Attribute("x")),
                                     CommonParser::ParseFloat(tag->Attribute("y")),
                                     CommonParser::ParseFloat(tag->Attribute("z")));;
+    }
+
+    Transform *EngineParser::ParseTranslateCurve(tinyxml2::XMLElement *tag) {
+        float time = CommonParser::ParseFloat(tag->Attribute("time"));
+        bool align = CommonParser::ParseBool(tag->Attribute("align"));
+
+        auto *pTranslateCurve = new TranslateCurve(time, align);
+
+        for (tinyxml2::XMLElement *child = tag->FirstChildElement(); child != nullptr; child = child->NextSiblingElement()) {
+            if (child->Name() == string("point")) {
+                pTranslateCurve->AddPoint(ParseVec3f(child));
+            }
+        }
+
+        return pTranslateCurve;
+    }
+
+    Window *EngineParser::ParseWindow(tinyxml2::XMLElement *tag) {
+        if (tag == nullptr) {
+            cerr << "Error: tag is null" << std::endl;
+            return nullptr;
+        }
+
+        if (tag->FindAttribute("width") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute width" << std::endl;
+            return nullptr;
+        }
+
+        if (tag->FindAttribute("height") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute height" << std::endl;
+            return nullptr;
+        }
+
+        int width;
+        int height;
+
+        try {
+            width = CommonParser::ParseInt(tag->Attribute("width"));
+            height = CommonParser::ParseInt(tag->Attribute("height"));
+        }
+        catch (domain_error &e) {
+            cerr << "Error: " << e.what() << " is not a valid int" << std::endl;
+            return nullptr;
+        }
+
+        return new Window(width, height);
     }
 } // cg_engine

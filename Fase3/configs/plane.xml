@@ -7,11 +7,8 @@
         <projection fov="100" near="1" far="1000" />
 	</camera>
 	<group>
-		<transform>
-			<rotate angle="-90" x="1" y="0" z="0" />
-		</transform>
 		<models>
-			<model file="models/teapot.3d" />
+			<model file="models/plane.3d" />
 		</models>
 	</group>
 </world>

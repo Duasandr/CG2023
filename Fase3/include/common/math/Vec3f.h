@@ -8,7 +8,6 @@
 #include <cmath>
 
 namespace cg_math {
-    class Mat;
     /**
      * @brief Vec3f class.
      * @details It represents a 3D vector.

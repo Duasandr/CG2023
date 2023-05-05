@@ -4,6 +4,7 @@
 #include <iostream>
 #include "world/Window.h"
 #include "world/World.h"
+#include "EngineParser.h"
 
 namespace cg_engine {
     using std::cerr;
@@ -21,7 +22,7 @@ namespace cg_engine {
 
         XMLElement *world_tag = res->mConfigFile.FirstChildElement("world");
 
-        res->mWindow = Window::Create(world_tag->FirstChildElement("window"));
+        res->mWindow = EngineParser::ParseWindow(world_tag->FirstChildElement("window"));
 
         res->mCamera = Camera::Create(world_tag->FirstChildElement("camera"));
 

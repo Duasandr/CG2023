@@ -44,14 +44,13 @@ namespace cg_math {
      */
 
     void Mat::Multiply(const Mat &lhs, const Mat &rhs, Mat &res) {
-        uint32_t lhsRows = lhs.mRows;
-        uint32_t lhsCols = lhs.mCols;
-        uint32_t rhsCols = rhs.mCols;
+        const uint32_t rows = lhs.mRows;
+        const uint32_t cols = rhs.mCols;
 
-        for (uint32_t i = 0; i < lhsRows; ++i) {
-            for (uint32_t j = 0; j < rhsCols; ++j) {
+        for (uint32_t i = 0; i < rows; ++i) {
+            for (uint32_t j = 0; j < cols; ++j) {
                 float sum = 0.0f;
-                for (uint32_t k = 0; k < lhsCols; ++k) {
+                for (uint32_t k = 0; k < cols; ++k) {
                     float value = lhs.Get(i, k) * rhs.Get(k, j);
                     sum += value;
                 }
@@ -61,6 +60,9 @@ namespace cg_math {
     }
 
     Mat Mat::Multiply(const Mat &lhs, const Mat &rhs) {
+        if (lhs.mCols != rhs.mRows) {
+            throw std::invalid_argument("Matrices cannot be multiplied");
+        }
         Mat res(lhs.GetRows(), rhs.GetCols());
         Multiply(lhs, rhs, res);
         return res;
@@ -94,7 +96,7 @@ namespace cg_math {
     void Mat::Set(uint32_t index, float value) { mSharedFloatVector->at(index) = value; }
 
     void Mat::Set(uint32_t row, uint32_t col, float value) {
-        uint32_t index = row * mCols + col;
+        uint32_t index = row * mRows + col;
         Set(index, value);
     }
 
@@ -107,7 +109,7 @@ namespace cg_math {
     float Mat::Get(uint32_t index) const { return mSharedFloatVector->at(index); }
 
     float Mat::Get(uint32_t row, uint32_t col) const {
-        uint32_t index = row * mCols + col;
+        uint32_t index = row * mRows + col;
         return Get(index);
     }
 

@@ -32,6 +32,8 @@ namespace cg_utils {
         * @throws std::domain_error when string is not a valid float
         */
         static float ParseFloat(const char *str);
+
+        static bool ParseBool(const char *str);
     };
 
 } // cg_engine
