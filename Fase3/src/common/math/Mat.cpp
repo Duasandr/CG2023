@@ -66,12 +66,6 @@ namespace cg_math {
         return res;
     }
 
-    Mat Mat::Multiply(const Mat &lhs, const vector<Mat> &rhs) {
-        Mat res(lhs.GetRows(), rhs[0].GetCols());
-        Multiply(lhs, rhs, res);
-        return res;
-    }
-
     Mat Mat::Multiply(const Mat &mat, const Vec3f &vec) {
         Mat res(mat.GetRows(), 1);
         Mat rhs(vec);
