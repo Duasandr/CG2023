@@ -5,45 +5,78 @@
 #include "Mat.h"
 
 namespace cg_math {
-    Mat::Mat() : mRows(0), mCols(0) { mData = nullptr; }
+    using std::initializer_list;
+    using std::vector;
+    using std::make_shared;
+
+    /*
+    * //////////////////////////////
+    * // Constructors
+    * //////////////////////////////
+    */
+
+    Mat::Mat() : mRows(0), mCols(0) { mSharedFloatVector = nullptr; }
 
     Mat::Mat(uint32_t rows, uint32_t cols) : mRows(rows), mCols(cols) {
-        mData = new float[rows * cols];
-        std::fill(mData, mData + rows * cols, 0);
+        mSharedFloatVector = make_shared<vector<float>>(rows * cols);
+        std::fill(mSharedFloatVector->begin(), mSharedFloatVector->end(), 0.0f);
     }
 
-    Mat::Mat(uint32_t rows, uint32_t cols, float *data) : mRows(rows), mCols(cols) {
-        mData = new float[rows * cols];
-        std::copy(data, data + rows * cols, mData);
+    Mat::Mat(const Vec3f &vec) : Mat(1, 4) {
+        Set(0, vec.GetX());
+        Set(1, vec.GetY());
+        Set(2, vec.GetZ());
+        Set(3, 1.0f);
     }
 
-    Mat::Mat(const Vec3f &vec) : Mat(4, 1) {
-        mData[0] = vec.GetX();
-        mData[1] = vec.GetY();
-        mData[2] = vec.GetZ();
-        mData[3] = 1;
+    Mat::Mat(uint32_t rows, uint32_t cols, initializer_list<float> list) : Mat(rows, cols) {
+        std::copy(list.begin(), list.end(), mSharedFloatVector->begin());
     }
 
-    Mat::~Mat() {
-        Destroy();
+    Mat::Mat(uint32_t rows, uint32_t cols, std::vector<float> vec) : Mat(rows, cols) {
+        std::copy(vec.begin(), vec.end(), mSharedFloatVector->begin());
+    }
+
+    /*
+     * //////////////////////////////
+     * // Static Methods
+     * //////////////////////////////
+     */
+
+    void Mat::Multiply(const Mat &lhs, const Mat &rhs, Mat &res) {
+        uint32_t lhsRows = lhs.mRows;
+        uint32_t lhsCols = lhs.mCols;
+        uint32_t rhsCols = rhs.mCols;
+
+        for (uint32_t i = 0; i < lhsRows; ++i) {
+            for (uint32_t j = 0; j < rhsCols; ++j) {
+                float sum = 0.0f;
+                for (uint32_t k = 0; k < lhsCols; ++k) {
+                    float value = lhs.Get(i, k) * rhs.Get(k, j);
+                    sum += value;
+                }
+                res.Set(i, j, sum);
+            }
+        }
     }
 
     Mat Mat::Multiply(const Mat &lhs, const Mat &rhs) {
-        Mat res(lhs.mRows, rhs.mCols);
+        Mat res(lhs.GetRows(), rhs.GetCols());
+        Multiply(lhs, rhs, res);
+        return res;
+    }
 
-        for (uint32_t i = 0; i < lhs.mRows; ++i) {
-            for (uint32_t j = 0; j < rhs.mCols; ++j) {
-                for (uint32_t k = 0; k < lhs.mCols; ++k) {
-                    res.mData[i * rhs.mCols + j] += lhs.mData[i * lhs.mCols + k] * rhs.mData[k * rhs.mCols + j];
-                }
-            }
-        }
-
+    Mat Mat::Multiply(const Mat &lhs, const vector<Mat> &rhs) {
+        Mat res(lhs.GetRows(), rhs[0].GetCols());
+        Multiply(lhs, rhs, res);
         return res;
     }
 
     Mat Mat::Multiply(const Mat &mat, const Vec3f &vec) {
-        return Multiply(mat, Mat(vec));
+        Mat res(mat.GetRows(), 1);
+        Mat rhs(vec);
+        Multiply(mat, rhs, res);
+        return res;
     }
 
     Mat Mat::Transpose(const Mat &mat) {
@@ -51,48 +84,71 @@ namespace cg_math {
 
         for (uint32_t i = 0; i < mat.mRows; ++i) {
             for (uint32_t j = 0; j < mat.mCols; ++j) {
-                res.mData[j * mat.mRows + i] = mat.mData[i * mat.mCols + j];
+                res.Set(j, i, mat.Get(i * mat.mCols + j));
             }
         }
 
         return res;
     }
 
-    void Mat::Destroy() {
-        if (mData != nullptr){
+    /*
+     * //////////////////////////////
+     * // Setters
+     * //////////////////////////////
+     */
 
-        }
+    void Mat::Set(uint32_t index, float value) { mSharedFloatVector->at(index) = value; }
+
+    void Mat::Set(uint32_t row, uint32_t col, float value) {
+        uint32_t index = row * mCols + col;
+        Set(index, value);
     }
 
-    Mat::Mat(std::initializer_list<float> list) {
-        mRows = 1;
-        mCols = list.size();
-        mData = new float[mRows];
-        std::copy(list.begin(), list.end(), mData);
-    }
+    /*
+     * //////////////////////////////
+     * // Getters
+     * //////////////////////////////
+     */
 
-    Mat::Mat(std::initializer_list<std::initializer_list<float>> list) {
-        mRows = list.size();
-        mCols = list.begin()->size();
-        mData = new float[mRows * mCols];
-
-        uint32_t i = 0;
-        for (auto &row : list) {
-            std::copy(row.begin(), row.end(), mData + i * mCols);
-            ++i;
-        }
-    }
+    float Mat::Get(uint32_t index) const { return mSharedFloatVector->at(index); }
 
     float Mat::Get(uint32_t row, uint32_t col) const {
-        return mData[row * mCols + col];
+        uint32_t index = row * mCols + col;
+        return Get(index);
     }
 
-    Mat operator*(const Mat &lhs, const Mat &rhs) {
-        return Mat::Multiply(lhs, rhs);
+    uint32_t Mat::GetRows() const { return mRows; }
+    uint32_t Mat::GetCols() const { return mCols; }
+
+    Mat Mat::RotationMatrix(const Vec3f &x, const Vec3f &y, const Vec3f &z) {
+        Mat res(4,4, {x.GetX(), x.GetY(), x.GetZ(), 0,
+                                    y.GetX(), y.GetY(), y.GetZ(), 0,
+                                    z.GetX(), z.GetY(), z.GetZ(), 0,
+                                    0, 0, 0, 1});
+
+        return res;
     }
 
-    Mat operator*(const Mat &mat, const Vec3f &vec) {
-        return Mat::Multiply(mat, vec);
+    float *Mat::GetData() const { return mSharedFloatVector->data(); }
+
+
+    /*
+     * //////////////////////////////
+     * // Overloaded Operators
+     * //////////////////////////////
+     */
+
+    Mat operator*(const Mat &lhs, const Mat &rhs)              { return Mat::Multiply(lhs, rhs); }
+    Mat operator*(const Mat &mat, const Vec3f &vec)            { return Mat::Multiply(mat, vec); }
+
+    std::ostream &operator<<(std::ostream &os, const Mat &mat) {
+        for (uint32_t i = 0; i < mat.GetRows(); ++i) {
+            for (uint32_t j = 0; j < mat.GetCols(); ++j) {
+                os << mat.Get(i, j) << " ";
+            }
+            os << std::endl;
+        }
+        return os;
     }
 
 
