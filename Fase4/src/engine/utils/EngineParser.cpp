@@ -10,6 +10,10 @@
 #include "Rotate.h"
 #include "Scale.h"
 #include "translate/TranslateCurve.h"
+#include "world/lights/DirectionalLight.h"
+#include "world/lights/PointLight.h"
+#include "world/lights/SpotLight.h"
+#include "color/Color.h"
 
 namespace cg_engine {
     using cg_utils::CommonParser;
@@ -47,6 +51,44 @@ namespace cg_engine {
             x = CommonParser::ParseFloat(tag->Attribute("x"));
             y = CommonParser::ParseFloat(tag->Attribute("y"));
             z = CommonParser::ParseFloat(tag->Attribute("z"));
+        }
+        catch (domain_error &e) {
+            cerr << "Error: " << e.what() << " is not a valid float" << std::endl;
+            return {};
+        }
+
+        return {x, y, z};
+    }
+
+    cg_math::Vec3f EngineParser::ParseVec3fColor(tinyxml2::XMLElement *tag) {
+        if (tag == nullptr) {
+            cerr << "Error: tag is null" << std::endl;
+            return {};
+        }
+
+        float x;
+        float y;
+        float z;
+
+        if (tag->FindAttribute("R") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute R" << std::endl;
+            return {};
+        }
+
+        if (tag->FindAttribute("G") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute G" << std::endl;
+            return {};
+        }
+
+        if (tag->FindAttribute("B") == nullptr) {
+            cerr << "Error: tag " << tag->Name() << " has no attribute B" << std::endl;
+            return {};
+        }
+
+        try {
+            x = CommonParser::ParseFloat(tag->Attribute("R"));
+            y = CommonParser::ParseFloat(tag->Attribute("G"));
+            z = CommonParser::ParseFloat(tag->Attribute("B"));
         }
         catch (domain_error &e) {
             cerr << "Error: " << e.what() << " is not a valid float" << std::endl;
@@ -94,22 +136,22 @@ namespace cg_engine {
         return {x, y, z};
     }
 
-    Transform* EngineParser::ParseTransform(tinyxml2::XMLElement *tag) {
-        if(tag) {
+    Transform *EngineParser::ParseTransform(tinyxml2::XMLElement *tag) {
+        if (tag) {
             string name = tag->Name();
 
-            if(name == "translate") {
+            if (name == "translate") {
                 return ParseTranslate(tag);
             }
 
-            if(name == "rotate") {
+            if (name == "rotate") {
                 return new Rotate(CommonParser::ParseFloat(tag->Attribute("angle")),
                                   CommonParser::ParseFloat(tag->Attribute("x")),
                                   CommonParser::ParseFloat(tag->Attribute("y")),
                                   CommonParser::ParseFloat(tag->Attribute("z")));
             }
 
-            if(name == "scale") {
+            if (name == "scale") {
                 return new Scale(CommonParser::ParseFloat(tag->Attribute("factor")));
             }
         }
@@ -117,12 +159,12 @@ namespace cg_engine {
     }
 
     Transform *EngineParser::ParseTranslate(tinyxml2::XMLElement *tag) {
-        if(tag->Attribute("time")) {
+        if (tag->Attribute("time")) {
             return ParseTranslateCurve(tag);
         }
         return new Translate(CommonParser::ParseFloat(tag->Attribute("x")),
-                                    CommonParser::ParseFloat(tag->Attribute("y")),
-                                    CommonParser::ParseFloat(tag->Attribute("z")));;
+                             CommonParser::ParseFloat(tag->Attribute("y")),
+                             CommonParser::ParseFloat(tag->Attribute("z")));;
     }
 
     Transform *EngineParser::ParseTranslateCurve(tinyxml2::XMLElement *tag) {
@@ -131,7 +173,8 @@ namespace cg_engine {
 
         auto *pTranslateCurve = new TranslateCurve(time, align);
 
-        for (tinyxml2::XMLElement *child = tag->FirstChildElement(); child != nullptr; child = child->NextSiblingElement()) {
+        for (tinyxml2::XMLElement *child = tag->FirstChildElement();
+             child != nullptr; child = child->NextSiblingElement()) {
             if (child->Name() == string("point")) {
                 pTranslateCurve->AddPoint(ParseVec3f(child));
             }
@@ -170,4 +213,55 @@ namespace cg_engine {
 
         return new Window(width, height);
     }
+
+    Light *EngineParser::ParseLights(tinyxml2::XMLElement *tag) {
+        if (tag->Attribute("type") == string("point")) {
+            return new PointLight(CommonParser::ParseFloat(tag->Attribute("posX")),
+                                  CommonParser::ParseFloat(tag->Attribute("posY")),
+                                  CommonParser::ParseFloat(tag->Attribute("posZ")));
+        }
+        if (tag->Attribute("type") == string("directional")) {
+            return new DirectionalLight(CommonParser::ParseFloat(tag->Attribute("dirX")),
+                                        CommonParser::ParseFloat(tag->Attribute("dirY")),
+                                        CommonParser::ParseFloat(tag->Attribute("dirZ")));
+        }
+        if (tag->Attribute("type") == string("spotlight")) {
+            return new SpotLight(CommonParser::ParseFloat(tag->Attribute("posX")),
+                                 CommonParser::ParseFloat(tag->Attribute("posY")),
+                                 CommonParser::ParseFloat(tag->Attribute("posZ")),
+                                 CommonParser::ParseFloat(tag->Attribute("dirX")),
+                                 CommonParser::ParseFloat(tag->Attribute("dirY")),
+                                 CommonParser::ParseFloat(tag->Attribute("dirZ")),
+                                 CommonParser::ParseFloat(tag->Attribute("cutoff")));
+        }
+        return nullptr;
+    }
+
+    Color* EngineParser::ParseColor(tinyxml2::XMLElement *color_tag) {
+        Color *color = new Color();
+
+        if (color_tag->FirstChildElement("diffuse")) {
+            color->SetDiffuse(ParseVec3fColor(color_tag->FirstChildElement("diffuse")));
+        }
+
+        if (color_tag->FirstChildElement("ambient")) {
+            color->SetAmbient(ParseVec3fColor(color_tag->FirstChildElement("ambient")));
+        }
+
+        if (color_tag->FirstChildElement("specular")) {
+            color->SetSpecular(ParseVec3fColor(color_tag->FirstChildElement("specular")));
+        }
+
+        if (color_tag->FirstChildElement("emissive")) {
+            color->SetEmission(ParseVec3fColor(color_tag->FirstChildElement("emissive")));
+        }
+
+        if (color_tag->FirstChildElement("shininess")) {
+            color->SetShininess(CommonParser::ParseFloat(color_tag->FirstChildElement("shininess")->Attribute("value")));
+        }
+
+        return color;
+    }
+
+
 } // cg_engine

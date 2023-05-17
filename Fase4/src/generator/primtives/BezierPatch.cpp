@@ -5,7 +5,7 @@
 #include <fstream>
 #include "primitives/BezierPatch.h"
 #include "Mat.h"
-#include "utils/DumpVertices.h"
+#include "utils/DumpModel.h"
 
 using std::ifstream;
 using std::cerr;
@@ -140,6 +140,9 @@ Vec3f BezierPatch::BezierPoint(uint32_t p, float u, float v) {
 
 void BezierPatch::Tessellate(const char *pathToFile) {
     vector<Vec3f> vertices;
+    vector<Vec3f> normals;
+    vector<Vec3f> textureCoordinates;
+
     uint32_t patchSize = mPatches.size();
 
     for (int p = 0; p < patchSize; ++p) {
@@ -155,12 +158,28 @@ void BezierPatch::Tessellate(const char *pathToFile) {
                 vertices.push_back(BezierPoint(p, u, (v + delta)));
                 vertices.push_back(BezierPoint(p, u, v));
 
+                textureCoordinates.emplace_back(u + delta, v + delta,0);
+                textureCoordinates.emplace_back(u, v + delta,0);
+                textureCoordinates.emplace_back(u, v,0);
+
                 vertices.push_back(BezierPoint(p, u, v));
                 vertices.push_back(BezierPoint(p, (u + delta), v));
                 vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
+
+                textureCoordinates.emplace_back(u, v,0);
+                textureCoordinates.emplace_back(u + delta, v,0);
+                textureCoordinates.emplace_back(u + delta, v + delta,0);
+
             }
         }
     }
 
-    DumpVertices(pathToFile, vertices.size(), vertices);
+    normals.reserve(vertices.size());
+    for (const auto &v: vertices) {
+        normals.push_back(Vec3f::Normalize(v));
+    }
+
+
+
+    DumpModel(pathToFile, vertices, normals, textureCoordinates);
 }

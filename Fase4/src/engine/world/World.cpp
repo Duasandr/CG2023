@@ -26,6 +26,16 @@ namespace cg_engine {
 
         res->mCamera = Camera::Create(world_tag->FirstChildElement("camera"));
 
+        XMLElement *lights_block = world_tag->FirstChildElement("lights");
+
+        if (lights_block) {
+
+            for (XMLElement *light_tag = lights_block->FirstChildElement("light");
+                 light_tag != nullptr; light_tag = light_tag->NextSiblingElement("light")) {
+                res->mLights.push_back(EngineParser::ParseLights(light_tag));
+            }
+        }
+
         return res;
     }
 
@@ -56,5 +66,18 @@ namespace cg_engine {
                 group->Draw();
             }
         }
+        for(auto light: mLights) {
+            if(light) {
+                light->TurnOn();
+            }
+        }
+    }
+
+    int World::GetLightsSize() const {
+        return mLights.size();
+    }
+
+    std::vector<Light*> *World::GetLights() {
+        return &mLights;
     }
 } // cg_engine

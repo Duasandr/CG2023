@@ -9,6 +9,8 @@
 #include "tinyxml2.h"
 #include "Transform.h"
 #include "Window.h"
+#include "world/lights/Light.h"
+#include "color/Color.h"
 
 namespace cg_engine {
 
@@ -23,6 +25,7 @@ namespace cg_engine {
          * @return Vec3f containing the values of the tag.
          */
         static cg_math::Vec3f ParseVec3f(tinyxml2::XMLElement *tag);
+        static cg_math::Vec3f ParseVec3fColor(tinyxml2::XMLElement *tag);
         /**
          * @brief Parses a XML tag into a Vec3f.
          * @details Parses a XML tag into a Vec3f. The tag must have the attributes fov, near and far.
@@ -37,8 +40,11 @@ namespace cg_engine {
         static Transform* ParseTransform(tinyxml2::XMLElement *tag);
         static Transform* ParseTranslate(tinyxml2::XMLElement *tag);
         static Transform* ParseTranslateCurve(tinyxml2::XMLElement *tag);
+        static Light* ParseLights(tinyxml2::XMLElement *tag);
+        static Color* ParseColor(tinyxml2::XMLElement *tag);
         static Transform* ParseRotate(tinyxml2::XMLElement *tag);
         static Transform* ParseScale(tinyxml2::XMLElement *tag);
+
     };
 
 } // cg_engine

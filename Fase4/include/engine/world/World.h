@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Group.h"
 #include "Window.h"
+#include "world/lights/Light.h"
 
 namespace cg_engine {
 
@@ -53,6 +54,9 @@ namespace cg_engine {
          * @return A reference to the camera
          */
         Camera &Camera();
+
+        int GetLightsSize() const;
+        std::vector<Light*>* GetLights();
     private:
         /**
          * @brief Default constructor
@@ -79,6 +83,7 @@ namespace cg_engine {
          * @details This vector contains all the groups that will be drawn by the world.
          */
         std::vector<cg_engine::Group*> mGroups;
+        std::vector<Light*> mLights;
     };
 
 } // cg_engine

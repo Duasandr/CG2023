@@ -36,7 +36,8 @@ file(GLOB_RECURSE GENERATOR_INCLUDE
         include/generator/*.h
         include/generator/primitives/*.h
         include/common/math/*.h
-        include/common/utils/*.h)
+        include/common/utils/*.h
+        )
 
 # Add executable targets
 add_executable(engine ${ENGINE_SOURCES} ${ENGINE_INCLUDE})
@@ -50,27 +51,35 @@ target_include_directories(engine PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/utils
         ${CMAKE_CURRENT_SOURCE_DIR}/include/common/math
         ${CMAKE_CURRENT_SOURCE_DIR}/include/common/utils
+        /opt/homebrew/Cellar/devil/1.8.0_6/include
         )
 
 target_include_directories(generator PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include/generator
         ${CMAKE_CURRENT_SOURCE_DIR}/include/common/math
         ${CMAKE_CURRENT_SOURCE_DIR}/include/common/utils
+        /opt/homebrew/Cellar/devil/1.8.0_6/include
         )
 
 
-# Find OpenGL package and add include directories and link directories to target
+find_package(DevIL REQUIRED)
 find_package(OpenGL REQUIRED)
-include_directories(${OpenGL_INCLUDE_DIRS})
-link_directories(${OpenGL_LIBRARY_DIRS})
+
+include_directories(${OpenGL_INCLUDE_DIRS} ${DevIL_INCLUDE_DIRS})
+link_directories(${OpenGL_LIBRARY_DIRS} ${DevIL_LIBRARY_DIRS})
 # Add definitions to target
-add_definitions(${OpenGL_DEFINITIONS})
+add_definitions(${OpenGL_DEFINITIONS} ${DevIL_DEFINITIONS})
 
 # Check if OpenGL is found
 if (NOT OPENGL_FOUND)
     # If not found, print error message
     message(ERROR " OPENGL not found!")
 endif (NOT OPENGL_FOUND)
+
+if (NOT DEVIL_FOUND)
+    # If not found, print error message
+    message(ERROR " DEVIL not found!")
+endif (NOT DEVIL_FOUND)
 
 # If we are on Windows
 if (WIN32)
@@ -96,17 +105,26 @@ if (WIN32)
 
 else (WIN32) #Linux and Mac
 
-    # Set C++ flags to ignore deprecated warnings
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} Wno-deprecated")
+    set( CMAKE_CXX_FLAGS† "${CMAKE_CXX_FLAGS} Wno-deprecated")
     find_package(GLUT REQUIRED)
     include_directories(${GLUT_INCLUDE_DIR})
     link_directories(${GLUT_LIBRARY_DIRS})
     add_definitions(${GLUT_DEFINITIONS})
 
-    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
-    if (NOT GLUT_FOUND)
+    if (NOT APPLE)
+        find_package(GLEW REQUIRED)
+        include_directories(${GLEW_INCLUDE_DIRS})
+        link_libraries(${GLEW_LIBRARIES})
+    endif(NOT APPLE)
+
+    find_package(DevIL REQUIRED)
+    link_libraries(${IL_LIBRARIES} )
+    include_directories(${IL_INCLUDE_DIR})
+
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ${IL_LIBRARIES})
+    if(NOT GLUT_FOUND)
         message(ERROR ": GLUT not found!")
-    endif (NOT GLUT_FOUND)
+    endif(NOT GLUT_FOUND)
 
 endif (WIN32)
 

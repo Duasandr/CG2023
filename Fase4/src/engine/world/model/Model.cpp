@@ -2,11 +2,15 @@
 // Created by Sandro Duarte on 10/03/2023.
 //
 #ifdef __APPLE__
+
 #include <glut.h>
+
 #else
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
+
+#include <IL/il.h>
 #include <iostream>
 #include "world/model/Model.h"
 
@@ -16,14 +20,32 @@ namespace cg_engine {
     using std::cerr;
     using std::endl;
 
+    Model::Model(const char *pathToFile) {
+        setArrays(pathToFile);
+    }
+
     /**
      * Constructs a Model object from a .3d file.
      * @param pathToFile
      * @throws std::exception when file not found
     */
-    Model::Model(const char *pathToFile) {
-        mVertexArray.SetVertices(pathToFile);
-        mVertexArray.CopyData(mVertexBuffer);
+    Model::Model(const char *pathToFile, const char *texturePath) {
+        setArrays(pathToFile);
+        mTextureId = LoadTexture(texturePath);
+    }
+
+    Model *Model::Create(const char *path) {
+        Model *res;
+
+        try {
+            res = new Model(path);
+        }
+        catch (exception &e) {
+            cerr << "File not found: " << path << endl;
+            delete res;
+            return nullptr;
+        }
+        return res;
     }
 
     /**
@@ -31,13 +53,13 @@ namespace cg_engine {
      * @param path
      * @return Model object or nullptr when fail
     */
-    Model *Model::Create(const char *pathToFile) {
+    Model *Model::Create(const char *pathToFile, const char *texturePath) {
         Model *res = nullptr;
 
         try {
-            res = new Model(pathToFile);
+            res = new Model(pathToFile, texturePath);
         }
-        catch(exception &e) {
+        catch (exception &e) {
             cerr << "File not found: " << pathToFile << endl;
 
             delete res;
@@ -53,9 +75,104 @@ namespace cg_engine {
      * @details Draws the model using the vertex buffer
      */
     void Model::Draw() const {
-        glColor3f(1.0f, 1.0f, 1.0f);
+        mColor->Paint();
+
+        glEnableClientState(GL_VERTEX_ARRAY);
+
+        glEnableClientState(GL_NORMAL_ARRAY);
+
         mVertexBuffer.Bind();
         glVertexPointer(3, GL_FLOAT, 0, 0);
-        glDrawArrays(GL_TRIANGLES, 0, mVertexArray.GetVertexCount());
+
+        mNormalBuffer.Bind();
+        glNormalPointer(GL_FLOAT, 0, 0);
+
+        if (mTextureId > 0) {
+
+            glEnable(GL_TEXTURE_2D);
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+            // bind the texture
+            glBindTexture(GL_TEXTURE_2D, mTextureId);
+
+            mTextureBuffer.Bind();
+            glTexCoordPointer(2, GL_FLOAT, 0, 0);
+
+            glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
+
+            glBindTexture(GL_TEXTURE_2D, 0);
+            glDisable(GL_TEXTURE_2D);
+
+        } else {
+            glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
+        }
+
     }
+
+    void Model::setArrays(const char *pathToFile) {
+        ifstream ifs;
+        ifs.open(pathToFile, ifstream::in);
+
+        if (!ifs.is_open()) {
+            throw exception();
+        }
+
+        mPositionArray.SetVertices(ifs);
+        mPositionArray.CopyData(mVertexBuffer);
+
+        mNormalArray.SetVertices(ifs);
+        mNormalArray.CopyData(mNormalBuffer);
+
+        mTextureArray.SetVertices(ifs);
+        mTextureArray.CopyData(mTextureBuffer);
+
+        ifs.close();
+    }
+
+    unsigned int Model::LoadTexture(const char *path) {
+
+        unsigned int t, tw, th;
+        unsigned char *texData;
+        unsigned int texID;
+// Iniciar o DevIL
+        ilInit();
+// Colocar a origem da textura no canto inferior esquerdo
+        ilEnable(IL_ORIGIN_SET);
+        ilOriginFunc(IL_ORIGIN_LOWER_LEFT);
+// Carregar a textura para memória
+        ilGenImages(1, &t);
+        ilBindImage(t);
+        ilLoadImage((ILstring) path);
+        tw = ilGetInteger(IL_IMAGE_WIDTH);
+        th = ilGetInteger(IL_IMAGE_HEIGHT);
+// Assegurar que a textura se encontra em RGBA (Red, Green, Blue, Alpha)
+        ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+        texData = ilGetData();
+// Gerar a textura para a placa gráfica
+        glGenTextures(1, &texID);
+        glBindTexture(GL_TEXTURE_2D, texID);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+// Upload dos dados de imagem
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tw, th, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        return texID;
+    }
+
+    Model::Model() {
+        mTextureId = -1;
+    }
+
+    void Model::SetColor(Color *color) {
+        delete mColor;
+        mColor = color;
+    }
+
 } // cg_engine

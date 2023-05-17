@@ -7,7 +7,7 @@
 
 #include "primitives/Plane.h"
 #include "Vec3f.h"
-#include "utils/DumpVertices.h"
+#include "utils/DumpModel.h"
 
 
 
@@ -17,6 +17,7 @@ using cg_math::Vec3f;
 
 void Plane(int length, int divisions, const char *filePath) {
     vector<Vec3f> vertices;
+    vector<Vec3f> textureCoordinates;
 
 
     // calculates the size of each square of the plane
@@ -45,6 +46,7 @@ void Plane(int length, int divisions, const char *filePath) {
             vertices.emplace_back(x + squareSize, y, z + squareSize);
             vertices.emplace_back(x  + squareSize, y, z);
 
+
             // Moves to next upper left x coordinate of the square (next column)
             x += squareSize;
         }
@@ -54,5 +56,28 @@ void Plane(int length, int divisions, const char *filePath) {
         z += squareSize;
     }
 
-    DumpVertices(filePath, vertices.size(), vertices);
+    float xTexture = 0.0f;
+    float yTexture = 1.0f;
+
+    float delta = 1.0f / static_cast<float>(divisions);
+
+    for (int i = 0; i < divisions; ++i) {
+        for(int j = 0; j < divisions; ++j) {
+           textureCoordinates.emplace_back(xTexture, yTexture,0);
+           textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
+           textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+
+           textureCoordinates.emplace_back(xTexture, yTexture,0);
+           textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+           textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
+
+           xTexture += delta;
+        }
+        xTexture = 0.0f;
+        yTexture -= delta;
+    }
+
+    vector<Vec3f> normals(vertices.size(), Vec3f(0.0f, 1.0f, 0.0f));
+
+    DumpModel(filePath, vertices, normals, textureCoordinates);
 }

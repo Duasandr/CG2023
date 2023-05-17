@@ -16,13 +16,14 @@ namespace cg_engine {
     class VertexArray {
     public:
         VertexArray() = default;
+        explicit VertexArray(int sizeOfElements);
 
         /**
          * Sets the vertices. Reads values from a .3d file.
          * @param pathToFile
          * @throws std::exception when file not found
         */
-        void SetVertices(const char* pathToFile);
+        void SetVertices(std::ifstream &ifs);
 
         /**
          * Copies data to a VertexBuffer.
@@ -39,6 +40,7 @@ namespace cg_engine {
     private:
 
         int mVertexCount;
+        int mSizeOfElements;
         float *mVertices;
     };
 
