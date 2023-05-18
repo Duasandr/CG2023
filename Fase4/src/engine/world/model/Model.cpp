@@ -75,12 +75,6 @@ namespace cg_engine {
      * @details Draws the model using the vertex buffer
      */
     void Model::Draw() const {
-        mColor->Paint();
-
-        glEnableClientState(GL_VERTEX_ARRAY);
-
-        glEnableClientState(GL_NORMAL_ARRAY);
-
         mVertexBuffer.Bind();
         glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -88,23 +82,22 @@ namespace cg_engine {
         glNormalPointer(GL_FLOAT, 0, 0);
 
         if (mTextureId > 0) {
-
             glEnable(GL_TEXTURE_2D);
-            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
             // bind the texture
             glBindTexture(GL_TEXTURE_2D, mTextureId);
 
             mTextureBuffer.Bind();
             glTexCoordPointer(2, GL_FLOAT, 0, 0);
+        }
 
-            glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
+        mColor->Paint();
 
+        glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
+
+        if (mTextureId > 0) {
             glBindTexture(GL_TEXTURE_2D, 0);
             glDisable(GL_TEXTURE_2D);
-
-        } else {
-            glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
         }
 
     }

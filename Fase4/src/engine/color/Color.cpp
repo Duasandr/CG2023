@@ -12,11 +12,11 @@
 #include "world/color/Color.h"
 
 void Color::Paint() const {
-    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT,mAmbient);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mSpecular);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mDiffuse);
-    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, mEmission);
-    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, mShininess);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mAmbient);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, mSpecular);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mDiffuse);
+    glMaterialfv(GL_FRONT, GL_EMISSION, mEmission);
+    glMaterialf(GL_FRONT, GL_SHININESS, mShininess);
 }
 
 void Color::SetDiffuse(const cg_math::Vec3f& diffuse) {

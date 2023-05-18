@@ -61,14 +61,14 @@ namespace cg_engine {
     }
 
     void World::Draw() {
-        for (auto &group: mGroups) {
-            if (group) {
-                group->Draw();
-            }
-        }
         for(auto light: mLights) {
             if(light) {
                 light->TurnOn();
+            }
+        }
+        for (auto &group: mGroups) {
+            if (group) {
+                group->Draw();
             }
         }
     }

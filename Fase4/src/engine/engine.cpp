@@ -14,22 +14,36 @@ int tracking = 0;
 GLint gMode = GL_FILL;
 
 void DrawAxis() {
+
+    if (!gWorld->GetLights()->empty()) {
+        glDisable(GL_LIGHTING); // Disable lighting
+    }
+
+    glPushMatrix(); // Save the current transformation matrix
+
     glBegin(GL_LINES);
 
-    glColor3f(1.0f, 0.0f, 0.0f);
+    glColor3f(1.0f, 0.0f, 0.0f); // Red X-axis
     glVertex3f(-100.0f, 0.0f, 0.0f);
     glVertex3f(100.0f, 0.0f, 0.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f);
+    glColor3f(0.0f, 1.0f, 0.0f); // Green Y-axis
     glVertex3f(0.0f, -100.0f, 0.0f);
     glVertex3f(0.0f, 100.0f, 0.0f);
 
-    glColor3f(0.0f, 0.0f, 1.0f);
+    glColor3f(0.0f, 0.0f, 1.0f); // Blue Z-axis
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
 
     glEnd();
+
+    glPopMatrix(); // Restore the previous transformation matrix
+
+    if (!gWorld->GetLights()->empty()) {
+        glEnable(GL_LIGHTING); // Re-enable lighting if needed
+    }
 }
+
 
 /**
  * Changes the window size. Called every time a window is altered.
@@ -243,6 +257,10 @@ int main(int argc, char **argv) {
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 // enter GLUT's main cycle
     glutMainLoop();
