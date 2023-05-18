@@ -10,7 +10,7 @@
 #include "Transform.h"
 #include "Window.h"
 #include "world/lights/Light.h"
-#include "color/Color.h"
+#include "material/Material.h"
 
 namespace cg_engine {
 
@@ -41,7 +41,7 @@ namespace cg_engine {
         static Transform* ParseTranslate(tinyxml2::XMLElement *tag);
         static Transform* ParseTranslateCurve(tinyxml2::XMLElement *tag);
         static Light* ParseLights(tinyxml2::XMLElement *tag);
-        static Color* ParseColor(tinyxml2::XMLElement *tag);
+        static Material* ParseColor(tinyxml2::XMLElement *tag);
         static Transform* ParseRotate(tinyxml2::XMLElement *tag);
         static Transform* ParseScale(tinyxml2::XMLElement *tag);
 

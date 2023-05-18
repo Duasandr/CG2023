@@ -91,7 +91,7 @@ namespace cg_engine {
             glTexCoordPointer(2, GL_FLOAT, 0, 0);
         }
 
-        mColor->Paint();
+        mMaterial->SetProperties();
 
         glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
 
@@ -163,9 +163,9 @@ namespace cg_engine {
         mTextureId = -1;
     }
 
-    void Model::SetColor(Color *color) {
-        delete mColor;
-        mColor = color;
+    void Model::SetColor(Material *color) {
+        delete mMaterial;
+        mMaterial = color;
     }
 
 } // cg_engine

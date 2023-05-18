@@ -8,7 +8,7 @@
 #include <cstdint>
 #include "VertexBuffer.h"
 #include "VertexArray.h"
-#include "color/Color.h"
+#include "material/Material.h"
 #include <array>
 
 namespace cg_engine {
@@ -36,7 +36,7 @@ namespace cg_engine {
          * Renders the vertex array.
         */
         void Draw() const;
-        void SetColor(Color *color);
+        void SetColor(Material *color);
 
     private:
         Model();
@@ -58,7 +58,7 @@ namespace cg_engine {
         VertexBuffer mNormalBuffer;
         VertexBuffer mTextureBuffer;
 
-        Color *mColor = new Color();
+        Material *mMaterial = new Material();
 
         void setArrays(const char *pathToFile);
     };

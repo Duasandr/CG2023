@@ -2,14 +2,14 @@
 // Created by Sandro Duarte on 17/05/2023.
 //
 
-#ifndef ENGINE_COLOR_H
-#define ENGINE_COLOR_H
+#ifndef ENGINE_MATERIAL_H
+#define ENGINE_MATERIAL_H
 #include "Vec3f.h"
 
-class Color {
+class Material {
 public:
 
-    void Paint() const;
+    void SetProperties() const;
 
     void SetDiffuse(const cg_math::Vec3f& diffuse);
     void SetAmbient(const cg_math::Vec3f& ambient);
@@ -25,4 +25,4 @@ private:
 };
 
 
-#endif //ENGINE_COLOR_H
+#endif //ENGINE_MATERIAL_H

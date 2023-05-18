@@ -220,11 +220,10 @@ int main(int argc, char **argv) {
 
         glEnable(GL_LIGHTING);
 
-        GLfloat dark[4] = {0.2, 0.2, 0.2, 1.0};
-        GLfloat white[4] = {1.0, 1.0, 1.0, 1.0};
+        float dark[4] = {0.2, 0.2, 0.2, 1.0};
+        float white[4] = {1.0, 1.0, 1.0, 1.0};
 
-        float amb[4] = {1.0f, 1.0f, 1.0f, 1.0f};
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, dark);
 
 
         for (auto const light: *gWorld->GetLights()) {
@@ -236,8 +235,6 @@ int main(int argc, char **argv) {
             glLightfv(lightId, GL_DIFFUSE, white);
             glLightfv(lightId, GL_SPECULAR, white);
         }
-
-
     }
 
 

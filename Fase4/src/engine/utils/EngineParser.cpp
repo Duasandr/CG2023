@@ -13,7 +13,7 @@
 #include "world/lights/DirectionalLight.h"
 #include "world/lights/PointLight.h"
 #include "world/lights/SpotLight.h"
-#include "color/Color.h"
+#include "material/Material.h"
 
 namespace cg_engine {
     using cg_utils::CommonParser;
@@ -237,8 +237,8 @@ namespace cg_engine {
         return nullptr;
     }
 
-    Color* EngineParser::ParseColor(tinyxml2::XMLElement *color_tag) {
-        Color *color = new Color();
+    Material* EngineParser::ParseColor(tinyxml2::XMLElement *color_tag) {
+        Material *color = new Material();
 
         if (color_tag->FirstChildElement("diffuse")) {
             color->SetDiffuse(ParseVec3fColor(color_tag->FirstChildElement("diffuse")));

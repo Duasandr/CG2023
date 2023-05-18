@@ -8,18 +8,12 @@
     </camera>
     <lights>
         <light type="directional" dirX="1" dirY="1" dirZ="1"/>
-        <light type="point" posX="100" posY="0" posZ="0"/>
-        <light type="point" posX="-10" posY="0" posZ="0"/>
-        <light type="point" posX="0" posY="10" posZ="0"/>
-        <light type="point" posX="0" posY="-10" posZ="0"/>
-        <light type="point" posX="0" posY="0" posZ="10"/>
-        <light type="point" posX="0" posY="0" posZ="-10"/>
     </lights>
     <group>
         <group>
             <!-- Sun -->
             <transform>
-                <!-- Sun is 50 times bigger than earth -->
+                <!-- Sun is 10 times bigger than earth -->
                 <scale factor="10"/>
             </transform>
             <models>

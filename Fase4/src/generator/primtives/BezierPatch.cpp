@@ -158,8 +158,8 @@ void BezierPatch::Tessellate(const char *pathToFile) {
                 vertices.push_back(BezierPoint(p, u, (v + delta)));
                 vertices.push_back(BezierPoint(p, u, v));
 
-                textureCoordinates.emplace_back(u + delta, v + delta,0);
-                textureCoordinates.emplace_back(u, v + delta,0);
+                textureCoordinates.emplace_back(u + delta, v - delta,0);
+                textureCoordinates.emplace_back(u, v - delta,0);
                 textureCoordinates.emplace_back(u, v,0);
 
                 vertices.push_back(BezierPoint(p, u, v));
@@ -168,7 +168,7 @@ void BezierPatch::Tessellate(const char *pathToFile) {
 
                 textureCoordinates.emplace_back(u, v,0);
                 textureCoordinates.emplace_back(u + delta, v,0);
-                textureCoordinates.emplace_back(u + delta, v + delta,0);
+                textureCoordinates.emplace_back(u + delta, v - delta,0);
 
             }
         }
@@ -178,8 +178,6 @@ void BezierPatch::Tessellate(const char *pathToFile) {
     for (const auto &v: vertices) {
         normals.push_back(Vec3f::Normalize(v));
     }
-
-
 
     DumpModel(pathToFile, vertices, normals, textureCoordinates);
 }
