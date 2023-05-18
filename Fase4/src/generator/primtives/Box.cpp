@@ -112,9 +112,9 @@ void LowerFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f
             textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
 
-            textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
-            textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
+            textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+            textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
 
             xTexture += delta;
         }
@@ -165,10 +165,10 @@ void LeftFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f>
     for (int i = 0; i < divisions; ++i) {
         for(int j = 0; j < divisions; ++j) {
             textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
-            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
+            textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
 
-            textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
+            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
 
@@ -220,13 +220,13 @@ void RightFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f
 
     for (int i = 0; i < divisions; ++i) {
         for(int j = 0; j < divisions; ++j) {
-            textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
-            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
-
             textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
             textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+
             textureCoordinates.emplace_back(xTexture, yTexture,0);
+            textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
 
             xTexture += delta;
         }
@@ -276,13 +276,13 @@ void BackFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f>
 
     for (int i = 0; i < divisions; ++i) {
         for(int j = 0; j < divisions; ++j) {
-            textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
-            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
-
             textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
             textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+
             textureCoordinates.emplace_back(xTexture, yTexture,0);
+            textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
+            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
 
             xTexture += delta;
         }
@@ -333,10 +333,10 @@ void FrontFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f
     for (int i = 0; i < divisions; ++i) {
         for(int j = 0; j < divisions; ++j) {
             textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
-            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
+            textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
 
-            textureCoordinates.emplace_back(xTexture + delta, yTexture,0);
+            textureCoordinates.emplace_back(xTexture, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture + delta, yTexture - delta,0);
             textureCoordinates.emplace_back(xTexture, yTexture,0);
 
