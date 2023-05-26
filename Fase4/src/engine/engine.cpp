@@ -11,37 +11,54 @@ using cg_engine::World;
 World *gWorld;
 int tracking = 0;
 
+#ifndef _NDEBUG
+GLint gMode = GL_LINE;
+#elif
 GLint gMode = GL_FILL;
-
+#endif
 void DrawAxis() {
+    bool lightsOn = gWorld->GetLightsSize();
+    float red[] = {1.0f, 0.0f, 0.0f, 1.0f};
+    float green[] = {0.0f, 1.0f, 0.0f, 1.0f};
+    float blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
 
-    if (!gWorld->GetLights()->empty()) {
-        glDisable(GL_LIGHTING); // Disable lighting
-    }
 
     glPushMatrix(); // Save the current transformation matrix
 
     glBegin(GL_LINES);
 
-    glColor3f(1.0f, 0.0f, 0.0f); // Red X-axis
+    // X-axis in red
+    if(lightsOn){
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
+    } else{
+        glColor3f(red[0], red[1], red[2]);
+    }
     glVertex3f(-100.0f, 0.0f, 0.0f);
     glVertex3f(100.0f, 0.0f, 0.0f);
 
-    glColor3f(0.0f, 1.0f, 0.0f); // Green Y-axis
+    // Y-axis in green
+    if(lightsOn){
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, green);
+    } else{
+        glColor3f(green[0], green[1], green[2]);
+    }
     glVertex3f(0.0f, -100.0f, 0.0f);
     glVertex3f(0.0f, 100.0f, 0.0f);
 
-    glColor3f(0.0f, 0.0f, 1.0f); // Blue Z-axis
+    // Z-axis in blue
+    if(lightsOn){
+        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
+    } else{
+        glColor3f(blue[0], blue[1], blue[2]);
+    }
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
+
+    glColor3f(1,1,1);
 
     glEnd();
 
     glPopMatrix(); // Restore the previous transformation matrix
-
-    if (!gWorld->GetLights()->empty()) {
-        glEnable(GL_LIGHTING); // Re-enable lighting if needed
-    }
 }
 
 
