@@ -11,11 +11,12 @@ using cg_engine::World;
 World *gWorld;
 int tracking = 0;
 
-#ifndef _NDEBUG
+#ifndef NDEBUG
 GLint gMode = GL_LINE;
-#elif
+#else
 GLint gMode = GL_FILL;
 #endif
+
 void DrawAxis() {
     bool lightsOn = gWorld->GetLightsSize();
     float red[] = {1.0f, 0.0f, 0.0f, 1.0f};
