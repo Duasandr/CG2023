@@ -5,6 +5,7 @@
 #ifndef ENGINE_WINDOW_H
 #define ENGINE_WINDOW_H
 #include "utils/tinyxml2.h"
+#include <string>
 
 namespace cg_engine {
     /**
@@ -47,6 +48,16 @@ namespace cg_engine {
          * @return The height of the window
          */
         int getHeight() const;
+        /**
+         * @brief Get the title of the window
+         * @return The title of the window
+         */
+        std::string getTitle() const;
+        /**
+         * @brief Set the title of the window
+         * @param title The title of the window
+         */
+        void setTitle(const std::string &title);
 
     private:
         /**
@@ -57,6 +68,11 @@ namespace cg_engine {
          * @brief Height of the window
         */
         int mHeight;
+
+        /**
+         * @brief Title of the window
+        */
+        std::string mTitle;
 
     };
 
