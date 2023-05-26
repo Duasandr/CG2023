@@ -23,6 +23,7 @@ namespace cg_engine {
          * @details It sets the factor to 1.0f.
          */
         Scale();
+        Scale(float x, float y, float z);
         /**
          * @brief Constructor that takes the factor of scaling.
          * @details It sets the factor to the given value. It is used to scale the object uniformly.
@@ -41,6 +42,7 @@ namespace cg_engine {
          * @brief Factor of scaling.
          */
         float mFactor;
+        cg_math::Vec3f *mScaleVec;
     };
 
 } // cg_engine
