@@ -210,7 +210,7 @@ int main(int argc, char **argv) {
     glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
     glutInitWindowSize(gWorld->Window().getWidth(), gWorld->Window().getHeight());
-    glutCreateWindow("CG@DI-UM");
+    glutCreateWindow(gWorld->Window().getTitle().c_str());
 
 
 #ifndef __APPLE__
