@@ -46,3 +46,23 @@ void Material::SetEmission(const cg_math::Vec3f& emission) {
 void Material::SetShininess(float shininess) {
     mShininess = shininess;
 }
+
+const float *Material::GetDiffuse() const {
+    return mDiffuse;
+}
+
+const float *Material::GetAmbient() const {
+    return mAmbient;
+}
+
+const float *Material::GetSpecular() const {
+    return mSpecular;
+}
+
+const float *Material::GetEmission() const {
+    return mEmission;
+}
+
+float Material::GetShininess() const {
+    return mShininess;
+}
