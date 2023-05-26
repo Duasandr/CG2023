@@ -152,7 +152,12 @@ namespace cg_engine {
             }
 
             if (name == "scale") {
-                return new Scale(CommonParser::ParseFloat(tag->Attribute("factor")));
+                if(tag->Attribute("factor")) {
+                    return new Scale(CommonParser::ParseFloat(tag->Attribute("factor")));
+                }
+                return new Scale(CommonParser::ParseFloat(tag->Attribute("x")),
+                                 CommonParser::ParseFloat(tag->Attribute("y")),
+                                 CommonParser::ParseFloat(tag->Attribute("z")));
             }
         }
         return nullptr;
