@@ -16,6 +16,12 @@ public:
     void SetSpecular(const cg_math::Vec3f& specular);
     void SetEmission(const cg_math::Vec3f& emission);
     void SetShininess(float shininess);
+
+    const float* GetDiffuse() const;
+    const float* GetAmbient() const;
+    const float* GetSpecular() const;
+    const float* GetEmission() const;
+    float GetShininess() const ;
 private:
     float mDiffuse[3]{200,200,200};
     float mAmbient[3]{50,50,50};
