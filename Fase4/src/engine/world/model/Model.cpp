@@ -75,6 +75,9 @@ namespace cg_engine {
      * @details Draws the model using the vertex buffer
      */
     void Model::Draw() const {
+
+        mMaterial->SetProperties();
+
         mVertexBuffer.Bind();
         glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -91,7 +94,6 @@ namespace cg_engine {
             glTexCoordPointer(2, GL_FLOAT, 0, 0);
         }
 
-        mMaterial->SetProperties();
 
         glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
 
@@ -99,7 +101,6 @@ namespace cg_engine {
             glBindTexture(GL_TEXTURE_2D, 0);
             glDisable(GL_TEXTURE_2D);
         }
-
     }
 
     void Model::setArrays(const char *pathToFile) {

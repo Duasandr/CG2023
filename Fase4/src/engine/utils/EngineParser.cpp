@@ -7,13 +7,14 @@
 #include "CommonParser.h"
 #include "utils/EngineParser.h"
 #include "transform/translate/Translate.h"
-#include "Rotate.h"
+#include "transform/rotate/Rotate.h"
 #include "Scale.h"
 #include "translate/TranslateCurve.h"
 #include "world/lights/DirectionalLight.h"
 #include "world/lights/PointLight.h"
 #include "world/lights/SpotLight.h"
 #include "material/Material.h"
+#include "rotate/RotateTime.h"
 
 namespace cg_engine {
     using cg_utils::CommonParser;
@@ -145,6 +146,12 @@ namespace cg_engine {
             }
 
             if (name == "rotate") {
+                if(tag->Attribute("time")) {
+                    return new RotateTime(CommonParser::ParseFloat(tag->Attribute("time")),
+                                      CommonParser::ParseFloat(tag->Attribute("x")),
+                                      CommonParser::ParseFloat(tag->Attribute("y")),
+                                      CommonParser::ParseFloat(tag->Attribute("z")));
+                }
                 return new Rotate(CommonParser::ParseFloat(tag->Attribute("angle")),
                                   CommonParser::ParseFloat(tag->Attribute("x")),
                                   CommonParser::ParseFloat(tag->Attribute("y")),

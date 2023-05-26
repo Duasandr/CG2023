@@ -235,13 +235,14 @@ int main(int argc, char **argv) {
     glewInit();
 #endif
     if (gWorld->GetLightsSize() != 0) {
-
+        glEnable(GL_RESCALE_NORMAL);
         glEnable(GL_LIGHTING);
 
         float dark[4] = {0.2, 0.2, 0.2, 1.0};
         float white[4] = {1.0, 1.0, 1.0, 1.0};
 
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, dark);
+        float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);
 
 
         for (auto const light: *gWorld->GetLights()) {
@@ -254,8 +255,7 @@ int main(int argc, char **argv) {
             glLightfv(lightId, GL_SPECULAR, white);
         }
     }
-
-
+    
     gWorld->LoadGroups();
 
 // Required callback registry
@@ -272,10 +272,10 @@ int main(int argc, char **argv) {
 //  OpenGL settings
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 
 // enter GLUT's main cycle
     glutMainLoop();

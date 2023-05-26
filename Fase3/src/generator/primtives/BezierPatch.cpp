@@ -86,7 +86,7 @@ BezierPatch *BezierPatch::Create(const char *pathToFile, uint32_t tesselation) {
         vector<float> zValues;
 
         for (int j = 0; j < PATCH_SIZE; ++j) {
-            Vec3f point = controlPoints[indices[i*PATCH_SIZE + j]];
+            Vec3f point = controlPoints[indices[i * PATCH_SIZE + j]];
             xValues.push_back(point.GetX());
             yValues.push_back(point.GetY());
             zValues.push_back(point.GetZ());
@@ -113,11 +113,12 @@ BezierPatch *BezierPatch::Create(const char *pathToFile, uint32_t tesselation) {
     cout << "Total control points: " << totalControlPoints << endl;
     cout << "Tesselation: " << res->mTesselation << endl;
     for (int i = 0; i < totalIndices; ++i) {
-        cout << "Patch " << i << ": " << indices[i] << endl;
+            cout << " " << indices[i] << ' ';
+            cout << endl;
     }
     cout << "Control points: " << endl;
     for (int i = 0; i < totalControlPoints; ++i) {
-        cout << controlPoints[i] << endl;
+        cout << controlPoints[i] << ' ';
     }
 #endif
 
@@ -151,13 +152,14 @@ void BezierPatch::Tessellate(const char *pathToFile) {
 
                 float delta = 1.0f/static_cast<float>(mTesselation);
 
-                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
-                vertices.push_back(BezierPoint(p, u, (v + delta)));
-                vertices.push_back(BezierPoint(p, u, v));
 
-                vertices.push_back(BezierPoint(p, u, v));
-                vertices.push_back(BezierPoint(p, (u + delta), v));
-                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
+                vertices.push_back(BezierPoint(p,u + delta,v + delta));
+                vertices.push_back(BezierPoint(p,u,v + delta));
+                vertices.push_back(BezierPoint(p,u,v));
+
+                vertices.push_back(BezierPoint(p,u,v));
+                vertices.push_back(BezierPoint(p,u + delta,v));
+                vertices.push_back(BezierPoint(p,u + delta,v + delta));
             }
         }
     }

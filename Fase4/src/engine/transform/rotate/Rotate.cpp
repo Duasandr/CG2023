@@ -7,7 +7,7 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #endif
-#include "transform/Rotate.h"
+#include "transform/rotate/Rotate.h"
 
 namespace cg_engine {
     using cg_math::Vec3f;

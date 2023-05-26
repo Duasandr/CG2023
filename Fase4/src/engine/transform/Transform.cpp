@@ -4,7 +4,7 @@
 
 #include "transform/Transform.h"
 #include "transform/translate/Translate.h"
-#include "transform/Rotate.h"
+#include "transform/rotate/Rotate.h"
 #include "transform/Scale.h"
 #include "utils/EngineParser.h"
 #include <string>

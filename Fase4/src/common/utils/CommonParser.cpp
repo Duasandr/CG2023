@@ -36,10 +36,10 @@ namespace cg_utils {
     }
 
     bool CommonParser::ParseBool(const char *str) {
-        if(strcmp(str, "True") == 0) {
+        if(strcmp(str, "True") == 0 || strcmp(str, "true") == 0) {
             return true;
         }
-        else if(strcmp(str, "False") == 0) {
+        else if(strcmp(str, "False") == 0 || strcmp(str, "false") == 0) {
             return false;
         }
         else {
