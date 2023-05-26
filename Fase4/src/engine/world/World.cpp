@@ -23,6 +23,7 @@ namespace cg_engine {
         XMLElement *world_tag = res->mConfigFile.FirstChildElement("world");
 
         res->mWindow = EngineParser::ParseWindow(world_tag->FirstChildElement("window"));
+        res->mWindow->setTitle(pathToFile);
 
         res->mCamera = Camera::Create(world_tag->FirstChildElement("camera"));
 
