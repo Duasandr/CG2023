@@ -2,6 +2,8 @@
 // Created by Sandro Duarte on 19/03/2023.
 //
 #include "world/Window.h"
+
+#include <utility>
 #include "utils/EngineParser.h"
 
 /**
@@ -15,5 +17,13 @@ namespace cg_engine {
 
     int Window::getWidth() const { return mWidth; }
     int Window::getHeight() const { return mHeight; }
+
+    std::string Window::getTitle() const {
+        return {mTitle};
+    }
+
+    void Window::setTitle(const std::string &title) {
+        mTitle = title;
+    }
 
 } // cg_engine
