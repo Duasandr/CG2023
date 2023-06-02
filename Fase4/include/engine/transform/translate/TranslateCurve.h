@@ -49,7 +49,6 @@ namespace cg_engine {
         float mTime;
         bool mAlign;
         int mCurrentIndices[4];
-        cg_math::Vec3f mPrevY;
         std::vector<cg_math::Vec3f> mPoints;
 
     };

@@ -21,20 +21,13 @@ namespace cg_engine {
                                       -0.5f, 0.0f, 0.5f, 0.0f,
                                       0.0f, 1.0f, 0.0f, 0.0f});
 
-    const Mat DERIVATIVE_MAT(4, 4, {-0.5f, 1.5f, -1.5f, 0.5f,
-                                    1.0f, -2.5f, 2.0f, -0.5f,
-                                    -0.5f, 0.0f, 0.5f, 0.0f,
-                                    0.0f, 1.0f, 0.0f, 0.0f});
-
-
-    const Mat C_MAT(4, 4, {1, 1, -1, 1,
-                           0, 0, 0, 1,
-                           1, 1, 1, 1,
-                           6, 4, 2, 1});
+    const Mat C_MAT(4, 4, {1.0f, 1.0f, -1.0f, 1.0f,
+                                    0.0f, 0.0f, 0.0f, 1.0f,
+                                    1.0f, 1.0f, 1.0f, 1.0f,
+                                    6.0f, 4.0f, 2.0f, 1.0f});
 
     TranslateCurve::TranslateCurve(float time, bool align) : mTime(time) , mAlign(align) {
-        mPrevY = Vec3f(0,-1,0);
-    }
+     }
 
 
     void TranslateCurve::AddPoint(const cg_math::Vec3f &point) { mPoints.push_back(point); }
@@ -75,16 +68,24 @@ namespace cg_engine {
     cg_math::Vec3f TranslateCurve::GetCatmullRomPoint(float gt) {
         float t = ComputeIndices(gt);
 
-        Mat mt(1,4, {t*t*t, t*t, t, 1});
+        Vec3f p0 = mPoints[mCurrentIndices[0]];
+        Vec3f p1 = mPoints[mCurrentIndices[1]];
+        Vec3f p2 = mPoints[mCurrentIndices[2]];
+        Vec3f p3 = mPoints[mCurrentIndices[3]];
 
-        Mat mp(4,4,{mPoints[mCurrentIndices[0]].GetX(), mPoints[mCurrentIndices[0]].GetY(), mPoints[mCurrentIndices[0]].GetZ(), 1,
-                    mPoints[mCurrentIndices[1]].GetX(), mPoints[mCurrentIndices[1]].GetY(), mPoints[mCurrentIndices[1]].GetZ(), 1,
-                    mPoints[mCurrentIndices[2]].GetX(), mPoints[mCurrentIndices[2]].GetY(), mPoints[mCurrentIndices[2]].GetZ(), 1,
-                    mPoints[mCurrentIndices[3]].GetX(), mPoints[mCurrentIndices[3]].GetY(), mPoints[mCurrentIndices[3]].GetZ(), 1});
+        Mat mpx(1,4, {p0.GetX(), p1.GetX(), p2.GetX(), p3.GetX()});
+        Mat mpy(1,4, {p0.GetY(), p1.GetY(), p2.GetY(), p3.GetY()});
+        Mat mpz(1,4, {p0.GetZ(), p1.GetZ(), p2.GetZ(), p3.GetZ()});
 
-        Mat res = mt * CATMULL_ROM_MAT * mp;
+        Mat resX = mpx * CATMULL_ROM_MAT;
+        Mat resY = mpy * CATMULL_ROM_MAT;
+        Mat resZ = mpz * CATMULL_ROM_MAT;
 
-        return {res.Get(0,0), res.Get(0,1), res.Get(0,2)};
+        float x = powf(t,3.0) * resX.Get(0) + powf(t,2.0) * resX.Get(1) + t * resX.Get(2) + resX.Get(3);
+        float y = powf(t,3.0) * resY.Get(0) + powf(t,2.0) * resY.Get(1) + t * resY.Get(2) + resY.Get(3);
+        float z = powf(t,3.0) * resZ.Get(0) + powf(t,2.0) * resZ.Get(1) + t * resZ.Get(2) + resZ.Get(3);
+
+        return {x,y,z};
     }
 
     float TranslateCurve::ComputeIndices(float gt) {
@@ -103,25 +104,32 @@ namespace cg_engine {
     }
 
     cg_math::Vec3f TranslateCurve::GetCatmullRomDerivative(float t) {
+        Vec3f p0 = mPoints[mCurrentIndices[0]];
+        Vec3f p1 = mPoints[mCurrentIndices[1]];
+        Vec3f p2 = mPoints[mCurrentIndices[2]];
+        Vec3f p3 = mPoints[mCurrentIndices[3]];
 
-        Mat mt(1,4, {3*t*t, 2*t, 1, 0});
+        Mat mpx(1,4, {p0.GetX(), p1.GetX(), p2.GetX(), p3.GetX()});
+        Mat mpy(1,4, {p0.GetY(), p1.GetY(), p2.GetY(), p3.GetY()});
+        Mat mpz(1,4, {p0.GetZ(), p1.GetZ(), p2.GetZ(), p3.GetZ()});
 
-        Mat mp(4,4,{mPoints[mCurrentIndices[0]].GetX(), mPoints[mCurrentIndices[0]].GetY(), mPoints[mCurrentIndices[0]].GetZ(), 1,
-                    mPoints[mCurrentIndices[1]].GetX(), mPoints[mCurrentIndices[1]].GetY(), mPoints[mCurrentIndices[1]].GetZ(), 1,
-                    mPoints[mCurrentIndices[2]].GetX(), mPoints[mCurrentIndices[2]].GetY(), mPoints[mCurrentIndices[2]].GetZ(), 1,
-                    mPoints[mCurrentIndices[3]].GetX(), mPoints[mCurrentIndices[3]].GetY(), mPoints[mCurrentIndices[3]].GetZ(), 1});
+        Mat resX = mpx * CATMULL_ROM_MAT;
+        Mat resY = mpy * CATMULL_ROM_MAT;
+        Mat resZ = mpz * CATMULL_ROM_MAT;
 
-        Mat res = mt * DERIVATIVE_MAT * mp;
+        float x = 3 * powf(t, 2.0) * resX.Get(0) + 2 * t * resX.Get(1) + resX.Get(2);
+        float y = 3 * powf(t, 2.0) * resY.Get(0) + 2 * t * resY.Get(1) + resY.Get(2);
+        float z = 3 * powf(t, 2.0) * resZ.Get(0) + 2 * t * resZ.Get(1) + resZ.Get(2);
 
-        return {res.Get(0,0), res.Get(0,1), res.Get(0,2)};
+        return {x,y,z};
     }
 
     void TranslateCurve::Align(float t) {
+        Vec3f up = Vec3f(0,1,0);
         Vec3f d = GetCatmullRomDerivative(t);
         Vec3f x = Vec3f::Normalize(d);
-        Vec3f z = Vec3f::Normalize(Vec3f::Cross(x, mPrevY));
+        Vec3f z = Vec3f::Normalize(Vec3f::Cross(x, up));
         Vec3f y = Vec3f::Normalize(Vec3f::Cross(z, x));
-        mPrevY = y;
 
         Mat rot = Mat::RotationMatrix(x, y, z);
 

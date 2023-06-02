@@ -44,14 +44,12 @@ namespace cg_math {
      */
 
     void Mat::Multiply(const Mat &lhs, const Mat &rhs, Mat &res) {
-        const uint32_t rows = lhs.mRows;
-        const uint32_t cols = rhs.mCols;
 
-        for (uint32_t i = 0; i < rows; ++i) {
-            for (uint32_t j = 0; j < cols; ++j) {
+        for (uint32_t i = 0; i < lhs.mRows; ++i) {
+            for (uint32_t j = 0; j < rhs.mCols; ++j) {
                 float sum = 0.0f;
-                for (uint32_t k = 0; k < cols; ++k) {
-                    float value = lhs.Get(i, k) * rhs.Get(k, j);
+                for (uint32_t k = 0; k < rhs.mRows; ++k) {
+                    float value = lhs.Get(i, k) * rhs.Get(j, k);
                     sum += value;
                 }
                 res.Set(i, j, sum);

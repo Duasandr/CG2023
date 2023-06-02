@@ -25,18 +25,11 @@ using std::vector;
  * @brief The Bezier matrix
  * @details Used to calculate the Bezier curve
  */
-static const Mat BezierMatrix(4, 4, { 1, -3, 3, -1,
-                                      0, 3, -6, 3,
-                                      0, 0, 3, -3,
-                                      0, 0, 0, 1});
-/**
- * @brief The Bezier matrix transpose
- * @details Used to calculate the Bezier curve
- */
-static const Mat BezierMatrixTranspose(4, 4, { 1, 0, 0, 0,
-                                               -3, 3, 0, 0,
-                                               3, -6, 3, 0,
-                                               -1, 3, -3, 1});
+static const Mat BezierMatrix(4, 4,
+                              {-1, 3, -3, 1,
+                                      3, -6, 3, 0,
+                                      -3, 3, 0, 0,
+                                      1, 0, 0, 0});
 
 /**
  * ////////////////////////////////
@@ -96,11 +89,7 @@ BezierPatch *BezierPatch::Create(const char *pathToFile, uint32_t tesselation) {
         Mat yMatrix(4, 4, yValues);
         Mat zMatrix(4, 4, zValues);
 
-        Mat xResult = BezierMatrix * xMatrix * BezierMatrixTranspose;
-        Mat yResult = BezierMatrix * yMatrix * BezierMatrixTranspose;
-        Mat zResult = BezierMatrix * zMatrix * BezierMatrixTranspose;
-
-        res->mPatches.push_back({xResult, yResult, zResult});
+        res->mPatches.push_back({xMatrix, yMatrix, zMatrix});
     }
 
     res->mTesselation = tesselation;
@@ -131,9 +120,9 @@ Vec3f BezierPatch::BezierPoint(uint32_t p, float u, float v) {
     Mat bv(4, 1, {v*v*v, v*v, v, 1});
     vector<Mat> patch = mPatches.at(p);
 
-    Mat mx = bu * patch.at(0)  *  bv;
-    Mat my = bu * patch.at(1)  *  bv;
-    Mat mz = bu * patch.at(2)  *   bv;
+    Mat mx = bu * BezierMatrix * patch.at(0) * BezierMatrix * bv;
+    Mat my = bu * BezierMatrix * patch.at(1) * BezierMatrix * bv;
+    Mat mz = bu * BezierMatrix * patch.at(2) * BezierMatrix * bv;
 
     return {mx.Get(0), my.Get(0), mz.Get(0)};
 }
@@ -154,17 +143,17 @@ void BezierPatch::Tessellate(const char *pathToFile) {
 
                 float delta = 1.0f/static_cast<float>(mTesselation);
 
-                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
-                vertices.push_back(BezierPoint(p, u, (v + delta)));
                 vertices.push_back(BezierPoint(p, u, v));
+                vertices.push_back(BezierPoint(p, u, (v + delta)));
+                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
+
+                vertices.push_back(BezierPoint(p, u, v));
+                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
+                vertices.push_back(BezierPoint(p, (u + delta), v));
 
                 textureCoordinates.emplace_back(u + delta, v - delta,0);
                 textureCoordinates.emplace_back(u, v - delta,0);
                 textureCoordinates.emplace_back(u, v,0);
-
-                vertices.push_back(BezierPoint(p, u, v));
-                vertices.push_back(BezierPoint(p, (u + delta), v));
-                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
 
                 textureCoordinates.emplace_back(u, v,0);
                 textureCoordinates.emplace_back(u + delta, v,0);
