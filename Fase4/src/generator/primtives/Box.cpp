@@ -65,7 +65,7 @@ void UpperFace(int length, int divisions, vector<Vec3f> &vertices, vector<Vec3f>
         xTexture = 0.0f;
         yTexture -= delta;
     }
-    int size = divisions * divisions;
+    int size = divisions * divisions * 6;
     for (int i = 0; i < size; ++i) {
         normals.emplace_back(0.0f, 1.0f, 0.0f);
     }
@@ -121,7 +121,7 @@ void LowerFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f
         xTexture = 0.0f;
         yTexture -= delta;
     }
-    int size = divisions * divisions;
+    int size = divisions * divisions * 6;
     for (int i = 0; i < size; ++i) {
         normals.emplace_back(0.0f, -1.0f, 0.0f);
     }
@@ -177,7 +177,7 @@ void LeftFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f>
         xTexture = 0.0f;
         yTexture -= delta;
     }
-    int size = divisions * divisions;
+    int size = divisions * divisions * 6;
     for (int i = 0; i < size; ++i) {
         normals.emplace_back(-1.0f, 0.0f, 0.0f);
     }
@@ -233,7 +233,7 @@ void RightFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f
         xTexture = 0.0f;
         yTexture -= delta;
     }
-    int size = divisions * divisions;
+    int size = divisions * divisions * 6;
     for (int i = 0; i < size; ++i) {
         normals.emplace_back(1.0f, 0.0f, 0.0f);
     }
@@ -289,7 +289,7 @@ void BackFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f>
         xTexture = 0.0f;
         yTexture -= delta;
     }
-    int size = divisions * divisions;
+    int size = divisions * divisions * 6;
     for (int i = 0; i < size; ++i) {
         normals.emplace_back(0.0f, 0.0f, -1.0f);
     }
@@ -345,7 +345,7 @@ void FrontFace(int length, int divisions, vector<Vec3f> &vertices,  vector<Vec3f
         xTexture = 0.0f;
         yTexture -= delta;
     }
-    int size = divisions * divisions;
+    int size = divisions * divisions * 6;
     for (int i = 0; i < size; ++i) {
         normals.emplace_back(0.0f, 0.0f, 1.0f);
     }
