@@ -76,7 +76,6 @@ namespace cg_engine {
      */
     void Model::Draw() const {
 
-        mMaterial->SetProperties();
 
         mVertexBuffer.Bind();
         glVertexPointer(3, GL_FLOAT, 0, 0);
@@ -94,6 +93,7 @@ namespace cg_engine {
             glTexCoordPointer(2, GL_FLOAT, 0, 0);
         }
 
+        mMaterial->SetProperties();
 
         glDrawArrays(GL_TRIANGLES, 0, mPositionArray.GetVertexCount());
 

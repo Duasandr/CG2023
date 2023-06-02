@@ -87,9 +87,9 @@ namespace cg_engine {
         }
 
         try {
-            x = CommonParser::ParseFloat(tag->Attribute("R"));
-            y = CommonParser::ParseFloat(tag->Attribute("G"));
-            z = CommonParser::ParseFloat(tag->Attribute("B"));
+            x = CommonParser::ParseFloat(tag->Attribute("R")) / 255.0f;
+            y = CommonParser::ParseFloat(tag->Attribute("G")) / 255.0f;
+            z = CommonParser::ParseFloat(tag->Attribute("B")) / 255.0f;
         }
         catch (domain_error &e) {
             cerr << "Error: " << e.what() << " is not a valid float" << std::endl;
@@ -228,51 +228,51 @@ namespace cg_engine {
 
     Light *EngineParser::ParseLights(tinyxml2::XMLElement *tag) {
         if (tag->Attribute("type") == string("point")) {
-            return new PointLight(CommonParser::ParseFloat(tag->Attribute("posX")),
-                                  CommonParser::ParseFloat(tag->Attribute("posY")),
-                                  CommonParser::ParseFloat(tag->Attribute("posZ")));
+            return new PointLight(CommonParser::ParseFloat(tag->Attribute("posx")),
+                                  CommonParser::ParseFloat(tag->Attribute("posy")),
+                                  CommonParser::ParseFloat(tag->Attribute("posz")));
         }
         if (tag->Attribute("type") == string("directional")) {
-            return new DirectionalLight(CommonParser::ParseFloat(tag->Attribute("dirX")),
-                                        CommonParser::ParseFloat(tag->Attribute("dirY")),
-                                        CommonParser::ParseFloat(tag->Attribute("dirZ")));
+            return new DirectionalLight(CommonParser::ParseFloat(tag->Attribute("dirx")),
+                                        CommonParser::ParseFloat(tag->Attribute("diry")),
+                                        CommonParser::ParseFloat(tag->Attribute("dirz")));
         }
         if (tag->Attribute("type") == string("spotlight")) {
-            return new SpotLight(CommonParser::ParseFloat(tag->Attribute("posX")),
-                                 CommonParser::ParseFloat(tag->Attribute("posY")),
-                                 CommonParser::ParseFloat(tag->Attribute("posZ")),
-                                 CommonParser::ParseFloat(tag->Attribute("dirX")),
-                                 CommonParser::ParseFloat(tag->Attribute("dirY")),
-                                 CommonParser::ParseFloat(tag->Attribute("dirZ")),
+            return new SpotLight(CommonParser::ParseFloat(tag->Attribute("posx")),
+                                 CommonParser::ParseFloat(tag->Attribute("posy")),
+                                 CommonParser::ParseFloat(tag->Attribute("posz")),
+                                 CommonParser::ParseFloat(tag->Attribute("dirx")),
+                                 CommonParser::ParseFloat(tag->Attribute("diry")),
+                                 CommonParser::ParseFloat(tag->Attribute("dirz")),
                                  CommonParser::ParseFloat(tag->Attribute("cutoff")));
         }
         return nullptr;
     }
 
-    Material* EngineParser::ParseColor(tinyxml2::XMLElement *color_tag) {
-        Material *color = new Material();
+    Material* EngineParser::ParseMaterial(tinyxml2::XMLElement *tag) {
+        Material *material = new Material();
 
-        if (color_tag->FirstChildElement("diffuse")) {
-            color->SetDiffuse(ParseVec3fColor(color_tag->FirstChildElement("diffuse")));
+        if (tag->FirstChildElement("diffuse")) {
+            material->SetDiffuse(ParseVec3fColor(tag->FirstChildElement("diffuse")));
         }
 
-        if (color_tag->FirstChildElement("ambient")) {
-            color->SetAmbient(ParseVec3fColor(color_tag->FirstChildElement("ambient")));
+        if (tag->FirstChildElement("ambient")) {
+            material->SetAmbient(ParseVec3fColor(tag->FirstChildElement("ambient")));
         }
 
-        if (color_tag->FirstChildElement("specular")) {
-            color->SetSpecular(ParseVec3fColor(color_tag->FirstChildElement("specular")));
+        if (tag->FirstChildElement("specular")) {
+            material->SetSpecular(ParseVec3fColor(tag->FirstChildElement("specular")));
         }
 
-        if (color_tag->FirstChildElement("emissive")) {
-            color->SetEmission(ParseVec3fColor(color_tag->FirstChildElement("emissive")));
+        if (tag->FirstChildElement("emissive")) {
+            material->SetEmission(ParseVec3fColor(tag->FirstChildElement("emissive")));
         }
 
-        if (color_tag->FirstChildElement("shininess")) {
-            color->SetShininess(CommonParser::ParseFloat(color_tag->FirstChildElement("shininess")->Attribute("value")));
+        if (tag->FirstChildElement("shininess")) {
+            material->SetShininess(CommonParser::ParseFloat(tag->FirstChildElement("shininess")->Attribute("value")));
         }
 
-        return color;
+        return material;
     }
 
 

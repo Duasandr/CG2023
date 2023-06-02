@@ -50,7 +50,7 @@ namespace cg_engine {
                 }
 
                 if (model_tag->FirstChildElement("color")) {
-                    model->SetColor(EngineParser::ParseColor(model_tag->FirstChildElement("color")));
+                    model->SetColor(EngineParser::ParseMaterial(model_tag->FirstChildElement("color")));
                 }
 
                 res->mModels.push_back(model);

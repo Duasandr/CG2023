@@ -19,48 +19,46 @@ GLint gMode = GL_FILL;
 
 void DrawAxis() {
     bool lightsOn = gWorld->GetLightsSize();
-    float red[] = {1.0f, 0.0f, 0.0f, 1.0f};
-    float green[] = {0.0f, 1.0f, 0.0f, 1.0f};
-    float blue[] = {0.0f, 0.0f, 1.0f, 1.0f};
-
+    float red[] = {1.0f, 0.0f, 0.0f};
+    float green[] = {0.0f, 1.0f, 0.0f};
+    float blue[] = {0.0f, 0.0f, 1.0f};
 
     glPushMatrix(); // Save the current transformation matrix
 
     glBegin(GL_LINES);
 
     // X-axis in red
-    if(lightsOn){
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
-    } else{
+    if (lightsOn) {
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red);
+    } else {
         glColor3f(red[0], red[1], red[2]);
     }
     glVertex3f(-100.0f, 0.0f, 0.0f);
     glVertex3f(100.0f, 0.0f, 0.0f);
 
     // Y-axis in green
-    if(lightsOn){
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, green);
-    } else{
+    if (lightsOn) {
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, green);
+    } else {
         glColor3f(green[0], green[1], green[2]);
     }
     glVertex3f(0.0f, -100.0f, 0.0f);
     glVertex3f(0.0f, 100.0f, 0.0f);
 
     // Z-axis in blue
-    if(lightsOn){
-        glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, red);
-    } else{
+    if (lightsOn) {
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, blue);
+    } else {
         glColor3f(blue[0], blue[1], blue[2]);
     }
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
 
-    glColor3f(1,1,1);
-
     glEnd();
 
     glPopMatrix(); // Restore the previous transformation matrix
 }
+
 
 
 /**
@@ -110,14 +108,20 @@ void RenderScene() {
               gWorld->Camera().GetLookAt().GetZ(),
               gWorld->Camera().GetUp().GetX(), gWorld->Camera().GetUp().GetY(), gWorld->Camera().GetUp().GetZ());
 
-    // Sets a different polygon mode on keyboard pressed
-    glPolygonMode(GL_FRONT, gMode);
+
 
     // Draw
 #ifndef NDEBUG
+    // Sets a different polygon mode on keyboard pressed
+    glPolygonMode(GL_FRONT, gMode);
+#endif
+
+    gWorld->Draw();
+
+#ifndef NDEBUG
+    // Draw axis
     DrawAxis();
 #endif
-    gWorld->Draw();
 
     // End of frame
     glutSwapBuffers();
@@ -234,12 +238,13 @@ int main(int argc, char **argv) {
 #ifndef __APPLE__
     glewInit();
 #endif
+
     if (gWorld->GetLightsSize() != 0) {
         glEnable(GL_RESCALE_NORMAL);
         glEnable(GL_LIGHTING);
 
-        float dark[4] = {0.2, 0.2, 0.2, 1.0};
-        float white[4] = {1.0, 1.0, 1.0, 1.0};
+        GLfloat dark[4] = {0.2,0.2,0.2,1.0};
+        GLfloat white[4] = {1.0,1.0,1.0,1.0};
 
         float amb[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
         glLightModelfv(GL_LIGHT_MODEL_AMBIENT, amb);

@@ -41,7 +41,7 @@ namespace cg_engine {
         static Transform* ParseTranslate(tinyxml2::XMLElement *tag);
         static Transform* ParseTranslateCurve(tinyxml2::XMLElement *tag);
         static Light* ParseLights(tinyxml2::XMLElement *tag);
-        static Material* ParseColor(tinyxml2::XMLElement *tag);
+        static Material* ParseMaterial(tinyxml2::XMLElement *tag);
         static Transform* ParseRotate(tinyxml2::XMLElement *tag);
         static Transform* ParseScale(tinyxml2::XMLElement *tag);
 

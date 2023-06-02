@@ -21,6 +21,12 @@ namespace cg_engine {
                                       -0.5f, 0.0f, 0.5f, 0.0f,
                                       0.0f, 1.0f, 0.0f, 0.0f});
 
+    const Mat DERIVATIVE_MAT(4, 4, {-0.5f, 1.5f, -1.5f, 0.5f,
+                                    1.0f, -2.5f, 2.0f, -0.5f,
+                                    -0.5f, 0.0f, 0.5f, 0.0f,
+                                    0.0f, 1.0f, 0.0f, 0.0f});
+
+
     const Mat C_MAT(4, 4, {1, 1, -1, 1,
                            0, 0, 0, 1,
                            1, 1, 1, 1,
@@ -76,8 +82,7 @@ namespace cg_engine {
                     mPoints[mCurrentIndices[2]].GetX(), mPoints[mCurrentIndices[2]].GetY(), mPoints[mCurrentIndices[2]].GetZ(), 1,
                     mPoints[mCurrentIndices[3]].GetX(), mPoints[mCurrentIndices[3]].GetY(), mPoints[mCurrentIndices[3]].GetZ(), 1});
 
-        Mat mpc = mp * C_MAT;
-        Mat res = mt * CATMULL_ROM_MAT * mpc;
+        Mat res = mt * CATMULL_ROM_MAT * mp;
 
         return {res.Get(0,0), res.Get(0,1), res.Get(0,2)};
     }
@@ -106,10 +111,9 @@ namespace cg_engine {
                     mPoints[mCurrentIndices[2]].GetX(), mPoints[mCurrentIndices[2]].GetY(), mPoints[mCurrentIndices[2]].GetZ(), 1,
                     mPoints[mCurrentIndices[3]].GetX(), mPoints[mCurrentIndices[3]].GetY(), mPoints[mCurrentIndices[3]].GetZ(), 1});
 
-        Mat mpc = mp * C_MAT;
-        Mat res = mt * CATMULL_ROM_MAT * mpc;
+        Mat res = mt * DERIVATIVE_MAT * mp;
 
-        return {res.Get(0,0), res.Get(0,0), res.Get(0,0)};
+        return {res.Get(0,0), res.Get(0,1), res.Get(0,2)};
     }
 
     void TranslateCurve::Align(float t) {

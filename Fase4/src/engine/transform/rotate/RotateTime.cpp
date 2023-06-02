@@ -25,15 +25,12 @@ cg_engine::RotateTime::RotateTime(float time, float x, float y, float z) {
 void cg_engine::RotateTime::Apply() {
     float delta = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
-    // Compute the speed at which the object should move
-    float speed = 1 / mTime; // mTime seconds to complete the curve
+    float speed = 360 / mTime; // mTime seconds to complete the curve
 
-    // Compute the total distance traveled by the object
     float distance = speed * delta;
 
     mCurrentAngle += distance;
 
-    // Check if the rotation is complete
     if (mCurrentAngle >= 360.0f) {
         // Reset the current angle to zero
         mCurrentAngle = 0;
