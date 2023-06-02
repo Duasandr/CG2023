@@ -13,6 +13,8 @@
 #include <IL/il.h>
 #include <iostream>
 #include "world/model/Model.h"
+#define MODEL_PATH "models/"
+#define TEXTURE_PATH "textures/"
 
 namespace cg_engine {
     using std::ifstream;
@@ -36,9 +38,11 @@ namespace cg_engine {
 
     Model *Model::Create(const char *path) {
         Model *res;
+        std::string pathTofile(MODEL_PATH);
+        pathTofile += std::string(path);
 
         try {
-            res = new Model(path);
+            res = new Model(pathTofile.c_str());
         }
         catch (exception &e) {
             cerr << "File not found: " << path << endl;
@@ -56,8 +60,14 @@ namespace cg_engine {
     Model *Model::Create(const char *pathToFile, const char *texturePath) {
         Model *res = nullptr;
 
+        std::string path(MODEL_PATH);
+        std::string texture(TEXTURE_PATH);
+
+        path += std::string(pathToFile);
+        texture += std::string(texturePath);
+
         try {
-            res = new Model(pathToFile, texturePath);
+            res = new Model(path.c_str(), texture.c_str());
         }
         catch (exception &e) {
             cerr << "File not found: " << pathToFile << endl;
