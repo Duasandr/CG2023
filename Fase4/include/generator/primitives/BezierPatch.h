@@ -48,7 +48,7 @@ public:
     static BezierPatch * Create(const char* pathToFile, uint32_t tesselation);
 
 
-    cg_math::Vec3f BezierPoint(uint32_t p, float u, float v);
+    void BezierPoint(uint32_t p, float u, float v);
 
     void Tessellate(const char *pathToFile);
 
@@ -68,6 +68,9 @@ private:
      * @details Each patch is a is a vector of 3 4x4 matrices. One for each axis.
      */
     std::vector<std::vector<cg_math::Mat>> mPatches;
+    std::vector<cg_math::Vec3f> mVertices;
+    std::vector<cg_math::Vec3f> mNormals;
+    std::vector<cg_math::Vec3f> mTextureCoordinates;
 };
 
 

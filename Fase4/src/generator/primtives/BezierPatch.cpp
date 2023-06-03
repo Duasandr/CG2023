@@ -113,24 +113,41 @@ BezierPatch *BezierPatch::Create(const char *pathToFile, uint32_t tesselation) {
     return res;
 }
 
-Vec3f BezierPatch::BezierPoint(uint32_t p, float u, float v) {
+void BezierPatch::BezierPoint(uint32_t p, float u, float v) {
     // p(u,v) = [u^3 u^2 u 1] * M * P * M^T * [v^3 v^2 v 1]^T
 
     Mat bu(1, 4, {u*u*u, u*u, u, 1});
     Mat bv(4, 1, {v*v*v, v*v, v, 1});
     vector<Mat> patch = mPatches.at(p);
 
+    // Point
     Mat mx = bu * BezierMatrix * patch.at(0) * BezierMatrix * bv;
     Mat my = bu * BezierMatrix * patch.at(1) * BezierMatrix * bv;
     Mat mz = bu * BezierMatrix * patch.at(2) * BezierMatrix * bv;
 
-    return {mx.Get(0), my.Get(0), mz.Get(0)};
+    mVertices.emplace_back(mx.Get(0), my.Get(0), mz.Get(0));
+
+    // Normal
+    Mat mdv(4, 1, {3*v*v, 2*v, 1, 0});
+    Mat mdu(1, 4, {3*u*u, 2*u, 1, 0});
+
+    Mat mxu = mdu * BezierMatrix * patch.at(0) * BezierMatrix * bv;
+    Mat myu = mdu * BezierMatrix * patch.at(1) * BezierMatrix * bv;
+    Mat mzu = mdu * BezierMatrix * patch.at(2) * BezierMatrix * bv;
+
+    Mat mxv = bu * BezierMatrix * patch.at(0) * BezierMatrix * mdv;
+    Mat myv = bu * BezierMatrix * patch.at(1) * BezierMatrix * mdv;
+    Mat mzv = bu * BezierMatrix * patch.at(2) * BezierMatrix * mdv;
+
+    Vec3f normalU = Vec3f(mxu.Get(0), myu.Get(0), mzu.Get(0));
+    Vec3f normalV = Vec3f(mxv.Get(0), myv.Get(0), mzv.Get(0));
+
+    Vec3f normal = Vec3f::Cross(normalU, normalV);
+
+    mNormals.emplace_back(Vec3f::Normalize(normal));
 }
 
 void BezierPatch::Tessellate(const char *pathToFile) {
-    vector<Vec3f> vertices;
-    vector<Vec3f> normals;
-    vector<Vec3f> textureCoordinates;
 
     uint32_t patchSize = mPatches.size();
 
@@ -143,30 +160,25 @@ void BezierPatch::Tessellate(const char *pathToFile) {
 
                 float delta = 1.0f/static_cast<float>(mTesselation);
 
-                vertices.push_back(BezierPoint(p, u, v));
-                vertices.push_back(BezierPoint(p, u, (v + delta)));
-                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
+                BezierPoint(p, u, v);
+                BezierPoint(p, u, (v + delta));
+                BezierPoint(p, (u + delta), (v + delta));
 
-                vertices.push_back(BezierPoint(p, u, v));
-                vertices.push_back(BezierPoint(p, (u + delta), (v + delta)));
-                vertices.push_back(BezierPoint(p, (u + delta), v));
+                BezierPoint(p, u, v);
+                BezierPoint(p, (u + delta), (v + delta));
+                BezierPoint(p, (u + delta), v);
 
-                textureCoordinates.emplace_back(u + delta, v - delta,0);
-                textureCoordinates.emplace_back(u, v - delta,0);
-                textureCoordinates.emplace_back(u, v,0);
+                mTextureCoordinates.emplace_back(u + delta, v - delta,0);
+                mTextureCoordinates.emplace_back(u, v - delta,0);
+                mTextureCoordinates.emplace_back(u, v,0);
 
-                textureCoordinates.emplace_back(u, v,0);
-                textureCoordinates.emplace_back(u + delta, v,0);
-                textureCoordinates.emplace_back(u + delta, v - delta,0);
+                mTextureCoordinates.emplace_back(u, v,0);
+                mTextureCoordinates.emplace_back(u + delta, v,0);
+                mTextureCoordinates.emplace_back(u + delta, v - delta,0);
 
             }
         }
     }
 
-    normals.reserve(vertices.size());
-    for (const auto &v: vertices) {
-        normals.push_back(Vec3f::Normalize(v));
-    }
-
-    DumpModel(pathToFile, vertices, normals, textureCoordinates);
+    DumpModel(pathToFile, mVertices, mNormals, mTextureCoordinates);
 }
