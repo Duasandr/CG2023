@@ -160,13 +160,13 @@ void BezierPatch::Tessellate(const char *pathToFile) {
 
                 float delta = 1.0f/static_cast<float>(mTesselation);
 
-                BezierPoint(p, u, v);
-                BezierPoint(p, u, (v + delta));
                 BezierPoint(p, (u + delta), (v + delta));
+                BezierPoint(p, u, (v + delta));
+                BezierPoint(p, u, v);
 
                 BezierPoint(p, u, v);
-                BezierPoint(p, (u + delta), (v + delta));
                 BezierPoint(p, (u + delta), v);
+                BezierPoint(p, (u + delta), (v + delta));
 
                 mTextureCoordinates.emplace_back(u + delta, v - delta,0);
                 mTextureCoordinates.emplace_back(u, v - delta,0);
