@@ -237,7 +237,7 @@ namespace cg_engine {
                                         CommonParser::ParseFloat(tag->Attribute("diry")),
                                         CommonParser::ParseFloat(tag->Attribute("dirz")));
         }
-        if (tag->Attribute("type") == string("spotlight")) {
+        if (tag->Attribute("type") == string("spotlight") || tag->Attribute("type") == string("spot")) {
             return new SpotLight(CommonParser::ParseFloat(tag->Attribute("posx")),
                                  CommonParser::ParseFloat(tag->Attribute("posy")),
                                  CommonParser::ParseFloat(tag->Attribute("posz")),
@@ -246,7 +246,7 @@ namespace cg_engine {
                                  CommonParser::ParseFloat(tag->Attribute("dirz")),
                                  CommonParser::ParseFloat(tag->Attribute("cutoff")));
         }
-        return nullptr;
+        throw std::invalid_argument(std::string ("Error: tag ") +  tag->Name() + " invalid type " + tag->Attribute("type"));
     }
 
     Material* EngineParser::ParseMaterial(tinyxml2::XMLElement *tag) {
