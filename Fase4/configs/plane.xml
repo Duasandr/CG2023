@@ -7,11 +7,11 @@
         <projection fov="60" near="1" far="1000" />
     </camera>
     <lights>
-        <light type="directional" dirX="1" dirY="0.7" dirZ="0.5"/>
+        <light type="directional" dirx="1" diry="0.7" dirz="0.5"/>
     </lights>
     <group>
         <models>
-            <model file="models/plane.3d" > <!-- generator box 2 3 box_nt.3d -->
+            <model file="plane.3d" > <!-- generator box 2 3 box_nt.3d -->
                 <color>
                     <diffuse R="100" G="100" B="0" />
                     <ambient R="25" G="25" B="10" />

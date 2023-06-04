@@ -54,6 +54,8 @@ void DrawAxis() {
     glVertex3f(0.0f, 0.0f, -100.0f);
     glVertex3f(0.0f, 0.0f, 100.0f);
 
+    glColor3f(1,1,1);
+
     glEnd();
 
     glPopMatrix(); // Restore the previous transformation matrix
